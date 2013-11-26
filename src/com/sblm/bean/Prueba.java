@@ -4,6 +4,15 @@ public class Prueba {
 
 	private int val;
 	private int prim;
+	private int sec;
+
+	public int getSec() {
+		return sec;
+	}
+
+	public void setSec(int sec) {
+		this.sec = sec;
+	}
 
 	public int getVal() {
 		return val;
