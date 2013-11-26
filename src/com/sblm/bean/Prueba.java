@@ -5,8 +5,33 @@ public class Prueba {
 	private int val;
 	private int prim;
 	private int sec;
-	
+	private int terc;
 	private int cuarto;
+	private int quinto;
+
+	public int getQuinto() {
+		return quinto;
+	}
+
+	public void setQuinto(int quinto) {
+		this.quinto = quinto;
+	}
+
+	public int getTerc() {
+		return terc;
+	}
+
+	public void setTerc(int terc) {
+		this.terc = terc;
+	}
+
+	public int getCuarto() {
+		return cuarto;
+	}
+
+	public void setCuarto(int cuarto) {
+		this.cuarto = cuarto;
+	}
 
 	public int getSec() {
 		return sec;
@@ -16,8 +41,6 @@ public class Prueba {
 		this.sec = sec;
 	}
 
-	
-	private int terc;
 	public int getVal() {
 		return val;
 	}
