@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.password">1234</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://192.168.1.197:1433;databaseName=beneficenciadba</property>
+        <property name="hibernate.connection.username">whr</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        <property name="hibernate.search.autoregister_listeners">false</property>
+        <mapping class="com.sblm.model.Perfilmodulo" />
+        <mapping class="com.sblm.model.Documento" />
+        <mapping class="com.sblm.model.Eventoauditoria" />
+        <mapping class="com.sblm.model.Auditoria" />
+        <mapping class="com.sblm.model.Modulo" />
+        <mapping class="com.sblm.model.Mercedconductiva" />
+        <mapping class="com.sblm.model.Perfilusuario" />
+        <mapping class="com.sblm.model.Arbitrio" />
+        <mapping class="com.sblm.model.Mep" />
+        <mapping class="com.sblm.model.Uso" />
+        <mapping class="com.sblm.model.Mensajeflujodocumento" />
+        <mapping class="com.sblm.model.Contrato" />
+        <mapping class="com.sblm.model.Tipopersona" />
+        <mapping class="com.sblm.model.Area" />
+        <mapping class="com.sblm.model.Tipodocumento" />
+        <mapping class="com.sblm.model.Igv" />
+        <mapping class="com.sblm.model.Tipotitularidad" />
+        <mapping class="com.sblm.model.Pagina" />
+        <mapping class="com.sblm.model.Materialpredominante" />
+        <mapping class="com.sblm.model.Titularidad" />
+        <mapping class="com.sblm.model.Ramo" />
+        <mapping class="com.sblm.model.Detallecartera" />
+        <mapping class="com.sblm.model.Detallecuota" />
+        <mapping class="com.sblm.model.Tipointerior" />
+        <mapping class="com.sblm.model.Upa" />
+        <mapping class="com.sblm.model.Banco" />
+        <mapping class="com.sblm.model.Cliente" />
+        <mapping class="com.sblm.model.Detallearbitrio" />
+        <mapping class="com.sblm.model.Extensionarchivo" />
+        <mapping class="com.sblm.model.Paginamodulo" />
+        <mapping class="com.sblm.model.Cuota" />
+        <mapping class="com.sblm.model.Tipovia" />
+        <mapping class="com.sblm.model.Estado" />
+        <mapping class="com.sblm.model.Ubigeo" />
+        <mapping class="com.sblm.model.Tipocontrato" />
+        <mapping class="com.sblm.model.Institucion" />
+        <mapping class="com.sblm.model.Tipocambio" />
+        <mapping class="com.sblm.model.Perfil" />
+        <mapping class="com.sblm.model.Representante" />
+         <mapping class="com.sblm.model.Archivodocumento" />
+        <mapping class="com.sblm.model.Asunto" />
+        <mapping class="com.sblm.model.Cartera" />
+        <mapping class="com.sblm.model.Cuentabancaria" />
+        <mapping class="com.sblm.model.Usuario" />
+        <mapping class="com.sblm.model.Estadoauditoria" />
+        <mapping class="com.sblm.model.Pertenencia" />
+        <mapping class="com.sblm.model.Inmueble" />
+        <mapping class="com.sblm.model.Seguimientoflujo" />
+        <mapping class="com.sblm.model.Accion" />
+        <mapping class="com.sblm.model.Carta" />
+        <mapping class="com.sblm.model.Inquilino" />
+        <mapping class="com.sblm.model.Califica" />
+        <mapping class="com.sblm.model.Flujodocumento" />
+        <mapping class="com.sblm.model.Tipoentidad" />
+        <mapping class="com.sblm.model.Tiponegocio" />
+        <mapping class="com.sblm.model.Valuacion" />
+        <mapping class="com.sblm.model.Permiso" />
+    </session-factory>
+</hibernate-configuration>

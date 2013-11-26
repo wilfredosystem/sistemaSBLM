@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<link href="../resources/css/estilo.css" rel="stylesheet"
+		type="text/css" />
+	<title>SBLM</title>
+</h:head>
+<h:body>
+
+	<div class="carterasubpestanas">
+
+		<p:commandLink id="idTabRegistroConsulta" styleClass="btnRegistro"
+			onclick="funcionTabRegistroConsulta();">
+			<div class="btncentrado">
+				<p:outputLabel value="Consulta"
+					style="margin-bottom:10px;  float:left;margin-left:5px;" />
+				<p:graphicImage value="/resources/images/cobranza/icon_consulta.png"
+					alt="Consulta" title="Consulta" />
+			</div>
+		</p:commandLink>
+		<p:commandLink id="idTabRegistroRegistro" styleClass="btnRegistro2"
+			onclick="funcionTabRegistroRegistro();">
+			<div class="btncentrado">
+				<p:outputLabel value="Registro"
+					style="margin-bottom:10px; float:left;margin-left:5px;" />
+				<p:graphicImage value="/resources/images/cobranza/icon_registro.png"
+					alt="Registro" title="Registro" />
+			</div>
+		</p:commandLink>
+	</div>
+
+	<div id="idDivRegistroRegistro" class="recau_panelPendientes">
+
+		<h:form>
+			<div class="filaBtnNuevoCartera">
+				<div style="float: left; margin-left: 35px;">
+					<h:outputText value="Registro de Cartera" />
+					<p:graphicImage width="20" height="20"
+						value="/resources/images/recaudacionarbitrios/impresora.png"
+						alt="icono" title="icono" style="margin-left:30px;" />
+				</div>
+
+			</div>
+		</h:form>
+
+
+		<div class="mante_gene_ContDescrip01">
+			<div class="cobranza_cartera_contenidoDatos">
+				<div class="cartera_ColumDatos">
+
+
+					<h:form id="frmRegistroCabecera">
+						<p:growl id="msjRegistro" showDetail="true" sticky="false"
+							life="4000" />
+
+						<div class="filaDatoLargo"
+							style="background-color: #CECECE; width: 490px; float: left;">
+							<div class="columLargo">
+								<h:outputText class="lblDatos" value="Cartera de Cobranza" />
+
+							</div>
+						</div>
+						<div class="filaDatoLargosCorto">
+							<div style="width: 500px; float: left; margin-top: 15px;">
+								<h:outputText style="float: left;width: 70px;" value="Cartera:" />
+
+								<p:inputText id="idregcartera" style="float:left; width:135px;"
+									value="#{carteraMB.cartera.numero}" />
+								<p:commandLink oncomplete="dlgReg_BuscarCartera.show();"
+									actionListener="#{carteraMB.cargarbusquedaDetalleCartera}"
+									style="float:left;margin-left:10px; margin-top:5px;"
+									update=":frmReg_BuscarCartera:tablaReg_BuscarCartera">
+									<p:graphicImage width="18" height="18"
+										value="/resources/images/cobranza/icon_consulta.png"
+										alt="Buscar Cartera" title="buscar cartera" />
+								</p:commandLink>
+
+								<p:commandLink oncomplete="dlgRegDetalleCartera.show();"
+									update=":frmReg_DetalleCartera, :frmReg_DetalleCartera:tablaRegistroPago"
+									style="float:left;margin-right:20px;"
+									actionListener="#{carteraMB.mostrarPagosCartera}">
+									<p:graphicImage width="22" height="22"
+										value="/resources/images/upa/verInmueble.png"
+										alt="Ver detalle" title="Ver detalle" />
+								</p:commandLink>
+
+								<h:outputText style="float:left;margin-left:95px;"
+									value="Agregar pago" />
+								<p:commandLink oncomplete="validacionLlenadoCartera();"
+									style="margin-left:0px;"
+									actionListener="#{carteraMB.listarComboContrato}"
+									update=":frmReg_RegistroDetalleCuota:idDetalleCuota_ContratoCuota">
+									<p:graphicImage
+										value="/resources/images/cobranza/icon_registro.png"
+										alt="Agregar pago" title="Agregar pago" />
+								</p:commandLink>
+							</div>
+						</div>
+
+
+					</h:form>
+
+					<!-- REGISTRO CUOTA -->
+<div id="dialogCuota">
+					<p:dialog header="REGISTRO DE CUOTAS" closable="true"
+						closeOnEscape="true" resizable="false"
+						widgetVar="dlgRegistroCuota" width="620" height="420"
+						style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+						<h:form id="frmReg_RegistroDetalleCuota">
+							<div style="margin: 10px;">
+								<!-- 								<div style="margin-bottom: 10px;"> -->
+
+								<!-- 									<div style="color: #59A7D4; float: left; margin-top: 5px;">Detalle codigo Sistema</div> -->
+								<!-- 								</div> -->
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Numero Contrato:" />
+									<p:selectOneMenu styleClass="cbxDatos"
+										id="idDetalleCuota_ContratoCuota"
+										onchange="limpiarvalidacion()" panelStyle="width:150px"
+										style="width: 188px;  font-size: 11px;" filter="true"
+										filterMatchMode="startsWith"
+										value="#{carteraMB.cuota.contrato.idcontrato}">
+										<f:selectItem itemLabel="Seleccione Numero Contrato"
+											itemValue="0" />
+										<f:selectItems value="#{carteraMB.contratosxcartera}"
+											var="con" itemValue="#{con.idcontrato}"
+											itemLabel="#{con.nrocontrato}">
+										</f:selectItems>
+										<p:ajax listener="#{carteraMB.mostrarNumeroCuotaxContrato}"
+											update="idDetalleCuota_ContratoNumCuota" />
+									</p:selectOneMenu>
+								</div>
+								<div class="filaDatoLargosCorto" style="width: 340px;">
+									<h:outputText styleClass="lblDatos" value="Numero Cuota:" />
+									<p:selectOneMenu styleClass="cbxDatos"
+										id="idDetalleCuota_ContratoNumCuota"
+										onchange="limpiarvalidacion()" panelStyle="width:150px"
+										style="width: 188px;  font-size: 11px;" filter="true"
+										filterMatchMode="startsWith"
+										value="#{carteraMB.cuota.idcuota}">
+										<f:selectItem itemLabel="Seleccione Numero Contrato"
+											itemValue="0" />
+
+										<f:selectItems value="#{carteraMB.cuotasxcontrato}" var="cuo"
+											itemValue="#{cuo.idcuota}" itemLabel="#{cuo.cuotanumero}">
+										</f:selectItems>
+										<p:ajax listener="#{carteraMB.mostrarMontoCuota}"
+											update=":frmReg_RegistroDetalleCuotaTabla:tablaRegistroPagoCuota,pnlDetalle " />
+									</p:selectOneMenu>
+									
+										<p:graphicImage width="22" height="22" id="idimagendetalle" 
+											value="/resources/images/upa/verInmueble.png"
+											alt="Ver detalle" title="Ver detalle" />
+								
+
+
+									<p:tooltip for="idimagendetalle">
+										<p:outputPanel id="pnlDetalle" >
+											<div class="filaDatoLargo"
+												style="width: 550px; height: auto;">
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Monto contrato (S/): " />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.cuota.contrato.montototalsoles}" />
+												</div>
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px;color: #59A7D4;height:auto;"
+														value="Monto contrato ($): " />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.cuota.contrato.montototaldolar}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo"
+												style="width: 550px; height: auto;">
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Cuota Fija(S/):" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.cuota.contrato.montocuotasoles}" />
+												</div>
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Cuota Fija($):" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.cuota.contrato.montocuotadolar}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo"
+												style="width: 550px; height: auto;">
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Cuota Pagado(S/):" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.montocuotaspagadas}" />
+												</div>
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Cuota Pagado($):" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.montocuotaspagadasdolar}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo"
+												style="width: 550px; height: auto;">
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Cuota Restante(S/):" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.cuota.contrato.montocuotasoles-carteraMB.montocuotaspagadas}" />
+												</div>
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Cuota Restante($):" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.cuota.contrato.montocuotadolar-carteraMB.montocuotaspagadasdolar}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo"
+												style="width: 550px; height: auto;">
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Total cuotas:" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.cuota.contrato.numerocuotas}" />
+												</div>
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4; height:auto;"
+														value="Inquilino:" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.cuota.contrato.inquilino.nombrescompletos}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo"
+												style="width: 550px; height: auto;">
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4;height:auto;"
+														value="Cuotas Pagadas:" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.valornumcuotaspagadas}" />
+												</div>
+												<div class="filaDatoLargosCorto"
+													style="width: 250px; height: auto;">
+													<h:outputText styleClass="lblDatos"
+														style="width:120px; color: #59A7D4; height:auto;"
+														value="Cuotas faltantes:" />
+													<h:outputText styleClass="lblDatos"
+														style="width:110px;height:auto;"
+														value="#{carteraMB.valornumcuotasrestantes}" />
+												</div>
+											</div>
+										</p:outputPanel>
+
+									</p:tooltip>
+
+
+
+								</div>
+
+
+
+
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value=" Monto (S./):" />
+									<p:inputText styleClass="txtDatos"
+										id="idDetalleCuota_montosoles"
+										value="#{carteraMB.detallecuota.montosoles}">
+										<p:ajax listener="#{carteraMB.cambiarMonedaSolesaDolar}"
+											update="idDetalleCuota_montodolar" />
+									</p:inputText>
+								</div>
+								<div class="filaDatoLargosCorto">
+
+									<h:outputText styleClass="lblDatos" value=" Monto ($):" />
+									<p:inputText styleClass="txtDatos"
+										id="idDetalleCuota_montodolar"
+										value="#{carteraMB.detallecuota.montodolar}">
+										<p:ajax listener="#{carteraMB.cambiarMonedaDolaraSoles}"
+											update="idDetalleCuota_montosoles" />
+									</p:inputText>
+								</div>
+								<div class="filaDatoLargosCorto" style="width: 330px;">
+									<h:outputText styleClass="lblDatos" value="Fecha Regitro:" />
+									<p:calendar styleClass="txtDatos" style="width:210px;"
+										id="idDetalleCuota_fecharegistro" showOn="button"
+										value="#{carteraMB.detallecuota.fecharegistro}" />
+								</div>
+								<!-- 								<div class="filaDatoLargosCorto" style="width: 550px;"> -->
+								<!-- 									<h:outputText styleClass="lblDatos" value=" Mora:" /> -->
+								<!-- 									<p:inputText styleClass="txtDatos" id="idcuota_mora" -->
+								<!-- 										value="#{carteraMB.cuota.mora}" /> -->
+								<!-- 									<h:outputText style="width:95px;float:left;margin-left:120px;" -->
+								<!-- 										value="Regularizacion:" /> -->
+								<!-- 									<p:selectBooleanCheckbox -->
+								<!-- 										value="#{carteraMB.cuota.regularizacion}" /> -->
+								<!-- 								</div> -->
+
+								<div class="filaDatoLargosCorto" style="width: 550px;">
+									<h:outputText styleClass="lblDatos" value="Observaciones:" />
+									<p:inputTextarea style="width:415px;" rows="3" cols="50"
+										value="#{carteraMB.detallecuota.observacion}" />
+
+								</div>
+								<br /> <br /> <br />
+								<p:separator style="float:left; width:570px; margin-top:35px;" />
+								<br />
+								<div class="cuota_botonenviar"
+									style="width: 500px; margin-bottom: 20px; margin-left: 10px;">
+									<p:commandButton value="Guardar"
+										oncomplete="validacionRegistroDetalleCuota();" />
+								</div>
+
+							</div>
+						</h:form>
+						<br />
+						<h:form id="frmReg_RegistroDetalleCuotaTabla">
+							<p:growl id="msjRegistroCuotaTabla" showDetail="true"
+								sticky="false" life="4000" />
+							<div class="dgaiMonitoreo_detalle" style="width: 550px">
+								<p:dataTable id="tablaRegistroPagoCuota" var="cu"
+									value="#{carteraMB.detallecuotasxcontrato}"
+									rowKey="#{cu.iddetallecuota}"
+									selection="#{carteraMB.detallecuota}" selectionMode="single"
+									paginator="true" stickyHeader="true"
+									emptyMessage="NO EXISTEN REGISTROS"
+									style="width:550px; font-size: 10px;  text-align:center;"
+									paginatorTemplate="Reg. por p&aacute;gina: {RowsPerPageDropdown}  &nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp;   {CurrentPageReport}"
+									currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+									rowsPerPageTemplate="10,15,20" rows="10"
+									paginatorPosition="top" scrollWidth="550"
+									styleClass="ui-datatable-hor-scroll">
+									<f:facet name="header">
+										<div style="color: #59A7D4; font-size: 12px;">LISTADO
+											PAGOS DE CUOTAS</div>
+									</f:facet>
+									<!-- 									<p:ajax event="rowSelect" -->
+									<!-- 										listener="#{carteraMB.onRowSelectRegistroCuotasPagos}" -->
+									<!-- 										update=":frmReg_RegistroDetalleCuota, :frmRegistroCabecera" /> -->
+
+									<p:column headerText="Numero Contrato">
+										<h:outputText value="#{cu.cuota.contrato.nrocontrato}" />
+									</p:column>
+									<p:column headerText="Monto Cuota (S/)">
+										<h:outputText value="#{cu.cuota.contrato.montocuotasoles}" />
+									</p:column>
+									<p:column headerText="Monto Cuota ($)">
+										<h:outputText value="#{cu.cuota.contrato.montocuotadolar}" />
+									</p:column>
+									<p:column headerText="Pago S/.">
+										<h:outputText value="#{cu.montosoles}" />
+									</p:column>
+									<p:column headerText="Pago $">
+										<h:outputText value="#{cu.montodolar}" />
+									</p:column>
+									<p:column headerText="Fecha Registro">
+										<h:outputText value="#{cu.fecharegistro}" />
+									</p:column>
+
+
+									<p:column headerText="Observacion">
+										<h:outputText value="#{cu.observacion}" />
+									</p:column>
+									<p:column headerText="F. Creacion">
+										<h:outputText value="#{cu.feccre}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Usuario creador">
+										<h:outputText value="#{cu.usrcre}" />
+									</p:column>
+									<p:column headerText="F. Modificacion">
+										<h:outputText value="#{cu.fecmod}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Usuario Modificador">
+										<h:outputText value="#{cu.usrmod}" />
+									</p:column>
+
+								</p:dataTable>
+
+							</div>
+						</h:form>
+					</p:dialog>
+</div>
+
+					<h:form>
+						<p:confirmDialog message="¿Desea Registrar Pago de cuota?"
+							header="Registro Cuota" severity="alert"
+							widgetVar="dlgConfirmarRegistroDetalleCuota">
+
+							<p:commandButton value="&nbsp;Aceptar"
+								update=":frmReg_RegistroDetalleCuotaTabla, :frmReg_RegistroDetalleCuota:idDetalleCuota_ContratoNumCuota"
+								actionListener="#{carteraMB.registrarPagoCuota}"
+								oncomplete="dlgConfirmarRegistroDetalleCuota.hide() "
+								image="icon-save">
+
+							</p:commandButton>
+							<p:commandButton value="&nbsp;Cancelar"
+								oncomplete="dlgConfirmarRegistroDetalleCuota.hide()"
+								image="icon-cancel" />
+						</p:confirmDialog>
+					</h:form>
+
+					<!-- DETALLE CARTERA -->
+					<h:form id="frmReg_BuscarCartera">
+						<p:dialog header="BUSQUEDA CARTERA" closable="true"
+							closeOnEscape="true" resizable="false"
+							widgetVar="dlgReg_BuscarCartera" width="auto" height="400"
+							style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+							<br />
+							<div style="color: #59A7D4;">
+								<p:spacer height="25" />
+								<p:dataTable id="tablaReg_BuscarCartera" var="deca"
+									value="#{carteraMB.carteras}" rowKey="#{deca.idcartera}"
+									selection="#{carteraMB.cartera}" selectionMode="single"
+									stickyHeader="true" paginator="true"
+									emptyMessage="NO EXISTEN CARTERAS"
+									style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;"
+									paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+									currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+									rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+									styleClass="ui-datatable-hor-scroll">
+									<f:facet name="header">
+										<div style="color: #59A7D4; font-size: 12px;">LISTADO DE
+											CARTERAS</div>
+									</f:facet>
+									<p:ajax event="rowSelect"
+										listener="#{carteraMB.onRowBuscarCartera}"
+										update=":frmRegistroCabecera:idregcartera"
+										oncomplete="dlgReg_BuscarCartera.hide();" />
+									<p:column headerText="Cartera">
+										<h:outputText value="#{deca.numero}" />
+									</p:column>
+									<p:column headerText="Cobrador">
+										<h:outputText value="#{deca.usuario.nombrescompletos}" />
+									</p:column>
+									<p:column headerText="Tipo lista">
+										<h:outputText value="#{deca.tipolista}" />
+									</p:column>
+									<p:column headerText="Numero">
+										<h:outputText value="#{deca.numero}" />
+									</p:column>
+
+								</p:dataTable>
+							</div>
+
+						</p:dialog>
+
+					</h:form>
+					<h:form id="frmReg_DetalleCartera">
+						<p:growl id="msjCarteradetalleCartera" showDetail="true"
+							sticky="false" life="4000" />
+						<!-- DETALLE CARTERA -->
+						<p:dialog header="DETALLE CARTERA" closable="true"
+							closeOnEscape="true" resizable="false" id="dlgDetalleContrato"
+							widgetVar="dlgRegDetalleCartera" width="auto" height="342"
+							style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+							<div class="dtbDespacho" style="margin: 10px; width: 470px;">
+								<div style="margin-bottom: 10px;">
+
+									<div
+										style="color: #59A7D4; float: left; margin-top: 5px; margin-left: 20px;">DATOS
+										DE CARTERA</div>
+								</div>
+								<br /> <br /> <br />
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Numero Cartera:" />
+									<p:outputLabel styleClass="txtDatos"
+										value="#{carteraMB.cartera.numero}" />
+								</div>
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value=" Tipo Lista:" />
+									<p:outputLabel styleClass="txtDatos"
+										value="#{carteraMB.cartera.tipolista}" />
+								</div>
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Cobrador:" />
+									<p:outputLabel styleClass="txtDatos"
+										value="#{carteraMB.cartera.usuario.nombrescompletos}" />
+								</div>
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Estado:" />
+									<p:outputLabel styleClass="txtDatos"
+										value="#{carteraMB.cartera.estado?'Activo':'Inactivo'}" />
+								</div>
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Fecha Registro:" />
+									<p:outputLabel styleClass="txtDatos"
+										value="#{carteraMB.cartera.feccre}" />
+								</div>
+
+							</div>
+							<div class="dgaiMonitoreo_detalle" style="width: 440px">
+								<p:dataTable id="tablaRegistroPago" var="cu"
+									value="#{carteraMB.cuotas}" rowKey="#{cu.idcuota}"
+									selection="#{carteraMB.cuota}" selectionMode="single"
+									paginator="true" stickyHeader="true"
+									emptyMessage="NO EXISTEN REGISTROS"
+									style="width:435px; font-size: 10px;  text-align:center;"
+									paginatorTemplate="Reg. por p&aacute;gina: {RowsPerPageDropdown}  &nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp;   {CurrentPageReport}"
+									currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+									rowsPerPageTemplate="10,15,20" rows="10"
+									paginatorPosition="top" scrollWidth="435"
+									styleClass="ui-datatable-hor-scroll">
+									<f:facet name="header">
+										<div style="color: #59A7D4; font-size: 12px;">LISTADO DE
+											PAGOS</div>
+									</f:facet>
+									<p:ajax event="rowSelect"
+										update=":frmReg_RegistroDetalleCuota, :frmRegistroCabecera" />
+
+									<p:column headerText="Numero Cartera">
+										<h:outputText value="#{cu.cartera.numero}" />
+									</p:column>
+
+
+
+									<p:column headerText="Contrato">
+										<h:outputText value="#{cu.contrato.idcontrato}" />
+									</p:column>
+									<p:column headerText="Monto (S/)">
+										<h:outputText value="#{cu.montoacumuladosoles}" />
+									</p:column>
+									<p:column headerText="Monto ($)">
+										<h:outputText value="#{cu.montoacumuladodolar}" />
+									</p:column>
+									<p:column headerText="mora">
+										<h:outputText value="#{cu.mora}" />
+									</p:column>
+									<p:column headerText="Regularizacion">
+										<h:outputText value="#{cu.regularizacion?'si':'no'}" />
+									</p:column>
+									<p:column headerText="Acho?">
+										<h:outputText value="#{cu.acho?'si':'no'}" />
+									</p:column>
+									<p:column headerText="Fecha Liquidacion">
+										<h:outputText value="#{cu.fechaliquidacion}" />
+									</p:column>
+									<p:column headerText="Garantia">
+										<h:outputText value="#{cu.garantia}" />
+									</p:column>
+									<p:column headerText="Observacion">
+										<h:outputText value="#{cu.observacion}" />
+									</p:column>
+									<p:column headerText="F. Creacion">
+										<h:outputText value="#{cu.feccre}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Usuario creador">
+										<h:outputText value="#{cu.usrcre}" />
+									</p:column>
+									<p:column headerText="F. Modificacion">
+										<h:outputText value="#{cu.fecmod}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Usuario Modificador">
+										<h:outputText value="#{cu.usrmod}" />
+									</p:column>
+
+								</p:dataTable>
+							</div>
+						</p:dialog>
+					</h:form>
+
+					<br /> <br />
+					<h:form id="frmTablaRegistroPago">
+
+					</h:form>
+
+					<h:form id="frmdlgGuardarRegistroDetalle">
+						<p:confirmDialog message="¿Desea Guardar Registro?"
+							header=" Registro" severity="alert"
+							widgetVar="dlgRegistrarRegistroDetalle">
+
+							<p:commandButton value="&nbsp;Aceptar"
+								update=":frmRegistroCabecera"
+								actionListener="#{carteraMB.registrarDetalleCartera}"
+								oncomplete="dlgRegistrarRegistroDetalle.hide()"
+								image="icon-save">
+
+							</p:commandButton>
+							<p:commandButton value="&nbsp;Cancelar"
+								update=":frmRegistroCabecera "
+								oncomplete="dlgRegistrarRegistroDetalle.hide()"
+								image="icon-cancel" />
+						</p:confirmDialog>
+					</h:form>
+				</div>
+				<h:form>
+					<div class="cartera_ColumInfo">
+
+						<div class="paginaInteriorCartera">
+							<div class="subcontenidoCreador_Cabecera" style="width: 172px;">
+
+								<div class="subcontenidoInfo_descripcionTitulo">Usuario
+									Creador</div>
+							</div>
+
+							<div class="subcontenidoInfo_detContenidoNombre"
+								style="width: 180px">
+
+								<div class="detalleTopfiltroDerecha2"
+									style="width: 80px; text-align: right;">
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila1"
+										style="font-size:9pt" value="#{carteraMB.usuariocreador}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila2"
+										value="#{carteraMB.cargo}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila3"
+										value="#{carteraMB.fecha}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</div>
+								<div class="iconoUserCreador">
+									<p:graphicImage width="60" height="60"
+										value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+		</div>
+
+
+
+		<h:form id="frmEliminarRegistro">
+
+			<p:confirmDialog id="dlgRegistro" message="¿Desea eliminar registro?"
+				header="Eliminar Registro" severity="alert"
+				widgetVar="dlgEliminarRegistro">
+
+				<p:commandButton value="&nbsp;Aceptar"
+					update=":frmTablaRegistroPago, :frmRegistroCabecera "
+					actionListener="#{inquilinoMB.eliminarInquilino}"
+					oncomplete="dlgEliminarRegistro.hide()" image="icon-save">
+
+				</p:commandButton>
+				<p:commandButton value="&nbsp;Cancelar"
+					update=":frmRegistroCabecera"
+					oncomplete="dlgEliminarRegistro.hide()" image="icon-cancel" />
+
+			</p:confirmDialog>
+		</h:form>
+	</div>
+
+
+
+
+
+	<!-- PANEL CONSULTAS -->
+	<div id="idDivRegistroConsulta" class="recau_panelPendientes">
+
+		<div class="mante_gene_ContDescrip01">
+			<div class="cobranza_cartera_contenidoDatos">
+				<div class="cartera_ColumDatos">
+					<div class="filaDatoLargo"
+						style="background-color: #CECECE; width: 490px; float: left; margin-bottom: 20px;">
+						<div class="columLargo">
+							<h:outputText class="lblDatos" value="Reporte de Cuotas" />
+
+						</div>
+					</div>
+					<h:form id="frmConsultaPago">
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos" value="Numero Cartera:" />
+							<p:selectOneMenu styleClass="cbxDatos" id="idCarteraCobrador"
+								onchange="limpiarvalidacion()" panelStyle="width:150px"
+								style="width:188px" filter="true" filterMatchMode="startsWith"
+								value="#{carteraMB.cartera.idcartera}">
+								<f:selectItem itemLabel="Seleccione numero Cartera"
+									itemValue="0" />
+								<f:selectItems value="#{carteraMB.carteras}" var="ca"
+									itemValue="#{ca.idcartera}" itemLabel="#{ca.numero}">
+								</f:selectItems>
+								<p:ajax listener="#{carteraMB.cargarContratosxcartera}"
+									event="change" update="idContratoCuota2,:frmtablaConsultaPago"
+									process="idCarteraCobrador" />
+							</p:selectOneMenu>
+						</div>
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos" value="Numero Contrato:" />
+							<p:selectOneMenu styleClass="cbxDatos" id="idContratoCuota2"
+								onchange="limpiarvalidacion()" panelStyle="width:150px"
+								style="width: 188px;  font-size: 11px;" filter="true"
+								filterMatchMode="startsWith"
+								value="#{carteraMB.cuota.contrato.idcontrato}">
+								<f:selectItem itemLabel="Seleccione Numero Contrato"
+									itemValue="0" />
+								<f:selectItems value="#{carteraMB.contratosxcartera}" var="con"
+									itemValue="#{con.idcontrato}" itemLabel="#{con.nrocontrato}">
+								</f:selectItems>
+								<p:ajax listener="#{carteraMB.mostrarPagosContrato}"
+									update=":frmtablaConsultaPago:tablaconsultasPagos" />
+							</p:selectOneMenu>
+						</div>
+
+					</h:form>
+
+					<h:form id="frmtablaConsultaPago">
+
+
+						<div style="float: right; margin: 15px 50px 15px 0;">
+							<p:commandLink oncomplete="dlgBuscarContrato.show();"
+								actionListener="#{carteraMB.PDFReporteCuota}" ajax="false"
+								style="float:left;margin-left:5px;">
+								<p:graphicImage width="28" height="28"
+									value="/resources/icons/tipoArchivo/pdf.png"
+									alt="Detalle Contrato" title="detalle Contrato" />
+							</p:commandLink>
+							<p:commandLink oncomplete="dlgBuscarContrato.show();"
+								actionListener="#{carteraMB.ExcelReporteCuota}" ajax="false"
+								style="float:left;margin-left:5px;">
+								<p:graphicImage width="28" height="28"
+									value="/resources/icons/tipoArchivo/xls.png"
+									alt="Detalle Contrato" title="detalle Contrato" />
+							</p:commandLink>
+						</div>
+
+						<div class="dgaiMonitoreo_detalle">
+							<p:dataTable id="tablaconsultasPagos" var="con"
+								value="#{carteraMB.contratosxcartera}" paginator="true"
+								stickyHeader="true" emptyMessage="NO EXISTEN REGISTROS"
+								style="width:450px; font-size: 10px;  text-align:center;"
+								paginatorTemplate="Reg. por p&aacute;gina: {RowsPerPageDropdown}  &nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp;   {CurrentPageReport}"
+								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+								rowsPerPageTemplate="10,15,20" rows="10" paginatorPosition="top"
+								scrollWidth="450" styleClass="ui-datatable-hor-scroll">
+								<f:facet name="header">
+									<div style="color: #59A7D4; font-size: 12px;">LISTADO DE
+										CUOTAS POR CONTRATO</div>
+								</f:facet>
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column headerText="" />
+										<p:column headerText="Monto Soles" />
+										<p:column headerText="Monto Dolares" />
+										<p:column headerText="Numero de cuota" />
+										<p:column headerText="Estado" />
+										<p:column headerText="Fecha Registro" />
+									</p:row>&nbsp;
+									</p:columnGroup>
+
+								<p:subTable var="cu" value="#{con.cuotas}">
+									<f:facet name="header" style="text-align:left;">
+										<div style="float: left; color: #686739;">Nro. Contrato:
+											#{con.nrocontrato}</div>   &nbsp;&nbsp;  <div
+											style="float: left; color: #686739;">Direccion:
+											#{con.upa.direccion}</div>
+									</f:facet>
+									<p:column headerText="Monto Soles">
+
+									</p:column>
+									<p:column headerText="Monto Soles" style="text-align:right;">  
+							                #{cu.montoacumuladosoles}  
+							            </p:column>
+
+									<p:column headerText="Monto Dolares" style="text-align:right;">  
+							                #{cu.montoacumuladodolar}  
+							            </p:column>
+									<p:column headerText="Numero cuota" style="text-align:right;">  
+							                #{cu.cuotanumero}  
+							            </p:column>
+									<p:column headerText="Estado" style="text-align:right;">  
+							                #{cu.cancelado?'cancelado':'Pendiente'}  
+							            </p:column>
+
+									<p:column headerText="Fecha Registro">  
+							                #{cu.fechaliquidacion}  
+							            </p:column>
+									<p:columnGroup type="footer">
+										<p:row>
+											<p:column footerText="Monto Contrato: "
+												style="text-align:right;color:#0B1F2A;" />
+											<p:column footerText="#{con.montototalsoles}"
+												style="text-align:right;color:#0B1F2A;" />
+											<p:column footerText="#{con.montototaldolar}"
+												style="text-align:right;color:#0B1F2A;" />
+										</p:row>
+										<p:row>
+											<p:column footerText="Monto Pagado: "
+												style="text-align:right;color:#0B1F2A;" />
+											<p:column footerText="#{con.montosolesgarantia}"
+												style="text-align:right;color:#0B1F2A;" />
+											<p:column footerText="#{con.montodolargarantia}"
+												style="text-align:right;color:#0B1F2A;" />
+
+										</p:row>
+										<p:row>
+											<p:column footerText="Monto Deuda: "
+												style="text-align:right;color:#0B1F2A;" />
+											<p:column
+												footerText="#{con.montototalsoles-con.montosolesgarantia}"
+												style="text-align:right;color:#0B1F2A;" />
+											<p:column
+												footerText="#{con.montototaldolar-con.montodolargarantia}"
+												style="text-align:right;color:#0B1F2A;" />
+
+										</p:row>
+									</p:columnGroup>
+
+
+
+
+								</p:subTable>
+							</p:dataTable>
+
+
+						</div>
+
+					</h:form>
+
+
+					<h:form id="frmdlgGuardarRegistroCabecera2">
+						<p:confirmDialog message="¿Desea Guardar Registrozz?"
+							header="Registro" severity="alert"
+							widgetVar="dlgRegistrarRegistroCabecera2">
+
+							<p:commandButton value="&nbsp;Aceptar"
+								actionListener="#{carteraMB.registrarPago}"
+								update=":frmtablaConsultaPago,  :frmtablaConsultaPago:tablaconsultasPagos"
+								oncomplete="dlgRegistrarRegistroCabecera2.hide(), dlgDetallePagos.hide()"
+								image="icon-save">
+							</p:commandButton>
+							<p:commandButton value="&nbsp;Cancelar"
+								oncomplete="dlgRegistrarRegistroCabecera2.hide()"
+								image="icon-cancel" />
+						</p:confirmDialog>
+					</h:form>
+				</div>
+				<h:form>
+					<div class="cartera_ColumInfo">
+
+						<div class="paginaInteriorCartera">
+							<div class="subcontenidoCreador_Cabecera" style="width: 172px;">
+
+								<div class="subcontenidoInfo_descripcionTitulo">Usuario
+									Creador</div>
+							</div>
+
+							<div class="subcontenidoInfo_detContenidoNombre"
+								style="width: 180px">
+
+								<div class="detalleTopfiltroDerecha2"
+									style="width: 80px; text-align: right;">
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila1"
+										style="font-size:9pt" value="#{carteraMB.usuariocreador}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila2"
+										value="#{carteraMB.cargo}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila3"
+										value="#{carteraMB.fecha}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</div>
+								<div class="iconoUserCreador">
+									<p:graphicImage width="60" height="60"
+										value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+
+</h:body>
+</html>

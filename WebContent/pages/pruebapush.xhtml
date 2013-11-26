@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>SBLM</title>
+
+	
+</h:head>
+<h:body>
+	<ui:composition template="./paginaMaestra.xhtml">
+		<ui:define name="content">
+
+			<div class="contenidoPrincipal_FondoPrincipal">
+
+				<div class="contenidoPrincipal_fondoIdentificador">
+					<!-- TITULO SUBCONTENIDO -->
+					<div class="administrador_tipocambioIcono"></div>
+					<div class="contenidoPrincipal_SubContenido">
+						<label class="contenidoPrincipal_lblTituloSubContenido">Administracion</label><br />
+						<label class="contenidoPrincipal_lblSubTituloSubContenido">Tipo
+							Cambio</label>
+					</div>
+				</div>
+				<div class="contenidoPrincipal_SubFondo">
+
+					<div class="administrador_tipocambioIconoInterior"></div>
+					<div id="lblSubtitulo"
+						class="contenidoPrincipal_subFondo_lblTitulox">Tipo cambio</div>
+					<div class="contenidoPrincipal_fondo_formulario">
+						<!-- CONTENIDO MODIFICABLE -->
+						<div class="mant_subFondo">
+
+
+
+							<p:growl widgetVar="growl" showDetail="true" />
+
+							<h:form>
+								<p:panel header="Growl">
+									<h:panelGrid columns="2">
+										<p:outputLabel for="summary" value="Summary: " />
+										<p:inputText id="summary" value="#{growlBean.summary}"
+											required="true" />
+
+										<p:outputLabel for="detail" value="Detail: " />
+										<p:inputText id="detail" value="#{growlBean.detail}"
+											required="true" />
+									</h:panelGrid>
+
+									<p:commandButton value="Send"
+										actionListener="#{growlBean.send}" />
+								</p:panel>
+							</h:form>
+
+							<p:socket onMessage="handleMessage" channel="/notifications" />
+
+<script type="text/javascript">
+		function handleMessage(facesmessage) {
+			facesmessage.severity = 'info';
+
+			PF('growl').show([ facesmessage ]);
+		}
+	</script>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

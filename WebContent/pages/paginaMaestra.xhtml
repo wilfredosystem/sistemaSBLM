@@ -1,0 +1,400 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{request.contextPath}/resources/icons/favicon.ico" />
+
+	<link href="./resources/css/default.css" rel="stylesheet"
+		type="text/css" />
+	<link href="./resources/css/cssLayout.css" rel="stylesheet"
+		type="text/css" />
+
+	<link href="../resources/css/estilo.css" rel="stylesheet"
+		type="text/css" />
+
+	<link href="../resources/css/cssLayout.css" rel="stylesheet"
+		type="text/css" />
+	<link rel="stylesheet" href="../resources/css/estiloImagenes.css" />
+
+	<script type="text/javascript"
+		src="../resources/js/notificacion_gadget.js" />
+
+	<link rel="stylesheet" href="../resources/css/estilosValidacion.css" />
+	
+	<script type="text/javascript" src="../resources/js/superAll.js" />
+	<script type="text/javascript" src="../resources/js/dgaiMonitoreo.js" />
+	<script type="text/javascript"
+		src="../resources/js/funcionesValidacion.js" />
+	<script type="text/javascript"
+		src="../resources/js/funcionesValidacionRecaudacion.js" />
+	<script type="text/javascript" src="../resources/js/menuFlotante.js" />
+	<link href="../resources/css/menuFlotante.css" rel="stylesheet"
+		type="text/css" />
+	<script type="text/javascript" src="../resources/js/recaudacion.js" />
+	<script type="text/javascript" src="../resources/js/inmueble.js" />
+	<script type="text/javascript" src="../resources/js/upa.js" />
+	<script type="text/javascript" src="../resources/js/inquilino.js" />
+	<script type="text/javascript" src="../resources/js/contrato.js" />
+	<script type="text/javascript" src="../resources/js/igv.js" /> 
+	<script type="text/javascript" src="../resources/js/cobranza.js" /> 
+	<script type="text/javascript" src="../resources/js/cobranzaCartera.js" /> 
+	<script type="text/javascript" src="../resources/js/cobranzaRegistro.js" />
+	<script type="text/javascript" src="../resources/js/funcionesValidacionRepresentanteInstitucion.js" />
+	<script type="text/javascript" src="../resources/js/funcionesValidacionContrato.js" /> 
+	<script type="text/javascript" src="../resources/jquery/jquery.blockUI.js" />
+	<title>SOCIEDAD BENEFICENCIA DE LIMA METROPOLITANA</title>
+
+
+</h:head>
+
+<h:body>
+	<h:panelGroup rendered="#{usuarioMB.loggedIn}">
+
+		<div id="contenidoPrincipal_Contenedor">
+			<div id="menuflotante">
+				<div id="top" class="top">
+					<h:form id="frmMaestra">
+
+						<!-- Contenido del menu lateral -->
+
+						<div class="contenidoPrincipal_Cabecera">
+							<div class="contenidoPrincipal_IconoUltCon"></div>
+
+							<div class="contenidoPrincipal_hora">
+								<h:outputText value=" &Uacute;ltima conexi&oacute;n" />
+								<h:outputText value=" #{usuarioMB.horaconexion}" />
+							</div>
+							<div class="contenidoPrincipal_lineaCabecera"></div>
+							<div class="contenidoPrincipal_IconoModificarPerfil">
+								<p:commandLink
+									actionListener="#{ceditarusuarios.cargarDataEditarPaginaMaestra}"
+									action="/pages/editarUsuario.jsf">
+									<p:graphicImage width="30" height="30"
+										value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+								</p:commandLink>
+							</div>
+							<div class="contenidoPrincipal_perfil">
+								<h:outputText value=" #{usuarioMB.usuariologueado.nombres}" />
+								<h:outputText value=" #{usuarioMB.usuariologueado.apellidopat}" />
+								<br />
+								<p:commandLink id="chartBtn" style="margin-right:20px;">
+									<h:outputText style="color:#029c05"
+										value=" #{usuarioMB.perfil.nombreperfil}" />
+								</p:commandLink>
+
+
+								<p:overlayPanel id="chartPanel" for="chartBtn" hideEffect="fade">
+									<div>
+										<h:outputLabel value="Cambiar Perfil:" />
+										<p:selectOneMenu id="cbxModuPagina" style="width: 190px;"
+											value="#{perfilusuarioMB.idperfilseleccionado}" effect="fade">
+											<f:selectItem itemLabel="Seleccione Perfil" itemValue="0" />
+											<f:selectItems value="#{perfilusuarioMB.perfilusuariosporid}"
+												var="perusu" itemLabel="#{perusu.perfil.nombreperfil}"
+												itemValue="#{perusu.perfil.idperfil}" />
+											<p:ajax listener="#{perfilusuarioMB.cambiarPerfil}"
+												 oncomplete="window.location.reload()"/>
+										</p:selectOneMenu>
+
+									</div>
+								</p:overlayPanel>
+							</div>
+
+						</div>
+
+						<div class="contenidoPrincipal_Barramenus">
+							<p:commandLink>
+							<div class="contenidoPrincipal_gadget" id="S_slide"
+								onclick="mostrarGadget();"></div></p:commandLink>
+							<div class="contenidoPrincipal_menus">
+								<!-- 							<p:megaMenu style=" height: 25px; border: none;" -->
+								<!-- 								autoDisplay="false"> -->
+
+<!-- 																<p:submenu label="Administración" icon="iconoAdministracion" -->
+<!-- 																	style="font-weight: 900;font-size: 12px; " -->
+<!-- 																	rendered="#{usuarioMB.modadministracion}"> -->
+
+
+								<!-- 									<p:column> -->
+								<!-- 										<p:submenu label=" " style="height:0px;"> -->
+								<!-- 											<p:menuitem value="Auditoria" url="superAuditoria.jsf" -->
+								<!-- 												rendered="true" /> -->
+								<!-- 											<p:menuitem value="Notificaciones" -->
+								<!-- 												url="superNotificaciones.jsf" rendered="true" /> -->
+								<!-- 											<p:menuitem value="Perfiles" url="perfil.jsf" rendered="true" /> -->
+								<!-- 											<p:menuitem value="Paginas" url="pagina.jsf" rendered="true" /> -->
+								<!-- 											<p:menuitem value="Modulos" url="modulo.jsf" rendered="true" /> -->
+								<!-- 											<p:menuitem value="Usuarios" url="superUsuario.jsf" -->
+								<!-- 												rendered="true" /> -->
+								<!-- 										</p:submenu> -->
+								<!-- 									</p:column> -->
+
+								<!-- 								</p:submenu> -->
+								<!-- 								<p:submenu label="Mantenimientos" icon="iconoMantenimiento" -->
+								<!-- 									rendered="#{usuarioMB.modmantenimiento}"> -->
+								<!-- 									<p:column> -->
+								<!-- 										<p:submenu label=" " style="height:0px;"> -->
+								<!-- 											<p:menuitem value="Tipo Cambio" url="tipoCambio.jsf" -->
+								<!-- 												rendered="true" /> -->
+								<!-- 										</p:submenu> -->
+								<!-- 									</p:column> -->
+								<!-- 								</p:submenu> -->
+								<!-- 								<p:submenu label="Modulos" icon="iconoMesaPartes" -->
+								<!-- 									rendered="#{usuarioMB.modmodulos}"> -->
+								<!-- 									<p:column> -->
+								<!-- 										<p:submenu label="DGAI" icon="iconoMesaPartes"> -->
+								<!-- 											<p:menuitem value="Monitorear DGAI" url="dgaiMonitoreo.jsf" /> -->
+								<!-- 											<p:menuitem value="Mesa Partes" url="monitoreoMesaPartes.jsf" /> -->
+								<!-- 											<p:separator /> -->
+								<!-- 											<p:menuitem value="Quit" url="#" /> -->
+								<!-- 										</p:submenu> -->
+								<!-- 										<p:submenu label="DAI" icon="proyecto"> -->
+								<!-- 											<p:menuitem value="Registrar responsable" -->
+								<!-- 												url="responsable.jsf" icon="usuario" /> -->
+								<!-- 										</p:submenu> -->
+								<!-- 										<p:submenu label="DIO" icon="proyecto"> -->
+								<!-- 											<p:menuitem value="Registrar responsable" -->
+								<!-- 												url="responsable.jsf" icon="usuario" /> -->
+								<!-- 										</p:submenu> -->
+								<!-- 									</p:column> -->
+								<!-- 							<p:column> -->
+								<!-- 								<p:submenu label="Recaudacion" icon="proyecto"> -->
+								<!-- 									<p:menuitem value="Registrar responsable" url="responsable.jsf" -->
+								<!-- 										icon="usuario" /> -->
+								<!-- 								</p:submenu> -->
+								<!-- 								<p:submenu label="Arrendamiento" icon="proyecto"> -->
+								<!-- 									<p:menuitem value="Registrar responsable" url="responsable.jsf" -->
+								<!-- 										icon="usuario" /> -->
+								<!-- 								</p:submenu> -->
+								<!-- 								<p:submenu label="Mesa partes" icon="proyecto"> -->
+								<!-- 									<p:menuitem value="Registrar responsable" url="responsable.jsf" -->
+								<!-- 										icon="usuario" /> -->
+								<!-- 								</p:submenu> -->
+								<!-- 							</p:column> -->
+								<!-- 							<p:column> -->
+								<!-- 								<p:submenu label="Legal" icon="proyecto"> -->
+								<!-- 									<p:menuitem value="Registrar responsable" url="responsable.jsf" -->
+								<!-- 										icon="usuario" /> -->
+								<!-- 								</p:submenu> -->
+								<!-- 								<p:submenu label="Tesoreria" icon="proyecto"> -->
+								<!-- 									<p:menuitem value="Registrar responsable" url="responsable.jsf" -->
+								<!-- 										icon="usuario" /> -->
+								<!-- 								</p:submenu> -->
+								<!-- 							</p:column> -->
+
+								<!-- 								</p:submenu> -->
+								<!-- 							</p:megaMenu> -->
+
+								<p:megaMenu model="#{usuarioMB.model}"
+									style="padding:1px; border:none;" autoDisplay="false">
+								</p:megaMenu>
+							</div>
+							<div class="contenidoPrincipal_menuSalir">
+								<p:commandButton type="outlogin" value=""
+									actionListener="#{usuarioMB.cerrarSesion}" id="btnSalir"
+									action="/pages/login.jsf"
+									styleClass="contenidoPrincipal_btnSalir"></p:commandButton>
+							</div>
+						</div>
+
+					</h:form>
+					<h:form id="frmGadget">
+						<div id="mostrar" class="demo">
+<p:commandLink>
+							<div class="menuOpen_btnMenu" id="H_slide"
+								onclick="ocultarGadget();"></div>
+</p:commandLink>
+							<div>
+								<div class="menuOpen_subfondo">
+									<div class="foto_user">
+										<p:graphicImage width="60" height="60"
+											value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+									</div>
+									<div class="detalle_user">
+
+										<div class="lblNombre">
+											<h:outputText value=" #{usuarioMB.nombrecompleto}" />
+
+										</div>
+										<br />
+										<div class="lblArea">
+											<h:outputText value=" #{usuarioMB.usuariologueado.cargo}" />
+										</div>
+										<br />
+										<div class="lblId">
+											<h:outputText value=" #{usuarioMB.usuariologueado.nombreusr}" />
+										</div>
+
+									</div>
+								</div>
+
+
+								<div class="menuOpen_subfcrema" style="text-decoration: none;">
+									<div
+										style="margin-top: 8px; margin-left: 22px; font-size: 11px; color: #636A78;">
+										Notificaciones</div>
+									<div class="fondonotif">
+										<div style="margin-left: 7px; margin-top: 4px; color: #a8c2d8">
+											<h:outputText value="#{cnotificaciones.nroPendienteTotal}" />
+										</div>
+									</div>
+
+								</div>
+								<div>
+
+									<div class="menuOpen_subfondMes">
+										<p:commandLink action="#{cnotificaciones.seleccionarItem(1)}"
+											oncomplete="EstadoNotificacionMaestras();" immediate="true"
+											style="text-decoration: none;">
+
+
+											<div class="cuadradoTransparente"
+												style="text-align: center; color: #fde871; font-size: 25pt;">
+												<h:outputText
+													value="#{cnotificaciones.nroNotificacionesMes}" />
+											</div>
+
+
+											<div>
+												<p:spacer width="60" height="35" />
+												<h:outputText style="color:#fff"
+													value="Total Mes #{cnotificaciones.mesActual}" />
+											</div>
+										</p:commandLink>
+									</div>
+
+									<div class="menuOpen_subfondoRevisado">
+										<p:commandLink action="#{cnotificaciones.seleccionarItem(2)}"
+											oncomplete="EstadoNotificacionMaestras(); " immediate="true">
+											<div class="cuadradoBlanco"
+												style="text-align: center; color: #2B626F; font-size: 15pt;">
+												<h:outputText value="#{cnotificaciones.nroRevisado}" />
+											</div>
+										</p:commandLink>
+
+										<div>
+											<p:spacer width="60" height="25" />
+											<h:outputText style="color:#fff" value="Revisados" />
+										</div>
+
+									</div>
+
+									<div class="menuOpen_subfondoCancelado">
+
+										<p:commandLink action="#{cnotificaciones.seleccionarItem(3)}"
+											oncomplete="EstadoNotificacionMaestras();" immediate="true">
+											<div class="cuadradoBlanco"
+												style="text-align: center; color: #BC1B30; font-size: 15pt;">
+												<h:outputText value="#{cnotificaciones.nroCancelado}" />
+											</div>
+
+										</p:commandLink>
+
+										<div>
+											<p:spacer width="60" height="25" />
+											<h:outputText style="color:#fff" value="Cancelados" />
+										</div>
+
+									</div>
+
+									<div class="menuOpen_subfondoPendiente">
+										<p:commandLink action="#{cnotificaciones.seleccionarItem(1)}"
+											oncomplete="EstadoNotificacionMaestras();" immediate="true">
+											<div class="cuadradoBlanco"
+												style="text-align: center; color: #3E9326; font-size: 15pt;">
+												<h:outputText value="#{cnotificaciones.nroPendiente}" />
+											</div>
+										</p:commandLink>
+										<div>
+											<p:spacer width="60" height="25" />
+											<h:outputText style="color:#fff" value="Pendientes" />
+										</div>
+
+									</div>
+								</div>
+
+								<p:commandLink action="#{tipocambioMB.irtipocambio()}">
+
+									<div class="menuOpen_subfcrema2">
+										<div style="margin-top: 10px;">
+											<div class="menuOpen_tipoCambio">
+												<div class="menuOpen_Texto_tipoCambio">Tipo de cambio</div>
+											</div>
+											<div class="menuOpen_lblTipoCambio">
+												<h:outputText
+													value="S./ #{tipocambioMB.resultadoTipoCambio}" />
+											</div>
+										</div>
+									</div>
+								</p:commandLink>
+							</div>
+
+							<div></div>
+
+							<div>
+								<div class="menuOpen_ultimo">
+									<div class="menuOpen_ultimoTexto">
+										<div style="color: #2DA100;">Ultimo</div>
+										<div style="color: #2DA100;">Modulo Activo</div>
+									</div>
+								</div>
+								<div style="margin-top: -50px; margin-left: 58px;">
+									<div>
+										<h:outputText value="Modulo: #{cauditoria.ultimoModulo}" />
+									</div>
+									<div>
+										<h:outputText value="Pagina: #{cauditoria.ultimaPagina}" />
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+					</h:form>
+				</div>
+			</div>
+			<!--FIN DIALOGO PERFILES-->
+			<div id="content" class="center_content">
+				<ui:insert name="content">Content</ui:insert>
+			</div>
+		</div>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{not usuarioMB.loggedIn}">
+		<h:form>
+			<div id="contenedor">
+				<div class="contenidoPrincipal">
+					<div class="cuadroMensaje_superiortotal"></div>
+					<div class="cuadroMensaje_total">
+						<div class="loginSBLM"></div>
+						<div class="simboloRestringido"></div>
+						<div class="lblAccesoRestringido">Acceso Restringido</div>
+						<div class="lblNuevoLogueo">Loguese nuevamente</div>
+
+						<div class="btnVolverRestringido">
+							<p:commandLink action="/pages/login.jsf"
+								style="margin-right:20px;">
+								<p:graphicImage
+									value="/resources/images/usuario/btnVolverRestringido.png"
+									alt="Volver" title="Volver" />
+							</p:commandLink>
+						</div>
+					</div>
+					<div class="pieLogin"></div>
+				</div>
+
+			</div>
+		</h:form>
+	</h:panelGroup>
+</h:body>
+
+</html>

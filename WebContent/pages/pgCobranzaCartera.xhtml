@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<link href="../resources/css/estilo.css" rel="stylesheet"
+		type="text/css" />
+	<title>SBLM</title>
+</h:head>
+<h:body>
+
+	<div class="carterasubpestanas">
+		<p:commandLink id="idTabCarteraConsulta" styleClass="btnRegistro"
+			onclick="funcionTabCarteraConsulta();">
+			<div class="btncentrado">
+				<p:outputLabel value="Consulta"
+					style="margin-bottom:10px;  float:left;margin-left:5px;" />
+				<p:graphicImage value="/resources/images/cobranza/icon_consulta.png"
+					alt="Consulta" title="Consulta" />
+			</div>
+		</p:commandLink>
+		<p:commandLink id="idTabCarteraRegistro" styleClass="btnRegistro2"
+			onclick="funcionTabCarteraRegistro();">
+			<div class="btncentrado">
+				<p:outputLabel value="Registro"
+					style="margin-bottom:10px; float:left;margin-left:5px;" />
+				<p:graphicImage value="/resources/images/cobranza/icon_registro.png"
+					alt="Registro" title="Registro" />
+			</div>
+		</p:commandLink>
+	</div>
+
+	<!-- PANEL REGISTRO -->
+	<div id="idDivCarteraRegistro" class="recau_panelPendientes">
+
+		<h:form>
+			<div class="filaBtnNuevoCartera">
+				<div style="float: left; margin-left: 35px;">
+					<h:outputText value="Registro de Cartera" />
+					<p:graphicImage width="20" height="20"
+						value="/resources/images/recaudacionarbitrios/impresora.png"
+						alt="icono" title="icono" style="margin-left:30px;" />
+				</div>
+				<p:commandLink actionListener="#{carteraMB.limpiarCampos}"
+					style="margin-left:250px;"
+					update=":frmCarteraCabecera, :frmCarteraCDet, :frmTablaCartera:tablaCarteraCDetalle">
+					<p:graphicImage value="/resources/images/perfil/nuevo_mas.png"
+						alt="Limpiar formulario" title="limpiar" />
+				</p:commandLink>
+			</div>
+		</h:form>
+
+
+		<div class="mante_gene_ContDescrip01">
+			<div class="cobranza_cartera_contenidoDatos">
+				<div class="cartera_ColumDatos">
+
+
+					<h:form id="frmCarteraCabecera">
+						<p:growl id="msjCartera" showDetail="true" sticky="false"
+							life="4000" />
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos"
+								value="N&uacute;mero Cartera:" />
+							<p:inputText styleClass="txtDatos" id="idCarteraNumCartera"
+								disabled="#{carteraMB.desactivadoEdicion}"
+								value="#{carteraMB.cartera.numero}" />
+						</div>
+						<div class="filaDatoLargosCorto">
+							<div style="width: 370px;">
+								<h:outputText styleClass="lblDatos" value="Cobrador:" />
+
+								<p:selectOneMenu styleClass="cbxDatos" id="idCarteraCobrador"
+									onchange="limpiarvalidacion()"
+									disabled="#{carteraMB.desactivadoEdicion}" filter="true"
+									filterMatchMode="startsWith"
+									style="width: 188px;  font-size: 11px;"
+									value="#{carteraMB.cartera.usuario.idusuario}">
+									<f:selectItem itemLabel="Seleccione Cobrador" itemValue="0" />
+									<f:selectItems value="#{carteraMB.usuarios}" var="lu"
+										itemLabel="#{lu.nombrescompletos}" itemValue="#{lu.idusuario}">
+									</f:selectItems>
+								</p:selectOneMenu>
+
+							</div>
+						</div>
+						<div class="filaDatoLargosCorto">
+							<div style="width: 500px;">
+								<h:outputText styleClass="lblDatos" value="Tipo Lista:" />
+								<p:selectOneMenu value="#{carteraMB.cartera.tipolista}"
+									disabled="#{carteraMB.desactivadoEdicion}"
+									id="idCarteraTipoLista" onchange="limpiarvalidacion()"
+									style="width: 188px; font-size: 11px; float:left;">
+									<f:selectItem itemLabel="Seleccione Tipo" itemValue="0" />
+									<f:selectItem itemLabel="Activo" itemValue="Activo" />
+									<f:selectItem itemLabel="Activo1" itemValue="Activo2" />
+
+								</p:selectOneMenu>
+								<div style="float: left; margin-left: 20px;">
+									<p:selectBooleanCheckbox value="#{carteraMB.cartera.estado}"
+										disabled="#{carteraMB.desactivadoEdicion}"
+										styleClass="chkF5Fotografias" />
+									<h:outputText value="Estado" />
+								</div>
+							</div>
+						</div>
+
+						<br />
+						<div class="mante_general_botonguardar"
+							style="float: left; width: 200px">
+							<p:commandButton value="Guardar"
+								oncomplete="validacionCarteraCabecera();" />
+						</div>
+						<br />
+						<p:separator
+							style="float:left; width:480px; margin:20px 0 20px 0;" />
+						<br />
+						<br />
+						<p:confirmDialog message="¿Desea Guardar Cartera?"
+							header="Registro Cartera" severity="alert"
+							widgetVar="dlgRegistrarCarteraCabecera">
+
+							<p:commandButton value="&nbsp;Aceptar"
+								update=":frmCarteraCabecera:msjCartera, :frmCarteraCDet, :frmTablaCarterax:dtbCarteraCabecera2"
+								action="#{carteraMB.registrarCartera}"
+								oncomplete="dlgRegistrarCarteraCabecera.hide()"
+								image="icon-save">
+
+							</p:commandButton>
+							<p:commandButton value="&nbsp;Cancelar"
+								oncomplete="dlgRegistrarCarteraCabecera.hide()"
+								image="icon-cancel" />
+						</p:confirmDialog>
+					</h:form>
+
+					<h:form id="frmCarteraCDet">
+						<p:growl id="msjCarteradetalle" showDetail="true" sticky="false"
+							life="4000" />
+						<div class="filaBtnNuevoCartera" style="margin-left: 155px;">
+							<p:commandLink actionListener="#{carteraMB.limpiarCamposDetalleCartera}"
+								style="margin-left:250px;" disabled="#{carteraMB.desactivado}"
+								update=":frmCarteraCabecera, :frmCarteraCDet, :frmTablaCartera:tablaCarteraCDetalle">
+								<p:graphicImage value="/resources/images/perfil/nuevo_mas.png"
+									alt="Limpiar formulario" title="limpiar" />
+							</p:commandLink>
+						</div>
+						<div class="filaDatoLargosCorto">
+							<div style="width: 370px;">
+								<h:outputText styleClass="lblDatos" value="Contrato:" />
+								<p:inputText styleClass="txtDatos" id="idCarteraContrato"
+									disabled="#{carteraMB.desactivado}"
+									value="#{carteraMB.detallecartera.contrato.idcontrato}" />
+								<p:commandLink oncomplete="dlgBuscarContrato.show();"
+									disabled="#{carteraMB.desactivado}" id="idlinkcontrato"
+									style="float:left;margin-left:5px;">
+									<p:graphicImage width="18" height="18"
+										value="/resources/images/cobranza/icon_consulta.png"
+										alt="Detalle Contrato" title="detalle Contrato" />
+								</p:commandLink>
+								<p:commandLink oncomplete="dlgDetalleContrato.show();"
+									disabled="#{carteraMB.desactivado}" id="idlinkupa"
+									update=":frmDetalleContrato"
+									style="float:left;margin-left:30px; margin-top:-20px;">
+									<p:graphicImage width="22" height="22"
+										value="/resources/images/cobranza/icon_ver.png"
+										alt="detalle Contrato" title="detalle Contrato" />
+								</p:commandLink>
+							</div>
+						</div>
+						<div class="filaDatoLargosCorto">
+							<div style="width: 370px;">
+								<h:outputText styleClass="lblDatos" value="UPA:" />
+								<p:inputText readonly="true" styleClass="txtDatos"
+									disabled="#{carteraMB.desactivado}" id="idCarteraUpa"
+									value="#{carteraMB.detallecartera.upa.idupa}" />
+
+							</div>
+						</div>
+						<div class="filaDatoLargosCorto">
+							<div style="width: 370px;">
+								<h:outputText styleClass="lblDatos" value="Inmueble:" />
+								<p:inputText readonly="true" styleClass="txtDatos"
+									disabled="#{carteraMB.desactivado}" id="idCarteraInmueble"
+									value="#{carteraMB.detallecartera.inmueble.idinmueble}" />
+
+							</div>
+						</div>
+
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos" value="Uso(*):" />
+							<p:selectOneMenu styleClass="cbxDatos" id="idCarteraUso"
+								disabled="#{carteraMB.desactivado}"
+								onchange="limpiarvalidacion()"
+								style="width: 188px;  font-size: 11px;"
+								value="#{carteraMB.detallecartera.uso.iduso}">
+								<f:selectItem itemLabel="Seleccione uso" itemValue="0" />
+								<f:selectItems value="#{carteraMB.usos}" var="us"
+									itemLabel="#{us.descripcion}" itemValue="#{us.iduso}">
+								</f:selectItems>
+							</p:selectOneMenu>
+						</div>
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos" value="Renta(S/):" />
+							<p:inputText styleClass="txtDatos" id="idCarteraRentaSoles"
+								disabled="#{carteraMB.desactivado}"
+								value="#{carteraMB.detallecartera.rentasoles}" />
+						</div>
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos" value="Renta($):" />
+							<p:inputText styleClass="txtDatos" id="idCarteraRentaDolar"
+								disabled="#{carteraMB.desactivado}"
+								value="#{carteraMB.detallecartera.rentadolar}" />
+						</div>
+
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos" value="Mora(%):" />
+							<p:inputText styleClass="txtDatos" id="idCarteraMora"
+								disabled="#{carteraMB.desactivado}"
+								value="#{carteraMB.detallecartera.mora}" />
+						</div>
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos" value="Fecha Vencimiento:" />
+							<p:calendar id="idCarteraFechaVen"
+								disabled="#{carteraMB.desactivado}"
+								styleClass="fechacobranzaCartera"
+								value="#{carteraMB.detallecartera.fechavencimiento}" />
+						</div>
+						<br />
+						<p:separator style="float:left; width:480px" />
+						<br />
+						<div class="mante_general_botonguardar">
+							<p:commandButton value="Guardar"
+								onclick="validaciondetallecartera();" />
+
+						</div>
+
+					</h:form>
+					<h:form>
+						<p:confirmDialog message="¿Desea Guardar Detalle de Cartera?"
+							header="Registro Detalle de cartera" severity="alert"
+							widgetVar="dlgRegistrarCarteraDetalle">
+
+							<p:commandButton value="&nbsp;Aceptar"
+								update=":frmTablaCartera:tablaCarteraCDetalle,:frmCarteraCDet:msjCarteradetalle, :frmBuscarContrato:dtbDetalleContrato"
+								actionListener="#{carteraMB.registrarDetalleCartera}"
+								oncomplete="dlgRegistrarCarteraDetalle.hide()" image="icon-save">
+
+							</p:commandButton>
+							<p:commandButton value="&nbsp;Cancelar"
+								oncomplete="dlgRegistrarCarteraDetalle.hide()"
+								image="icon-cancel" />
+						</p:confirmDialog>
+					</h:form>
+
+					<h:form id="frmTablaCartera">
+						<p:growl showDetail="true" sticky="false" life="4000" />
+						<div class="dgaiMonitoreo_detalle">
+							<p:dataTable id="tablaCarteraCDetalle" var="dc"
+								value="#{carteraMB.detallecarteras}"
+								rowKey="#{dc.iddetallecartera}"
+								selection="#{carteraMB.detallecartera}" selectionMode="single"
+								paginator="true" stickyHeader="true"
+								emptyMessage="NO EXISTEN DETALLES DE CARTERA"
+								style="width:435px; font-size: 10px;  text-align:center;"
+								paginatorTemplate="Reg. por p&aacute;gina: {RowsPerPageDropdown}  &nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp;   {CurrentPageReport}"
+								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+								rowsPerPageTemplate="10,15,20" rows="10" paginatorPosition="top"
+								scrollWidth="435" styleClass="ui-datatable-hor-scroll">
+
+								<f:facet name="header">
+									<div style="color: #59A7D4; font-size: 12px;">DETALLE DE
+										CARTERA</div>
+								</f:facet>
+								<p:ajax event="rowSelect" listener="#{carteraMB.onRowSelect}"
+									update=":frmCarteraCDet" />
+								<p:column headerText="UPA">
+									<h:outputText value="#{dc.upa.idupa}" />
+								</p:column>
+
+								<p:column headerText="Inmueble">
+									<h:outputText value="#{dc.inmueble.idinmueble}" />
+								</p:column>
+
+								<p:column headerText="Contrato">
+									<h:outputText value="#{dc.contrato.idcontrato}" />
+								</p:column>
+								<p:column headerText="Uso">
+									<h:outputText value="#{dc.uso.iduso}" />
+								</p:column>
+								<p:column headerText="Renta (S/)">
+									<h:outputText value="#{dc.rentasoles}" />
+								</p:column>
+								<p:column headerText="Renta($)">
+									<h:outputText value="#{dc.rentadolar}" />
+								</p:column>
+								<p:column headerText="Mora">
+									<h:outputText value="#{dc.mora}" />
+								</p:column>
+								<p:column headerText="Fecha Vencimiento">
+									<h:outputText value="#{dc.fechavencimiento}" />
+								</p:column>
+
+								<p:column headerText="F. Creacion">
+									<h:outputText value="#{dc.feccre}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Usuario creador">
+									<h:outputText value="#{dc.usrcre}" />
+								</p:column>
+								<p:column headerText="F. Modificacion">
+									<h:outputText value="#{dc.fecmod}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Usuario Modificador">
+									<h:outputText value="#{dc.usrmod}" />
+								</p:column>
+								<p:column width="15">
+									<p:commandButton oncomplete="dlgEliminarCarteraDetalle.show();"
+										style="margin-left:-4px;" image="icon-delete" title="Eliminar">
+										<f:setPropertyActionListener value="#{dc}"
+											target="#{carteraMB.detallecarteracapturado}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</div>
+					</h:form>
+					<h:form id="frmEliminarCarteraDetalle">
+
+						<p:confirmDialog id="dlgEliminar"
+							message="¿Desea eliminar Detalle de cartera?"
+							header="Eliminar Inquilino" severity="alert"
+							widgetVar="dlgEliminarCarteraDetalle">
+
+							<p:commandButton value="&nbsp;Aceptar"
+								actionListener="#{carteraMB.eliminarCarteraDetalle}"
+								update=":frmTablaCartera:tablaCarteraCDetalle,:frmCarteraCDet, :frmBuscarContrato:dtbDetalleContrato"
+								oncomplete="dlgEliminarCarteraDetalle.hide()" image="icon-save">
+
+							</p:commandButton>
+							<p:commandButton value="&nbsp;Cancelar"
+								update=":frmCarteraCabecera"
+								oncomplete="dlgEliminarCarteraDetalle.hide()"
+								image="icon-cancel" />
+
+						</p:confirmDialog>
+					</h:form>
+
+					<h:form id="frmBuscarContrato"> 
+						<!-- DETALLE CONTRATO -->
+						<p:dialog header="CONSULTA CONTRATO" closable="true"
+							closeOnEscape="true" resizable="false"
+							widgetVar="dlgBuscarContrato" width="600" height="342"
+							style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+							<div class="dtbDespacho" style="margin: 10px;">
+								<div style="margin-bottom: 10px;">
+									<p:graphicImage width="30" height="30" style="float:left;"
+										value="../resources/images/inmueble/iconManteTitulo.png" />
+									<div style="color: #59A7D4; float: left; margin-top: 5px;">CONSULTA
+										CONTRATO</div>
+								</div>
+								<br />
+								<div style="color: #59A7D4;">
+									<p:spacer height="25" />
+									<p:dataTable id="dtbDetalleContrato" var="co"
+										value="#{carteraMB.contratosdisponibles}" rowKey="#{co.idcontrato}"
+										selection="#{carteraMB.contrato}" selectionMode="single"
+										stickyHeader="true" paginator="true"
+										style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;"
+										paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+										currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+										rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+										styleClass="ui-datatable-hor-scroll">
+										<p:ajax event="rowSelect"
+											listener="#{carteraMB.onRowSelectDetalleContrato}"
+											update=":frmCarteraCDet:idCarteraContrato,:frmCarteraCDet:idCarteraUpa,:frmCarteraCDet:idCarteraInmueble"
+											oncomplete="dlgBuscarContrato.hide();" />
+										<p:column headerText="Contrato">
+											<h:outputText value="#{co.nrocontrato}" />
+										</p:column>
+										<p:column headerText="inquilo">
+											<h:outputText value="#{co.inquilino.nombrescompletos}" />
+										</p:column>
+										<p:column headerText="UPA">
+											<h:outputText value="#{co.upa.idupa}" />
+										</p:column>
+										<p:column headerText="Inmueble">
+											<h:outputText value="#{co.upa.inmueble.idinmueble}" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+							</div>
+						</p:dialog>
+
+					</h:form>
+					<h:form id="frmDetalleContrato">
+						<!-- DETALLE CONTRATO -->
+						<p:dialog header="DETALLE CONTRATO" closable="true"
+							closeOnEscape="true" resizable="false" id="dlgDetalleContrato"
+							widgetVar="dlgDetalleContrato" width="600" height="342"
+							style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+							<div class="dtbDespacho" style="margin: 10px;">
+								<!-- 								<div style="margin-bottom: 10px;"> -->
+								<!-- 									<div style="color: #59A7D4; float: left; margin-top: 5px;">DATOS -->
+								<!-- 										CONTRATO</div> -->
+								<!-- 								</div> -->
+								<br /> <br /> <br />
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Contrato:" />
+									<p:outputLabel styleClass="txtDatos" id="idcontratodetalle"
+										value="#{carteraMB.contrato.idcontrato}" />
+								</div>
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Tipo Contrato:" />
+									<p:outputLabel styleClass="txtDatos" id="idtipocontratodetalle"
+										value="#{carteraMB.contrato.tipo}" />
+								</div>
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Inquilino:" />
+									<p:outputLabel styleClass="txtDatos" id="idinquilinodetalle"
+										value="#{carteraMB.detallecartera.contrato.inquilino.nombrescompletos}" />
+								</div>
+
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos"
+										value=" Num Registro Inmueble:" />
+									<p:outputLabel styleClass="txtDatos" id="idcontratoinmueble"
+										value="#{carteraMB.contrato.upa.inmueble.numregistrosbn}" />
+								</div>
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Direccion UPA:" />
+									<p:outputLabel styleClass="txtDatos" id="idcontratoupa"
+										value="#{carteraMB.contrato.upa.direccion}" />
+								</div>
+
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Manzana:" />
+									<p:outputLabel styleClass="txtDatos" id="idmanzana"
+										value="#{carteraMB.contrato.upa.manzana}" />
+								</div>
+								<div class="filaDatoLargosCorto">
+									<h:outputText styleClass="lblDatos" value="Lote:" />
+									<p:outputLabel styleClass="txtDatos" id="idlote"
+										value="#{carteraMB.contrato.upa.lote}" />
+								</div>
+
+							</div>
+						</p:dialog>
+					</h:form>
+
+				</div>
+				<h:form>
+					<div class="cartera_ColumInfo">
+
+						<div class="paginaInteriorCartera">
+							<div class="subcontenidoCreador_Cabecera" style="width: 172px;">
+
+								<div class="subcontenidoInfo_descripcionTitulo">Usuario
+									Creador</div>
+							</div>
+
+							<div class="subcontenidoInfo_detContenidoNombre"
+								style="width: 180px">
+
+								<div class="detalleTopfiltroDerecha2"
+									style="width: 80px; text-align: right;">
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila1"
+										style="font-size:9pt" value="#{carteraMB.usuariocreador}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila2"
+										value="#{carteraMB.cargo}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila3"
+										value="#{carteraMB.fecha}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</div>
+								<div class="iconoUserCreador">
+									<p:graphicImage width="60" height="60"
+										value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+			</div>
+
+		</div>
+
+
+
+	</div>
+
+
+
+	<!-- PANEL CONSULTAS -->
+
+	<div id="idDivCarteraConsulta" class="recau_panelPendientes">
+
+		<div class="mante_gene_ContDescrip01">
+			<div class="cobranza_cartera_contenidoDatos">
+				<div class="cartera_ColumDatos">
+
+
+					<h:form id="frmCarteraCabecera2">
+						<p:growl id="msjCarteradetalle2" showDetail="true" sticky="false"
+							life="4000" />
+						<div class="filaDatoLargosCorto">
+							<h:outputText styleClass="lblDatos"
+								value="N&uacute;mero Cartera:" />
+							<p:inputText styleClass="txtDatos" id="idCarteraNumeroCartera"
+								value="#{carteraMB.cartera.numero}" />
+						</div>
+						<div class="filaDatoLargosCorto">
+							<div style="width: 370px;">
+								<h:outputText styleClass="lblDatos" value="Cobrador:" />
+								<p:selectOneMenu styleClass="cbxDatos" id="idCarteraCobrador2"
+									onchange="limpiarvalidacion()"
+									style="width: 188px;  font-size: 11px;"
+									value="#{carteraMB.cartera.usuario.idusuario}">
+									<f:selectItem itemLabel="Seleccione Cobrador" itemValue="0" />
+									<f:selectItems value="#{carteraMB.usuarios}" var="lu"
+										itemLabel="#{lu.nombrescompletos}" itemValue="#{lu.idusuario}">
+									</f:selectItems>
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<br />
+						<p:separator style="float:left; width:450px" />
+						<br />
+						<br />
+						<div class="mante_general_botonguardar" style="float: left;">
+							<p:commandButton value="Guardar" oncomplete="validarCartera();"
+								style="float:left; margin-bottom:20px;"
+								update="frmCarteraCabecera2:msjCarteradetalle2, frmCarteraCabecera2" />
+							<p:commandButton
+								style="float:left;margin-left:20px; margin-bottom:20px;"
+								value="Editar Detalle"
+								update="msjCarteradetalle2, :frmCarteraCabecera, :frmCarteraCDet, :frmTablaCartera:tablaCarteraCDetalle"
+								actionListener="#{carteraMB.editarCartera}"
+								oncomplete="validarConsultaCartera();" />
+						</div>
+						<br />
+						<br />
+
+
+					</h:form>
+					<h:form id="frmactualizarcartera">
+						<p:confirmDialog message="¿Desea Guardar  Cartera?"
+							header="Registro  cartera" severity="alert"
+							widgetVar="dlgcartera">
+
+							<p:commandButton value="&nbsp;Aceptar"
+								actionListener="#{carteraMB.registrarCartera}"
+								oncomplete="dlgcartera.hide()" image="icon-save"
+								update=":frmCarteraCabecera2:msjCarteradetalle2,:frmTablaCarterax:dtbCarteraCabecera2 ">
+
+							</p:commandButton>
+							<p:commandButton value="&nbsp;Cancelar"
+								oncomplete="dlgcartera.hide()" image="icon-cancel" />
+						</p:confirmDialog>
+					</h:form>
+
+
+					<h:form id="frmTablaCarterax">
+						<div class="dgaiMonitoreo_detalle">
+							<p:dataTable id="dtbCarteraCabecera2" var="carte"
+								value="#{carteraMB.carteras}" rowKey="#{carte.idcartera}"
+								selection="#{carteraMB.cartera}" selectionMode="single"
+								paginator="true" emptyMessage="NO EXISTEN CARTERAS"
+								style="width:435px; font-size: 10px;  text-align:center;"
+								paginatorTemplate="Reg. por p&aacute;gina: {RowsPerPageDropdown}  &nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp;   {CurrentPageReport}"
+								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+								rowsPerPageTemplate="10,15,20" rows="10" paginatorPosition="top"
+								scrollWidth="435" styleClass="ui-datatable-hor-scroll">
+								<p:ajax event="rowSelect"
+									listener="#{carteraMB.onRowSelectLista}"
+									update=":frmCarteraCabecera2" />
+								<f:facet name="header">
+									<div style="color: #59A7D4; font-size: 12px;">LISTA DE
+										CARTERAS</div>
+								</f:facet>
+								<p:column headerText="Numero cartera">
+									<h:outputText value="#{carte.numero}" />
+								</p:column>
+								<p:column headerText="Cobrador">
+									<h:outputText value="#{carte.usuario.nombrescompletos}" />
+								</p:column>
+								<p:column headerText="Tipo Lista">
+									<h:outputText value="#{carte.tipolista}" />
+								</p:column>
+								<p:column headerText="Cobrador">
+									<h:outputText value="#{carte.estado?'Activo':'Inactivo'}" />
+								</p:column>
+								<p:column headerText="F. Creacion">
+									<h:outputText value="#{carte.feccre}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Usuario creador">
+									<h:outputText value="#{carte.usrcre}" />
+								</p:column>
+								<p:column headerText="F. Modificacion">
+									<h:outputText value="#{carte.fecmod}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Usuario Modificador">
+									<h:outputText value="#{carte.usrmod}" />
+								</p:column>
+								<p:column width="15">
+									<p:commandButton oncomplete="dlgEliminarCartera.show();"
+										style="margin-left:-4px;" image="icon-delete" title="Eliminar">
+										<f:setPropertyActionListener value="#{carte}"
+											target="#{carteraMB.carteracapturado}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</div>
+					</h:form>
+					<h:form id="frmEliminarCartera">
+						<p:confirmDialog id="dlgEliminar"
+							message="¿Desea eliminar  cartera?" header="Eliminar Cartera"
+							severity="alert" widgetVar="dlgEliminarCartera">
+							<p:commandButton value="&nbsp;Aceptar"
+								actionListener="#{carteraMB.eliminarCartera}"
+								update=":frmTablaCarterax:dtbCarteraCabecera2"
+								oncomplete="dlgEliminarCartera.hide()" image="icon-save">
+							</p:commandButton>
+							<p:commandButton value="&nbsp;Cancelar"
+								oncomplete="dlgEliminarCartera.hide()" image="icon-cancel" />
+						</p:confirmDialog>
+					</h:form>
+				</div>
+				<h:form>
+					<div class="cartera_ColumInfo">
+
+						<div class="paginaInteriorCartera">
+							<div class="subcontenidoCreador_Cabecera" style="width: 172px;">
+
+								<div class="subcontenidoInfo_descripcionTitulo">Usuario
+									Creador</div>
+							</div>
+
+							<div class="subcontenidoInfo_detContenidoNombre"
+								style="width: 180px">
+
+								<div class="detalleTopfiltroDerecha2"
+									style="width: 80px; text-align: right;">
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila1"
+										style="font-size:9pt" value="#{carteraMB.usuariocreador}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila2"
+										value="#{carteraMB.cargo}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila3"
+										value="#{carteraMB.fecha}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</div>
+								<div class="iconoUserCreador">
+									<p:graphicImage width="60" height="60"
+										value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+		</div>
+
+	</div>
+
+</h:body>
+</html>

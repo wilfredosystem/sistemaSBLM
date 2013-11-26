@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<link href="../resources/css/estilox.css" rel="stylesheet"
+		type="text/css" />
+
+	<title>SBLM-SOCIEDAD DE BENEFICIANCIA DE LIMA METROPOLITANA x</title>
+</h:head>
+<h:body>
+
+	<ui:composition template="./paginaMaestra.xhtml">
+		<ui:define name="content">
+
+
+
+			<div class="contenidoPrincipal_FondoPrincipal">
+
+				<div class="contenidoPrincipal_fondoIdentificador">
+					<!-- TITULO SUBCONTENIDO -->
+					<div class="inmueble_IconoIdentificador"></div>
+					<div class="contenidoPrincipal_SubContenido">
+						<label class="contenidoPrincipal_lblTituloSubContenido">MANTENIMIENTOS</label><br />
+						<label class="contenidoPrincipal_lblSubTituloSubContenido">UPA</label>
+					</div>
+				</div>
+				<div class="contenidoPrincipal_SubFondo">
+					<!-- CONTENIDO MODIFICABLE -->
+					<div class="inmueble_subFondo_Icono"></div>
+					<div id="lblSubtitulo"
+						class="contenidoPrincipal_subFondo_lblTitulox">Datos
+						Generales</div>
+
+					<p:commandLink id="idGeneralUpa" styleClass="btnDerivacion"
+						onclick="tabGeneralUpa();">
+						<div class="btncentrado">Generales</div>
+					</p:commandLink>
+					<p:commandLink id="idTecnicosUpa" styleClass="btnDespacho"
+						onclick="tabTecnicosUpa();"
+						actionListener="#{upaMB.cargarUltimoregistro}"
+						update=":frmTecnicos,:frmTablaTecnicos:dtbTecnicos">
+						<div class="btncentrado">Tecnicos</div>
+					</p:commandLink>
+					<p:commandLink id="idOtrosUpa" styleClass="btnConsultas"
+						onclick="tabOtrosUpa();"
+						actionListener="#{upaMB.cargarUltimoregistro}"
+						update=":frmValidacionUpa,:frmTablaOtros:dtbOtros">
+						<div class="btncentrado">otros</div>
+					</p:commandLink>
+
+
+					<div class="contenidoPrincipal_fondo_formulario">
+						<div class="dgaiMonitoreo_Contenido">
+
+
+
+
+							<!-- PANEL GENERAL -->
+
+
+							<div id="idDivGeneralUpa" class="recau_panelPendientes">
+								<h:form>
+									<div class="filaBtnNuevo">
+										<p:commandLink actionListener="#{upaMB.limpiarCampos}"
+											style="margin-right:20px;" update=":frmGeneral">
+											<p:graphicImage
+												value="/resources/images/perfil/nuevo_mas.png"
+												alt="Limpiar formulario" title="limpiar" />
+										</p:commandLink>
+									</div>
+								</h:form>
+								<h:form id="frmGeneral">
+									<p:growl id="msjgeneral" showDetail="true" sticky="false"
+										life="4000" />
+
+									<div class="mante_gene_ContDescrip01">
+
+										<div class="filaencabezado">
+											<div class="col01Upa">
+
+												<h:outputText class="lblRegSbn" value="Inmueble(*):" />
+
+												<p:autoComplete id="txtUpaInmueble"
+													style="float:left; width:135px;"
+													value="#{upaMB.upa.inmueble.numregistrosbn}"
+													completeMethod="#{upaMB.autocompletar}" />
+												<p:commandLink oncomplete="dlgDetalleInmueble.show();"
+													style="float:left;margin-right:20px;">
+													<p:graphicImage width="27" height="27"
+														value="/resources/images/upa/verInmueble.png"
+														alt="Limpiar formulario" title="buscar inmueble" />
+												</p:commandLink>
+											</div>
+
+											<div class="col02">
+												<div class="columFile">
+													<div class="u_buttonUpload">
+
+														<div style="width: 50px; height: 20px">
+
+															<p:fileUpload styleClass="ui-fileupload"
+																update="smallCarousel" style="visibility:hidden"
+																fileUploadListener="#{inmuebleMB.cargadoArchivo}"
+																mode="advanced" auto="true" sizeLimit="100000000"
+																label=""
+																allowTypes="/(\.|\/)(gif|jpe?g|dwg|exe|7z|bpm|fla|html|swf|tgz|tif|png|xlsx|xls|doc|docx|txt|avi|mp3|mpeg|ppt|pptx|rar|zip|pdf|ppt|pptx)$/">
+															</p:fileUpload>
+														</div>
+													</div>
+													<p:commandLink>
+														<p:graphicImage id="idImagenUsuario" width="106"
+															height="18"
+															value="../resources/images/inmueble/upload.png"
+															onclick="openUploadFileDialogue();" />
+													</p:commandLink>
+
+												</div>
+												<div class="columCarrusel">
+													<p:carousel id="smallCarousel"
+														value="#{upaMB.aaMB.displayList}" var="varFile"
+														circular="true" style="height:80px; width:162px;"
+														itemStyleClass="cuerpoCarrusel" numVisible="3">
+														<h:panelGrid columns="2" cellpadding="5"
+															style="text-align: center;">
+															<p:commandLink
+																rendered="#{varFile.extensionarchivo.rutaIcono=='vacio.png' ? 'false':'true'}"
+																actionListener="#{archivoadjuntoMB.descargarArchivo(varFile)}"
+																ajax="false" immediate="true">
+																<p:graphicImage id="idNotificaciones"
+																	style="float:left;"
+																	value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+																<p:fileDownload value="#{archivoadjuntoMB.filedownload}" />
+															</p:commandLink>
+															<p:commandLink title="Eliminar de lista"
+																style="float:left;"
+																rendered="#{varFile.extensionarchivo.rutaIcono=='vacio.png' ? 'false':'true'}"
+																action="#{upaMB.aaMB.eliminarArchivodeLista}"
+																update="smallCarousel">
+																<p:graphicImage id="idNotificacioness" width="15"
+																	style="float:left; margin-bottom:15px;" height="15"
+																	value="../resources/icons/trash.png" />
+																<f:setPropertyActionListener value="#{varFile}"
+																	target="#{upaMB.aaMB.archivoDelete}" />
+															</p:commandLink>
+
+															<p:tooltip for="idNotificaciones" value="#{varFile.ruta}"
+																showEffect="slide" hideEffect="slide" />
+														</h:panelGrid>
+													</p:carousel>
+
+												</div>
+											</div>
+										</div>
+										<br />
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera" value="Direcci&oacute;n" />
+										</div>
+										<div class="fila01">
+											<div class="columTipoVia">
+												<h:outputText class="lblTipoVia" value="Tipo Via:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.tipovia.descripcion}" />
+											</div>
+											<div class="columLote">
+												<h:outputText class="lblLote" value="Lote:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.lote}" />
+											</div>
+										</div>
+										<div class="fila02">
+											<div class="columSubLote">
+												<h:outputText class="lblSubLote" value="Sub Lote:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.sublote}" />
+											</div>
+											<div class="columDistrito">
+												<h:outputText class="lblDistrito" value="Departamento:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.ubigeo.depa}" />
+											</div>
+
+										</div>
+										<div class="fila02">
+											<div class="columDistrito">
+												<h:outputText class="lblDistrito" value="Provincia:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.ubigeo.prov}" />
+											</div>
+											<div class="columSubLote">
+												<h:outputText class="lblDistrito" value="Distrito:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.ubigeo.dist}" />
+											</div>
+										</div>
+										<div class="fila03">
+											<div class="columDireccion">
+												<h:outputText class="lblDireccion" value="Direccion:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.direccion}" />
+											</div>
+											<div class="columNroPrincipal">
+
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.numeroprincipal} #{upaMB.inmueble.manzana}  #{upaMB.inmueble.lote} " />
+											</div>
+										</div>
+										<div class="fila07">
+											<div class="columManzana">
+												<h:outputText class="lblManzana" value="Urbanizacion:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.urbanizacion}" />
+
+											</div>
+											<div class="columEtapa">
+												<h:outputText class="lblEtapa" value="Etapa:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.etapa}" />
+
+											</div>
+										</div>
+
+										<div class="fila05">
+
+											<div class="columZona">
+												<h:outputText class="lblZona" value="Zona:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.zona}" />
+
+											</div>
+											<div class="columSector">
+												<h:outputText class="lblSector" value="Sector:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.sector}" />
+											</div>
+										</div>
+										<div class="fila06">
+											<div class="columUbicPiso">
+												<h:outputText class="lblUbicPiso" value="Ubicado en Piso:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.ubicacionpiso}" />
+											</div>
+											<div class="columUbicPiso">
+												<h:outputText class="lblUbicPiso" value="Referencia:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.referenciainmueble}" />
+											</div>
+										</div>
+										<br />
+
+
+										<p:separator id="separator02" />
+										<div class="fila04">
+
+											<div class="columTipoInterior">
+												<h:outputText class="lblTipoInterior"
+													value="Tipo Interior(*):" />
+
+												<p:selectOneMenu style="width: 184px;  font-size: 11px;"
+													id="txtTipoInterior" onchange="limpiarvalidacion()"
+													value="#{upaMB.upa.tipointerior.idtipointerior}">
+													<f:selectItem itemLabel="Seleccione tipo interior"
+														itemValue="0" />
+													<f:selectItems value="#{upaMB.listaTipoInterior}"
+														var="tipint" itemLabel="#{tipint.descripcion}"
+														itemValue="#{tipint.idtipointerior}">
+													</f:selectItems>
+
+												</p:selectOneMenu>
+											</div>
+											<div class="columNroInterior">
+												<h:outputText class="lblNroInterior" value="Nro. Interior:" />
+												<p:inputText id="txtNroInterior" styleClass="txtNroInterior"
+													value="#{upaMB.upa.nombrenuminterior}" />
+											</div>
+										</div>
+										<div class="fila09">
+											<div class="columHabUrbana">
+												<h:outputText class="lblHabUrbana" value="Hab. Urbana(*):" />
+												<div class="txtHabUrbana">
+													<p:selectBooleanCheckbox
+														value="#{upaMB.upa.habilitacionurbana}" />
+												</div>
+
+											</div>
+											<div class="columNombreHabUrbana">
+												<h:outputText class="lblNombreHabUrbana" value="Nombre (*):" />
+												<p:inputText id="txtNombreHabUrbana"
+													styleClass="txtNombreHabUrbana"
+													value="#{upaMB.upa.nombrehabilitacionurbana}" />
+
+
+											</div>
+										</div>
+										<div class="fila10">
+											<div class="columUbigeo">
+												<h:outputText class="lblUbigeo" value="Ubigeo:" />
+												<h:outputText class="lblRegSbn" style="width:200px;"
+													value="#{upaMB.inmueble.ubigeo.ubigeo}" />
+											</div>
+
+										</div>
+										<p:separator id="separator03" />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												oncomplete="validacioUpaGeneral();" />
+										</div>
+
+									</div>
+
+
+									<p:dialog header="DETALLE INMUEBLE" closable="true"
+										id="midialogo" closeOnEscape="true" resizable="false"
+										widgetVar="dlgDetalleInmueble" width="580" height="342"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<div class="dtbDespacho" style="margin: 10px;">
+											<div style="margin-bottom: 10px;">
+												<p:graphicImage width="30" height="30" style="float:left;"
+													value="../resources/images/inmueble/iconManteTitulo.png" />
+
+												<div style="color: #59A7D4; float: left; margin-top: 5px;">Consulta
+													Inmuebles</div>
+											</div>
+
+											<br />
+											<div style="color: #59A7D4;">
+
+												<p:spacer height="25" />
+
+												<p:dataTable id="dtbGeneral" var="inmu"
+													value="#{inmuebleMB.inmuebles}" rowKey="#{inmu.idinmueble}"
+													selection="#{upaMB.inmueble}" selectionMode="single"
+													stickyHeader="true" paginator="true"
+													style="width:auto; font-size: 10px;  margin: 0px 0px 0px 0px;"
+													paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+													currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+													rowsPerPageTemplate="5,15,20,50" rows="5" scrollWidth="690"
+													styleClass="ui-datatable-hor-scroll">
+													<p:ajax event="rowSelect"
+														listener="#{upaMB.filaInmuebleSeleccionado}"
+														oncomplete="dlgDetalleInmueble.hide();"
+														update=":frmGeneral:txtUpaInmueble , :frmGeneral" />
+													<p:column headerText="Nro. Registrp SBN">
+														<h:outputText value="#{inmu.numregistrosbn}" />
+													</p:column>
+
+													<p:column headerText="denominacion">
+														<h:outputText value="#{inmu.denominacion}" />
+													</p:column>
+
+													<p:column headerText="Lote">
+														<h:outputText value="#{inmu.lote}" />
+													</p:column>
+													<p:column headerText="tipo Via">
+														<h:outputText value="#{inmu.tipovia.descripcion}" />
+													</p:column>
+													<p:column headerText="Ubigeo">
+														<h:outputText value="#{inmu.ubigeo.ubigeo}" />
+													</p:column>
+													<p:column headerText="Sub Lote">
+														<h:outputText value="#{inmu.sublote}" />
+													</p:column>
+													<p:column headerText="Direccion">
+														<h:outputText value="#{inmu.direccion}" />
+													</p:column>
+													<p:column headerText="Tipo Interior">
+														<h:outputText value="#{inmu.tipointerior.descripcion}" />
+													</p:column>
+													<p:column headerText="Nro. Principal">
+														<h:outputText value="#{inmu.numeroprincipal}" />
+													</p:column>
+													<p:column headerText="Nro. Interior">
+														<h:outputText value="#{inmu.numnombreinterior}" />
+													</p:column>
+													<p:column headerText="Nro. Grupal">
+														<h:outputText value="#{inmu.numerogrupal}" />
+													</p:column>
+													<p:column headerText="Zona">
+														<h:outputText value="#{inmu.zona}" />
+													</p:column>
+													<p:column headerText="Ubic. en piso">
+														<h:outputText value="#{inmu.ubicacionpiso}" />
+													</p:column>
+													<p:column headerText="Sector">
+														<h:outputText value="#{inmu.sector}" />
+													</p:column>
+													<p:column headerText="Manzana">
+														<h:outputText value="#{inmu.manzana}" />
+													</p:column>
+													<p:column headerText="Etapa">
+														<h:outputText value="#{inmu.etapa}" />
+													</p:column>
+													<p:column headerText="Referencia">
+														<h:outputText value="#{inmu.referenciainmueble}" />
+													</p:column>
+													<!-- 													<p:column headerText="Hab. Urbana"> -->
+													<!-- 														<h:outputText -->
+													<!-- 															value="#{inmu.tipohabilitacionurbana.descripcion}" /> -->
+													<!-- 													</p:column> -->
+													<p:column headerText="Nombre">
+														<h:outputText value="#{inmu.nombrehabilitacionurbana}" />
+													</p:column>
+													<p:column headerText="Ubigeo">
+														<h:outputText value="#{inmu.numregistrosbn}" />
+													</p:column>
+
+
+												</p:dataTable>
+
+											</div>
+										</div>
+									</p:dialog>
+								</h:form>
+								<h:form id="frmdlgGuardarInmuebleGeneral">
+									<p:confirmDialog message="¿Desea Guardar UPA?"
+										header="Registro UPA" severity="alert"
+										widgetVar="dlgRegistrarUpaGeneral">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmTablaGeneral:dtbGeneral, :frmGeneral"
+											actionListener="#{upaMB.registrarUpa}"
+											oncomplete="dlgRegistrarUpaGeneral.hide()" image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar" update=":frmGeneral "
+											oncomplete="dlgRegistrarUpaGeneral.hide()"
+											image="icon-cancel" />
+
+									</p:confirmDialog>
+								</h:form>
+								<h:form id="frmTablaGeneral">
+									<div class="dgaiMonitoreo_detalle">
+										<p:dataTable id="dtbGeneral" var="up" value="#{upaMB.upas}"
+											rowKey="#{up.idupa}" selection="#{upaMB.upa}"
+											selectionMode="single" stickyHeader="true" paginator="true"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+											styleClass="ui-datatable-hor-scroll">
+											<p:ajax event="rowSelect" listener="#{upaMB.onRowSelect}"
+												update=":frmGeneral" />
+											<p:column headerText="Inmueble">
+												<h:outputText value="#{up.inmueble.numregistrosbn}" />
+											</p:column>
+
+											<p:column headerText="Lote">
+												<h:outputText value="#{up.lote}" />
+											</p:column>
+
+											<p:column headerText="Ubigeo">
+												<h:outputText value="#{up.inmueble.ubigeo.ubigeo}" />
+											</p:column>
+											<p:column headerText="Sub Lote">
+												<h:outputText value="#{up.sublote}" />
+											</p:column>
+											<p:column headerText="Direccion">
+												<h:outputText value="#{up.direccion}" />
+											</p:column>
+											<p:column headerText="Tipo Interior">
+												<h:outputText value="#{up.tipointerior.descripcion}" />
+											</p:column>
+											<p:column headerText="Nro. Principal">
+												<h:outputText value="#{up.numprincipal}" />
+											</p:column>
+											<p:column headerText="Nro. Interior">
+												<h:outputText value="#{up.nombrenuminterior}" />
+											</p:column>
+											<p:column headerText="Nro. Grupal">
+												<h:outputText value="#{up.numgrupal}" />
+											</p:column>
+											<p:column headerText="Zona">
+												<h:outputText value="#{up.nombrenumzona}" />
+											</p:column>
+											<p:column headerText="Ubic. en piso">
+												<h:outputText value="#{up.ubicacionpiso}" />
+											</p:column>
+											<p:column headerText="Sector">
+												<h:outputText value="#{up.nombrenumsector}" />
+											</p:column>
+											<p:column headerText="Manzana">
+												<h:outputText value="#{up.manzana}" />
+											</p:column>
+											<p:column headerText="Etapa">
+												<h:outputText value="#{up.nombrenumetapa}" />
+											</p:column>
+											<p:column headerText="Referencia">
+												<h:outputText value="#{up.referenciaupa}" />
+											</p:column>
+											<!-- 											<p:column headerText="Hab. Urbana"> -->
+											<!-- 												<h:outputText -->
+											<!-- 													value="#{up.tipohabilitacionurbana.descripcion}" /> -->
+											<!-- 											</p:column> -->
+											<p:column headerText="Nombre">
+												<h:outputText value="#{up.nombrehabilitacionurbana}" />
+											</p:column>
+											<p:column headerText="Ubigeo">
+												<h:outputText value="#{up.inmueble.ubigeo.ubigeo}" />
+											</p:column>
+
+											<p:column headerText="F. Creacion">
+												<h:outputText value="#{up.feccre}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario creador">
+												<h:outputText value="#{up.usrcre}" />
+											</p:column>
+											<p:column headerText="F. Modificacion">
+												<h:outputText value="#{up.fecmod}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario Modificador">
+												<h:outputText value="#{up.usrmod}" />
+											</p:column>
+											<p:column width="15">
+												<p:commandButton oncomplete="dlgEliminarUpaGeneral.show();"
+													style="margin-left:-4px;" update=":frmGeneral"
+													image="icon-delete" title="Eliminar">
+													<f:setPropertyActionListener value="#{up}"
+														target="#{upaMB.upacapturado}" />
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+									</div>
+
+								</h:form>
+								<h:form id="frmEliminarInmuebleGeneral">
+
+									<p:confirmDialog id="dlgEliminar"
+										message="¿Desea eliminar registro de UPA?"
+										header="Eliminar UPA" severity="alert"
+										widgetVar="dlgEliminarUpaGeneral">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmTablaGeneral:dtbGeneral, :frmGeneral "
+											actionListener="#{upaMB.eliminarUpa}"
+											oncomplete="dlgEliminarUpaGeneral.hide()" image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar" update=":frmGeneral"
+											oncomplete="dlgEliminarUpaGeneral.hide()" image="icon-cancel" />
+
+									</p:confirmDialog>
+								</h:form>
+
+
+							</div>
+
+
+							<!-- PANEL TECNICO -->
+
+							<div id="idDivTecnicosUpa" class="recau_panelPendientes">
+
+								<h:form id="frmTecnicos">
+									<p:growl id="msjTecnicos" showDetail="true" sticky="false"
+										life="4000" widgetVar="msjTecnicosx" />
+
+									<div class="mante_gene_ContDescrip01">
+										<div class="filaRegSbn">
+											<h:outputText class="lblRegSbn" value="Inmueble:" />
+											<p:inputText id="txtUpaInmueble02"
+												styleClass="txtUpaInmueble"
+												value="#{upaMB.upa.inmueble.numregistrosbn}" disabled="true" />
+										</div>
+										<br />
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera" value="Caracteristicas" />
+
+										</div>
+										<div class="filaReg01">
+											<div class="columTitularidad">
+												<h:outputText class="lblTitularidad" value="Antiguedad:" />
+												<p:selectOneMenu value="#{upaMB.upa.antiguedad}"
+													onchange="limpiarvalidacion()" id="txtAntiguedad"
+													style="width: 188px;  font-size: 11px;">
+													<f:selectItem itemLabel="Seleccione Antiguedad"
+														itemValue="0" />
+													<f:selectItem itemLabel="hasta 5 años" itemValue="5" />
+													<f:selectItem itemLabel="hasta 10 años" itemValue="10" />
+													<f:selectItem itemLabel="hasta 15 años" itemValue="15" />
+													<f:selectItem itemLabel="hasta 20 años" itemValue="20" />
+													<f:selectItem itemLabel="hasta 30 años" itemValue="30" />
+												</p:selectOneMenu>
+											</div>
+											<div class="columTipoTitularidad">
+												<h:outputText class="lblTipoTitularidad"
+													value="Mat. estructural:" />
+												<p:selectOneMenu id="txtMep" onchange="limpiarvalidacion()"
+													style="width: 188px;  font-size: 11px;"
+													value="#{upaMB.upa.mep.idmep}">
+													<f:selectItem itemLabel="Seleccione Material estructural"
+														itemValue="0" />
+													<f:selectItems value="#{upaMB.listaMep}" var="mep"
+														itemLabel="#{mep.descripcion}" itemValue="#{mep.idmep}">
+													</f:selectItems>
+												</p:selectOneMenu>
+											</div>
+										</div>
+
+
+										<div class="filaReg02">
+											<div class="columResolucion">
+												<h:outputText class="lblTitularidad" value="Conservacion:" />
+												<p:selectOneMenu value="#{upaMB.upa.conservacion}"
+													id="txtConservacion" onchange="limpiarvalidacion()"
+													style="width: 188px;  font-size: 11px;">
+													<f:selectItem itemLabel="Seleccione conservacion"
+														itemValue="0" />
+													<f:selectItem itemLabel="Muy bueno" itemValue="Muy bueno" />
+													<f:selectItem itemLabel="Bueno" itemValue="Bueno" />
+													<f:selectItem itemLabel="Regular" itemValue="Regular" />
+													<f:selectItem itemLabel="Malo" itemValue="Malo" />
+													<f:selectItem itemLabel="Muy malo" itemValue="Muy malo" />
+												</p:selectOneMenu>
+
+											</div>
+											<div class="columFechaResolucion">
+												<h:outputText class="lblTitularidad" value="Uso:" />
+												<p:selectOneMenu id="txtUso" onchange="limpiarvalidacion()"
+													style="width: 188px;  font-size: 11px;"
+													value="#{upaMB.upa.uso.iduso}">
+													<f:selectItem itemLabel="Seleccione Uso" itemValue="0" />
+													<f:selectItems value="#{upaMB.listaUso}" var="uso"
+														itemLabel="#{uso.descripcion}" itemValue="#{uso.iduso}">
+													</f:selectItems>
+												</p:selectOneMenu>
+
+											</div>
+										</div>
+										<div class="filaReg03">
+											<div class="columTipoMonumento">
+												<div class="columSaneamientoFL">
+													<!-- 													<p:selectBooleanCheckbox value="#{upaMB.upa.opcagua}" /> -->
+													<!-- 													<h:outputText class="lblSaneamientoFL" value="Agua" /> -->
+
+													<p:selectBooleanCheckbox value="#{upaMB.upa.opcagua}"
+														styleClass="chkF4PartidaReg" />
+													&nbsp;&nbsp;
+													<h:outputText class="lblParteInmu" value="Agua" />
+												</div>
+												<div class="columSituacion">
+													<!-- 													<p:selectBooleanCheckbox value="#{upaMB.upa.opcdesague}" /> -->
+													<!-- 													<h:outputText class="lblSituacion" value="Desague" /> -->
+
+													<p:selectBooleanCheckbox value="#{upaMB.upa.opcdesague}"
+														styleClass="chkF4PartidaReg" />
+													&nbsp;&nbsp;
+													<h:outputText class="lblParteInmu" value="Desague" />
+												</div>
+											</div>
+										</div>
+										<br />
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera" value="Registro" />
+										</div>
+										<div class="filaTec04">
+											<div class="columF4upa00">
+												<h:outputText class="lblF4upa01" value="" />
+											</div>
+											<div class="columF4upa01">
+												<h:outputText class="lblF4upa01" value="Terreno (m2)" />
+											</div>
+											<div class="columF4upa02">
+												<h:outputText class="lblF4upa02" value="Construida (m2)" />
+											</div>
+											<div class="columF4upa03">
+												<h:outputText class="lblF4upa03" value="Comun (m2)" />
+											</div>
+											<div class="columF4upa04">
+												<h:outputText class="lblF4upa04" value="Libre (m2)" />
+											</div>
+											<div class="columF4upa05">
+												<h:outputText class="lblF4upa05" value="Declarada (m2)" />
+											</div>
+										</div>
+										<div class="filaReg05">
+											<div class="columF5upa01">
+												<h:outputText class="lblF7Valor" value="Area" />
+											</div>
+											<div class="columF5upa02">
+
+												<p:inputText styleClass="txtF5upa01" id="txtAreaTerreno"
+													value="#{upaMB.upa.areaterreno}" />
+											</div>
+											<div class="columF5upa03">
+
+												<p:inputText styleClass="txtF5upa02" id="txtAreaConstruida"
+													value="#{upaMB.upa.areaconstruida}" />
+											</div>
+											<div class="columF5upa04">
+												<p:inputText styleClass="txtF5upa03" id="txtAreaComun"
+													value="#{upaMB.upa.areacomun}" />
+											</div>
+											<div class="columF5upa05">
+												<p:inputText styleClass="txtF5upa04" id="txtAreaLibre"
+													value="#{upaMB.upa.arealibre}" />
+											</div>
+											<div class="columF5upa06">
+												<p:inputText styleClass="txtF5upa05" id="txtAreaDeclarada"
+													value="#{upaMB.upa.areadeclarada}" />
+											</div>
+										</div>
+										<br />
+										<p:separator />
+										<div class="filaTec06">
+											<div class="columObsUpa">
+												<h:outputText class="lblUbicPiso" value="Observacion:" />
+												<p:inputTextarea rows="3" cols="50" id="txtUbicPiso"
+													styleClass="txtObsUpa" value="#{upaMB.upa.obsupa}" />
+											</div>
+
+										</div>
+										<br /> <br /> <br />
+
+
+										<p:separator />
+										<div class="filaTec07">
+											<div class="columParteInmu">
+
+												<p:selectBooleanCheckbox
+													value="#{upaMB.upa.opcparteinmueble}"
+													styleClass="chkF4PartidaReg" />
+												<h:outputText class="lblParteInmu"
+													value="Es parte del inmueble(*)" />
+											</div>
+											<div class="columF4PlanoPer">
+												<p:selectBooleanCheckbox value="#{upaMB.upa.opcupadepurada}"
+													styleClass="chkF4PlanoPer" />
+												<h:outputText class="lblF4PlanoPer" value="Depurada" />
+											</div>
+										</div>
+										<div class="filaTec08">
+											<div class="columParteInmu">
+
+												<p:selectBooleanCheckbox
+													value="#{upaMB.upa.opcupadisponible}"
+													styleClass="chkF4PartidaReg" />
+												<h:outputText class="lbldisponibleAlqui"
+													value="Disponible para alquilar(*)" />
+											</div>
+
+											<div class="columF4PlanoUbi">
+
+												<p:selectBooleanCheckbox
+													value="#{upaMB.upa.opcupahabilitada}"
+													styleClass="chkF4PlanoUbi" />
+												<h:outputText class="lblF4PlanoUbi" value="Habilitada" />
+											</div>
+
+										</div>
+										<br />
+										<p:separator />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												oncomplete="validacionUpaTecnico();" />
+										</div>
+
+									</div>
+
+								</h:form>
+								<h:form id="frmdlgGuardarInmuebleRegitral">
+									<p:confirmDialog message="¿Desea Guardar Inmueble?"
+										header="Registro Inmueble" severity="alert"
+										widgetVar="dlgRegistrarUpaTecnico">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmTablaTecnicos:dtbTecnicos, :frmTecnicos"
+											actionListener="#{upaMB.registrarUpa}"
+											oncomplete="dlgRegistrarUpaTecnico.hide()" image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar" update=":frmTecnicos "
+											oncomplete="dlgRegistrarUpaTecnico.hide()"
+											image="icon-cancel" />
+
+									</p:confirmDialog>
+								</h:form>
+								<h:form id="frmTablaTecnicos">
+									<div class="dgaiMonitoreo_detalle">
+
+										<p:dataTable id="dtbTecnicos" var="up" value="#{upaMB.upas}"
+											rowKey="#{up.idupa}" selection="#{upaMB.upa}"
+											selectionMode="single" stickyHeader="true" paginator="true"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+											styleClass="ui-datatable-hor-scroll">
+											<p:ajax event="rowSelect" listener="#{upaMB.onRowSelect}"
+												update=":frmTecnicos" />
+											<p:column headerText="Nro. Registrp SBN">
+												<h:outputText value="#{up.inmueble.numregistrosbn}" />
+											</p:column>
+											<p:column headerText="Antiguedad">
+												<h:outputText value="#{up.antiguedad}" />
+											</p:column>
+											<p:column headerText="Material estruc.">
+												<h:outputText value="#{up.mep.descripcion}" />
+											</p:column>
+											<p:column headerText="conservacion">
+												<h:outputText value="#{up.conservacion}" />
+											</p:column>
+											<p:column headerText="Uso">
+												<h:outputText value="#{up.uso.descripcion}" />
+											</p:column>
+											<p:column headerText="Agua">
+												<h:outputText value="#{up.opcagua}" />
+											</p:column>
+											<p:column headerText="Desague">
+												<h:outputText value="#{up.opcdesague}" />
+											</p:column>
+											<p:column headerText="area terreno">
+												<h:outputText value="#{up.areaterreno}" />
+											</p:column>
+											<p:column headerText="area construida">
+												<h:outputText value="#{up.areaconstruida}" />
+											</p:column>
+											<p:column headerText="area comun">
+												<h:outputText value="#{up.areacomun}" />
+											</p:column>
+											<p:column headerText="Area libre">
+												<h:outputText value="#{up.arealibre}" />
+											</p:column>
+											<p:column headerText="Area declarada">
+												<h:outputText value="#{up.areadeclarada}" />
+											</p:column>
+											<p:column headerText="Observacion">
+												<h:outputText value="#{up.obsupa}" />
+											</p:column>
+
+
+											<p:column headerText="F. Creacion">
+												<h:outputText value="#{up.feccre}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario creador">
+												<h:outputText value="#{up.usrcre}" />
+											</p:column>
+											<p:column headerText="F. Modificacion">
+												<h:outputText value="#{up.fecmod}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario Modificador">
+												<h:outputText value="#{up.usrmod}" />
+											</p:column>
+
+										</p:dataTable>
+
+									</div>
+
+								</h:form>
+							</div>
+
+
+							<!-- PANEL VALIDACION -->
+							<div id="idDivOtrosUpa" class="recau_panelPendientes">
+
+								<h:form id="frmValidacionUpa">
+									<p:growl id="msjTecnico" showDetail="true" sticky="false"
+										life="4000" widgetVar="msjTecnicox" />
+									<div class="mante_gene_ContDescrip01">
+										<div class="filaRegSbn">
+											<h:outputText class="lblRegSbn" value="Inmueble:" />
+											<p:inputText id="txtUpaInmueble03"
+												styleClass="txtUpaInmueble"
+												value="#{upaMB.upa.inmueble.numregistrosbn}" disabled="true" />
+										</div>
+										<br />
+
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera"
+												value="Valuaci&oacute;n Comercial Aproximada" />
+
+										</div>
+										<div class="filaTec01">
+											<div class="columMatPredominante">
+												<h:outputText class="lblMatPredominante"
+													value="Id Valuaci&oacute;n:" />
+												<div class="txtMatPredominante">
+
+													<p:selectOneMenu style="width: 190px;  font-size: 11px;"
+														id="txtMatPredominante"
+														value="#{upaMB.upa.valuacion.idvaluacion}">
+														<f:selectItem itemLabel="Seleccione Id. valuaci&oacute;n"
+															itemValue="0" />
+														<f:selectItems value="#{upaMB.listaValuacion}" var="val"
+															itemLabel="#{val.descripcion}"
+															itemValue="#{val.idvaluacion}">
+														</f:selectItems>
+													</p:selectOneMenu>
+												</div>
+											</div>
+											<div class="columNumPisos">
+												<h:outputText class="lblNumPisos" value="Fecha  Valuacion:" />
+												<p:calendar id="txtUpaFecha" styleClass="txtNumPisos"
+													value="#{upaMB.upa.fechavaluacion}" />
+
+											</div>
+										</div>
+										<div class="filaTec02">
+											<div class="columAnhoConstru">
+												<h:outputText class="lblAnhoConstru"
+													value="Merced Conductiva:" />
+												<div class="txtAnhoConstru">
+
+
+													<p:inputText id="txtMercedConduc" styleClass="txtNumPisos"
+														value="#{upaMB.upa.mercedconductiva}" />
+
+												</div>
+											</div>
+
+										</div>
+										<div class="filaTec03">
+											<div class="columObsUpa">
+												<h:outputText class="lblAreaTerreno" value="Observacion:" />
+
+												<p:inputTextarea rows="3" cols="50" styleClass="txtObsUpa"
+													value="#{upaMB.upa.obsupaotros}" />
+											</div>
+
+										</div>
+										<br /> <br />
+
+										<p:separator />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												oncomplete="validacionUpaOtros();" />
+										</div>
+									</div>
+
+								</h:form>
+								<h:form id="frmdlgGuardarUpaOtros">
+									<p:confirmDialog message="¿Desea Guardar UPAx?"
+										header="Registro UPA" severity="alert"
+										widgetVar="dlgRegistrarUpaOtros">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmTablaOtros:dtbOtros, :frmValidacionUpa"
+											actionListener="#{upaMB.registrarUpa}"
+											oncomplete="dlgRegistrarUpaOtros.hide();" image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar" update=":frmTecnicos "
+											oncomplete="dlgRegistrarUpaOtros.hide();" image="icon-cancel" />
+
+									</p:confirmDialog>
+								</h:form>
+								<h:form id="frmTablaOtros">
+									<div class="dgaiMonitoreo_detalle">
+										<p:dataTable id="dtbOtros" var="up" value="#{upaMB.upas}"
+											rowKey="#{up.idupa}" selection="#{upaMB.upa}"
+											selectionMode="single" stickyHeader="true" paginator="true"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+											styleClass="ui-datatable-hor-scroll">
+											<p:ajax event="rowSelect" listener="#{upaMB.onRowSelect}"
+												update=":frmValidacionUpa" />
+											<p:column headerText="Nro. Registrp SBN">
+												<h:outputText value="#{up.inmueble.idinmueble}" />
+											</p:column>
+
+
+
+
+											<p:column headerText="F. Creacion">
+												<h:outputText value="#{up.feccre}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario creador">
+												<h:outputText value="#{up.usrcre}" />
+											</p:column>
+											<p:column headerText="F. Modificacion">
+												<h:outputText value="#{up.fecmod}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario Modificador">
+												<h:outputText value="#{up.usrmod}" />
+											</p:column>
+
+										</p:dataTable>
+
+									</div>
+
+
+
+								</h:form>
+
+							</div>
+
+
+						</div>
+
+
+					</div>
+
+
+
+
+				</div>
+
+
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

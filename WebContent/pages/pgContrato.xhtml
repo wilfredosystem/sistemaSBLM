@@ -1,0 +1,1820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<link href="../resources/css/estilox.css" rel="stylesheet"
+		type="text/css" />
+
+	<title>SBLM-SOCIEDAD DE BENEFICIANCIA DE LIMA METROPOLITANA x</title>
+</h:head>
+<h:body>
+
+	<ui:composition template="./paginaMaestra.xhtml">
+		<ui:define name="content">
+
+			<div class="contenidoPrincipal_FondoPrincipal">
+
+				<div class="contenidoPrincipal_fondoIdentificador">
+					<!-- TITULO SUBCONTENIDO -->
+					<div class="contrato_IconoIdentificador"></div>
+					<div class="contenidoPrincipal_SubContenido">
+						<label class="contenidoPrincipal_lblTituloSubContenido">MANTENIMIENTOS</label><br />
+						<label class="contenidoPrincipal_lblSubTituloSubContenido">Contratos</label>
+					</div>
+				</div>
+				<div class="contenidoPrincipal_SubFondo">
+					<!-- CONTENIDO MODIFICABLE -->
+					<div class="inmueble_subFondo_Icono"></div>
+					<div id="lblSubtitulo"
+						class="contenidoPrincipal_subFondo_lblTitulox">Propiedades</div>
+
+					<p:commandLink id="idTab01" styleClass="btnContratoPropiedades"
+						onclick="funcionTab01();">
+						<div class="btncentrado">Propiedades</div>
+					</p:commandLink>
+					<p:commandLink id="idTab02" styleClass="btnDespacho"
+						onclick="funcionTab02();" update=":frmInstitucion">
+						<div class="btncentrado">Institución</div>
+					</p:commandLink>
+					<p:commandLink id="idTab03" styleClass="btnConsultas"
+						onclick="funcionTab03();" update=":frmAval">
+						<div class="btncentrado">Cliente y Aval</div>
+					</p:commandLink>
+					<p:commandLink id="idTab04" styleClass="btnConsultas"
+						onclick="funcionTab04();" update=":frmPeriodo">
+						<div class="btncentrado">Períodos</div>
+					</p:commandLink>
+
+					<p:commandLink id="idTab05" styleClass="btnConsultas"
+						onclick="funcionTab05();" update=":frmGarantias">
+						<div class="btncentrado">Garantía</div>
+					</p:commandLink>
+					<p:commandLink id="idTab06" styleClass="btnConsultas"
+						onclick="funcionTab06();">
+						<div class="btncentrado">Cuotas</div>
+					</p:commandLink>
+					<div class="contenidoPrincipal_fondo_formulario">
+						<div class="dgaiMonitoreo_Contenido">
+
+
+							<!-- PANEL PROPIEDADES -->
+							<div id="idDivTab01" class="recau_panelPendientes">
+								<h:form id="frmPropiedades">
+
+									<div class="mante_gene_ContDescrip01">
+										<div class="contrato_contenidoDatos">
+											<div class="contrato_ColumDatos">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Tipo de Contrato(*):" />
+													<p:selectOneMenu styleClass="cbxDatos" id="idContratoTipo"
+														onchange="limpiarvalidacion();"
+														style="width: 188px;  font-size: 11px;"
+														value="#{ccMB.contrato.tipo}">
+														<f:selectItem itemLabel="Seleccione Tipo " itemValue="" />
+														<f:selectItem itemLabel="Convocatoria Pública"
+															itemValue="Convocatoria Pública" />
+														<f:selectItem itemLabel="Alquiler Directo"
+															itemValue="Alquiler Directo" />
+													</p:selectOneMenu>
+												</div>
+
+												<p:growl id="growlNotificaNroContrato" showDetail="true"
+													sticky="false" life="3000" />
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Numero(*):" />
+													<h:inputText styleClass="txtDatos" id="idContratoNumero"
+														value="#{ccMB.contrato.nrocontrato}">
+														<p:ajax event="keyup"
+															listener="#{ccMB.verificarExistenciaCodigoContrato}"
+															update="growlNotificaNroContrato" />
+														<p:ajax event="blur"
+															listener="#{ccMB.verificarExistenciaCodigoContrato}"
+															update="growlNotificaNroContrato" />
+													</h:inputText>
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="A&ntilde;o(*):" />
+													<p:selectOneMenu styleClass="cbxDatos" id="idContratoAnho"
+														value="#{ccMB.contrato.aniocontrato}"
+														onchange="limpiarvalidacionAnioContrato();"
+														style="width: 188px;  font-size: 11px;">
+														<f:selectItem itemLabel="Seleccione A&ntilde;o"
+															itemValue="0" />
+														<f:selectItems value="#{ccMB.listaAnho}" var="an"
+															itemLabel="#{an}" itemValue="#{an}">
+														</f:selectItems>
+													</p:selectOneMenu>
+												</div>
+											</div>
+
+											<div class="contrato_ColumInfo">
+												<div class="columFile">
+													<div class="u_buttonUpload">
+
+														<div style="width: 50px; height: 20px">
+
+															<p:fileUpload styleClass="ui-fileupload"
+																update="smallCarousel" style="visibility:hidden"
+																fileUploadListener="#{inquilinoMB.cargadoArchivo}"
+																mode="advanced" auto="true" sizeLimit="100000000"
+																allowTypes="/(\.|\/)(gif|jpe?g|dwg|exe|7z|bpm|fla|html|swf|tgz|tif|png|xlsx|xls|doc|docx|txt|avi|mp3|mpeg|ppt|pptx|rar|zip|pdf|ppt|pptx)$/">
+															</p:fileUpload>
+														</div>
+													</div>
+													<p:commandLink>
+														<p:graphicImage id="idImagenUsuario" width="106"
+															height="18"
+															value="../resources/images/inmueble/upload.png"
+															onclick="openUploadFileDialogue();" />
+													</p:commandLink>
+
+												</div>
+												<div class="columCarrusel">
+													<p:carousel id="smallCarousel"
+														value="#{inquilinoMB.aaMB.displayList}" var="varFile"
+														circular="true" style="height:80px; width:162px;"
+														itemStyleClass="cuerpoCarrusel" numVisible="3">
+														<h:panelGrid columns="2" cellpadding="5"
+															style="text-align: center;">
+															<p:commandLink
+																actionListener="#{archivoadjuntoMB.descargarArchivo(varFile)}"
+																ajax="false" immediate="true">
+																<p:graphicImage id="idNotificaciones"
+																	style="float:left;"
+																	value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+																<p:fileDownload value="#{archivoadjuntoMB.filedownload}" />
+															</p:commandLink>
+															<p:commandLink title="Eliminar de lista"
+																style="float:left;"
+																action="#{inquilinoMB.aaMB.eliminarArchivodeLista}"
+																update="smallCarousel">
+																<p:graphicImage id="idNotificacioness" width="15"
+																	style="float:left; margin-bottom:15px;" height="15"
+																	value="../resources/icons/trash.png" />
+																<f:setPropertyActionListener value="#{varFile}"
+																	target="#{inquilinoMB.aaMB.archivoDelete}" />
+															</p:commandLink>
+
+															<p:tooltip for="idNotificaciones" value="#{varFile.ruta}"
+																showEffect="slide" hideEffect="slide" />
+														</h:panelGrid>
+													</p:carousel>
+
+												</div>
+											</div>
+										</div>
+
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+
+										<br />
+										<p:outputPanel id="idoutputpanelUPA">
+											<p:outputPanel rendered="#{!ccMB.mostrarUpaSimpleMultiple}">
+												<h:panelGrid columns="2" style="margin-top:10px;">
+													<p:column>
+														<p:commandLink oncomplete="iddlgListaUpa.show();"
+															style="float:left;margin-right:20px;">
+															<p:graphicImage width="22" height="22"
+																value="/resources/images/upa/verInmueble.png"
+																alt="Limpiar formulario" title="Buscar Inmueble" />
+														</p:commandLink>
+														<h:inputHidden id="idhiddenUpa"
+															value="#{ccMB.upa.direccion}" />
+													</p:column>
+													<p:column>
+														<h:outputText value="UPA(*)" />
+													</p:column>
+												</h:panelGrid>
+
+
+												<h:panelGrid columns="2"
+													style="margin-left:18px;margin-top:25px;">
+													<p:column>
+														<h:outputText style="color: #4C4C4C;"
+															value="C&oacute;digo UPA:" />
+													</p:column>
+
+													<p:column>
+														<h:outputText style="color:black;"
+															id="idContratoCodigoUpa2" maxlength="9" value="" />
+													</p:column>
+
+												</h:panelGrid>
+
+												<h:panelGrid columns="2"
+													style="margin-left:18px;margin-top:12px;">
+													<p:column>
+														<h:outputText value="Dirección UPA:"
+															style="color: #4C4C4C;" />
+													</p:column>
+
+													<p:column>
+														<h:outputText id="idContratoUpa"
+															value="#{ccMB.upa.direccion}"
+															style="margin-left:35px;color:black;" />
+													</p:column>
+
+												</h:panelGrid>
+
+											</p:outputPanel>
+											<h:panelGrid columns="2" style="margin-top:10px;">
+												<p:column>
+													<p:commandLink oncomplete="iddlgListaInmueble.show();"
+														style="float:left;margin-right:20px;">
+														<p:graphicImage width="22" height="22"
+															value="/resources/images/upa/verInmueble.png"
+															alt="Limpiar formulario" title="buscar inmueble" />
+													</p:commandLink>
+												</p:column>
+												<p:column>
+													<h:outputText value="Inmueble(*)" />
+												</p:column>
+											</h:panelGrid>
+
+
+											<h:panelGrid columns="2"
+												style="margin-left:18px;margin-top:20px;">
+												<p:column>
+													<h:outputText value="C&oacute;digo Inmueble:"
+														style="color: #4C4C4C;" />
+												</p:column>
+												<p:column>
+													<p:outputLabel id="idContratoCodigoInmueble" maxlength="9"
+														value="#{ccMB.inmueble.codigopredio}"
+														style="margin-left:20px;color:black;" />
+												</p:column>
+											</h:panelGrid>
+
+											<h:panelGrid columns="2"
+												style="margin-left:18px;margin-top:15px;">
+												<p:column>
+													<h:outputText value="Direc. de Inmueble:"
+														style="color: #4C4C4C;" />
+												</p:column>
+												<p:column>
+													<h:outputText id="idContratoInmueble"
+														value="#{ccMB.inmueble.direccion} #{ccMB.inmueble.ubigeo.dist} #{ccMB.inmueble.ubigeo.prov} #{ccMB.inmueble.ubigeo.depa}"
+														style="margin-left:10px;color:black;" />
+												</p:column>
+											</h:panelGrid>
+
+
+
+
+											<p:outputPanel rendered="#{ccMB.mostrarUpaSimpleMultiple}">
+												<div class="" style="margin-top: 25px;">
+													Upa(*)
+													<p:commandLink oncomplete="iddlgListaUpa.show();"
+														style="float:left;margin-right:20px;">
+														<p:graphicImage width="22" height="22"
+															value="/resources/images/upa/verInmueble.png"
+															alt="Limpiar formulario" title="Buscar Upa" />
+													</p:commandLink>
+												</div>
+
+												<h:panelGrid columns="2"
+													style="margin-left:18px;margin-top:15px;">
+													<p:column>
+														<h:outputText value="C&oacute;digo UPA:"
+															style="color: #4C4C4C;" />
+													</p:column>
+
+													<p:column>
+														<p:outputLabel id="idContratoCodigoUpa" maxlength="9"
+															value="" />
+													</p:column>
+												</h:panelGrid>
+
+												<h:panelGrid columns="2"
+													style="margin-left:18px;margin-top:15px;">
+													<p:column>
+														<h:outputText styleClass="lblDatos" value="UPA:" />
+													</p:column>
+													<p:column>
+														<p:selectOneMenu id="idComboUpas" styleClass="cbxDatos"
+															value="#{ccMB.idupaselecionada}"
+															style="width: 175px;  font-size: 11px;margin-left:25px;">
+															<f:selectItem itemLabel="Seleccionar" itemValue="0" />
+															<f:selectItems value="#{ccMB.upasInmueble}" var="upa"
+																itemLabel="#{upa.idupa}" itemValue="#{upa.direccion}">
+															</f:selectItems>
+															<p:ajax listener="#{ccMB.buscarUpaXid}" update="idpanel" />
+														</p:selectOneMenu>
+													</p:column>
+												</h:panelGrid>
+
+											</p:outputPanel>
+
+
+
+											<p:outputPanel id="idpanel">
+												<div class="filaDatoLargo">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="Conservación:" />
+														<h:outputText styleClass="txtDatos"
+															id="idContratoConservacion"
+															value="#{ccMB.upa.conservacion}" />
+													</div>
+												</div>
+												<div class="filaDatoLargo">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="Área Terreno:" />
+														<h:outputText styleClass="txtDatos"
+															id="idContratoAreaTerreno"
+															value="#{ccMB.inmueble.areaterreno}" />
+													</div>
+												</div>
+												<div class="filaDatoLargo">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos"
+															value="Área Construida:" />
+														<h:outputText styleClass="txtDatos"
+															id="idContratoAreaConstruida"
+															value="#{ccMB.inmueble.areaconstruida}" />
+													</div>
+												</div>
+
+												<div class="filaDatoLargo">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="Uso:" />
+														<h:outputText styleClass="cbxDatos" id="idComboUso"
+															style="width: 188px;  font-size: 11px;"
+															value="#{ccMB.upa.uso.descripcion}" />
+													</div>
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos"
+															value="Uso específico:" />
+														<h:inputText styleClass="txtDatos"
+															id="idContratoUsoEspecifico"
+															value="#{ccMB.contrato.usoespecifico}" />
+													</div>
+												</div>
+
+											</p:outputPanel>
+										</p:outputPanel>
+
+
+										<br />
+
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<h:panelGrid columns="2">
+											<p:column>
+												<p:commandLink oncomplete="iddlgListaInquilino.show();">
+													<p:graphicImage width="22" height="22"
+														value="/resources/images/upa/verInmueble.png"
+														alt="Limpiar formulario" title="buscar inquilino"
+														style="margin-top:15px;" />
+												</p:commandLink>
+											</p:column>
+											<h:outputText value="Inquilino(*)" style="margin-left:20px;" />
+											<p:column>
+											</p:column>
+										</h:panelGrid>
+
+
+
+
+										<br />
+										<p:outputPanel id="idoutputpanelInquilino">
+											<div class="filaDatoLargo" style="margin-left: 20px;">
+												<h:outputText styleClass="lblDatos" value="Nombres:" />
+												<h:outputText value="#{ccMB.inquilino.nombrescompletos}" />
+											</div>
+
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="RUC:" />
+													<h:outputText styleClass="txtDatos" id="idContratoRuc"
+														style="width:150px;" value="#{ccMB.inquilino.ruc}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="DNI:" />
+													<h:outputText styleClass="txtDatos" id="idContratoDni"
+														value="#{ccMB.inquilino.dni}" />
+												</div>
+											</div>
+
+										</p:outputPanel>
+										<h:panelGrid columns="3">
+
+											<p:selectBooleanCheckbox value="#{ccMB.contrato.siocupante}"
+												style="margin-left:20px;margin-left:20px;">
+												<p:ajax update="idInputTextOcupante"
+													listener="#{ccMB.ActivarDesactivarSiOcupante}" />
+											</p:selectBooleanCheckbox>
+
+											<p:outputPanel id="idInputTextOcupante">
+												<h:outputText value="Ocupante"
+													style="margin-left:20px;color:#4C4C4C;" />
+
+												<p:inputText value="#{ccMB.contrato.sinombreocupante}"
+													style="margin-left:20px;"
+													rendered="#{!ccMB.contrato.siocupante}" />
+											</p:outputPanel>
+
+
+
+
+
+										</h:panelGrid>
+
+										<br />
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+
+										<h:panelGrid columns="1"
+											style="margin-left:20px;margin-top:15px;">
+											<p:row>
+												<h:outputText styleClass="lblDatos" value="Resolucion:" />
+											</p:row>
+
+											<p:row>
+												<p:selectBooleanCheckbox value="#{ccMB.siResolucion}" />
+												<h:outputText value="Sí"
+													style="color: #4C4C4C;margin-left:15px;" />
+											</p:row>
+
+										</h:panelGrid>
+
+
+										<br />
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<br />
+										<div class="filaDatoLargo" style="height: 30px;">
+											<h:panelGrid columns="6">
+												<h:outputText styleClass="lblDatosContra2" value="Inicio:" />
+												<p:calendar id="idContratoFechainicio"
+													styleClass="anchoCalendar"
+													value="#{ccMB.contrato.iniciocontrato}" showOn="button">
+													<p:ajax event="dateSelect"
+														listener="#{ccMB.actualizarfechafincontrato}" />
+												</p:calendar>
+												<h:outputText styleClass="lblDatosContra" value="Nº Coutas:"
+													style="margin-left:90px;" />
+												<h:inputText styleClass="txtDatos" id="idContratoPlazo"
+													style="width:25px;" value="#{ccMB.nrocoutas}">
+													<p:ajax event="keyup" listener="#{ccMB.calcularFecha}"
+														update="idContratoFechaFinContrato" />
+													<p:ajax event="blur" listener="#{ccMB.calcularFecha}"
+														update="idContratoFechaFinContrato" />
+												</h:inputText>
+												<h:outputText styleClass="lblDatosContra2" value="Término:"
+													style="margin-left:90px;" />
+												<p:calendar id="idContratoFechaFinContrato"
+													rendered="#{ccMB.contrato.siocupante}"
+													styleClass="anchoCalendar"
+													value="#{ccMB.contrato.fincontrato}" showOn="button" />
+											</h:panelGrid>
+											<div class="filaDatoLargosCorto"></div>
+
+											<div class="filaDatoLargosCorto"></div>
+
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos"
+													value="Fact. Renovación:" />
+												<h:inputText styleClass="txtDatos" id="idContratoRenovacion"
+													value="#{ccMB.contrato.factrenovacion}" />
+											</div>
+
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto"></div>
+
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<div class="lblDatos">
+													<p:selectBooleanCheckbox
+														value="#{ccMB.contrato.sisuscrito}"
+														styleClass="chkF4PlanoPer">
+														<p:ajax update="idContratoFechaSuscrito"
+															listener="#{ccMB.ActivarDesactivarSifechaSuscrito}" />
+													</p:selectBooleanCheckbox>
+													&nbsp;&nbsp;&nbsp;
+													<h:outputText value="Suscrito" />
+												</div>
+												<p:outputPanel id="idContratoFechaSuscrito">
+
+													<p:calendar rendered="#{ccMB.contrato.sisuscrito}"
+														styleClass="txtDatos"
+														value="#{ccMB.contrato.sifechasuscrito}" showOn="button" />
+												</p:outputPanel>
+											</div>
+											<div class="filaDatoLargosCorto">
+												<div class="lblDatos">
+													<p:selectBooleanCheckbox
+														value="#{ccMB.contrato.siactaentrega}"
+														styleClass="chkF4PlanoPer">
+														<p:ajax update="idContratoFechaEntrega"
+															listener="#{ccMB.ActivarDesactivarSiactaEntrega}" />
+													</p:selectBooleanCheckbox>
+													&nbsp;&nbsp;&nbsp;
+													<h:outputText value="Acta Entrega" />
+												</div>
+												<p:outputPanel id="idContratoFechaEntrega">
+
+													<p:calendar styleClass="txtDatos"
+														value="#{ccMB.contrato.sifechaactaentrega}"
+														showOn="button" rendered="#{ccMB.contrato.siactaentrega}" />
+												</p:outputPanel>
+											</div>
+										</div>
+										<br />
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<br />
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Monto:" />
+												<h:inputText styleClass="txtDatos"
+													style="width:100px;text-align:right"
+													value="#{ccMB.contrato.montototalsoles}" />
+											</div>
+
+											<p:selectBooleanCheckbox id="idSoles" value="#{ccMB.sisoles}"
+												styleClass="chkF4PlanoPer" itemLabel="Soles">
+												<p:ajax update="idDolar"
+													listener="#{ccMB.cambiarDolarSoles}" />
+											</p:selectBooleanCheckbox>
+											<p:selectBooleanCheckbox id="idDolar" value="#{ccMB.sidolar}"
+												styleClass="chkF4PlanoPer" itemLabel="Dólar"
+												style="margin-left:20px;">
+												<p:ajax update="idSoles"
+													listener="#{ccMB.cambiarSolesDolar}" />
+											</p:selectBooleanCheckbox>
+										</div>
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<br />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												onclick="validacionContratoPropiedades();" />
+										</div>
+										<p:growl id="growlSeleccionarItemCancelar" showDetail="true"
+											sticky="true" />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Cancelar Contrato"
+												actionListener="#{ccMB.validarCancelacionContrato}"
+												update="growlSeleccionarItemCancelar" />
+										</div>
+									</div>
+
+
+									<p:growl id="growlGrabarContrato" showDetail="true"
+										sticky="false" life="3000" />
+									<p:confirmDialog message="¿Desea grabar contrato"
+										header="Registro contrato" severity="alert"
+										widgetVar="dlgRegistrarContrato">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmPropiedades,:idTablaPropiedades,growlGrabarContrato"
+											actionListener="#{ccMB.grabarCabeceraContrato}"
+											oncomplete="dlgRegistrarContrato.hide()" image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar"
+											update=":frmInstitucion "
+											oncomplete="dlgRegistrarContrato.hide()" image="icon-cancel" />
+									</p:confirmDialog>
+									<p:growl id="growlNotificaUpa" showDetail="true" sticky="false"
+										life="3000" />
+									<p:dialog header="Seleccione Upa" id="iddlgListaUpa"
+										width="655" height="300" closable="true" closeOnEscape="true"
+										resizable="false" widgetVar="iddlgListaUpa" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<p:dataTable var="detall" value="#{ccMB.listUpa}"
+											emptyMessage="No existe  ningún arbitrios registrados"
+											style="width:625px; font-size: 10px;  margin-right:0px;text-aling:center;"
+											styleClass="ui-datatable-hor-scroll" rowKey="#{detall.idupa}"
+											rowIndexVar="row" selection="#{ccMB.selectUpa}"
+											selectionMode="single" paginator="true">
+											<p:ajax event="rowSelect" listener="#{ccMB.seleccionarUpa}"
+												oncomplete="iddlgListaUpa.hide()"
+												update=":frmPropiedades:idoutputpanelUPA,:frmPropiedades:growlNotificaUpa" />
+											<!-- 															        <p:column headerText="Clave" filterBy="#{detall.clave}" filterMatchMode="contains">   -->
+											<!-- 															            <h:outputText value="#{detall.clave}" />   -->
+											<!-- 															        </p:column>				 -->
+
+											<p:column headerText="Ubigeo"
+												filterBy="#{detall.inmueble.ubigeo.ubigeo}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.inmueble.ubigeo.ubigeo}" />
+											</p:column>
+
+											<p:column headerText="Departamento"
+												filterBy="#{detall.inmueble.ubigeo.depa}" filterMatchMode="contains">
+												<h:outputText value="#{detall.inmueble.ubigeo.depa}" />
+											</p:column>
+
+											<p:column headerText="Provincia"
+												filterBy="#{detall.inmueble.ubigeo.prov}" filterMatchMode="contains">
+												<h:outputText value="#{detall.inmueble.ubigeo.prov}" />
+											</p:column>
+
+											<p:column headerText="Distrito"
+												filterBy="#{detall.inmueble.ubigeo.dist}" filterMatchMode="contains">
+												<h:outputText value="#{detall.inmueble.ubigeo.dist}" />
+											</p:column>
+
+											<p:column headerText="Dirección"
+												filterBy="#{detall.direccion}" filterMatchMode="contains">
+												<h:outputText value="#{detall.direccion}" />
+											</p:column>
+
+
+											<p:column headerText="Uso"
+												filterBy="#{detall.uso.descripcion}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.uso.descripcion}" />
+											</p:column>
+
+											<p:column headerText="Situacion">
+												<h:outputText value="#{detall.inmueble.situacion}" />
+											</p:column>
+
+										</p:dataTable>
+									</p:dialog>
+
+									<p:dialog header="Seleccione Inquilino"
+										id="iddlgListaInquilino" width="655" height="300"
+										closable="true" closeOnEscape="true" resizable="false"
+										widgetVar="iddlgListaInquilino" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<p:dataTable var="detall" value="#{ccMB.listInquilino}"
+											emptyMessage="No existe  ningún arbitrios registrados"
+											style="width:625px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+											styleClass="ui-datatable-hor-scroll"
+											rowKey="#{detall.idinquilino}" rowIndexVar="row"
+											selection="#{ccMB.inquilino}" selectionMode="single"
+											paginator="true">
+
+											<p:ajax event="rowSelect"
+												oncomplete="iddlgListaInquilino.hide();"
+												update=":frmPropiedades:idoutputpanelInquilino" />
+
+											<p:column headerText="DNI" filterBy="#{detall.dni}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.dni}" />
+											</p:column>
+
+											<p:column headerText="RUC" filterBy="#{detall.ruc}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.ruc}" />
+											</p:column>
+
+											<p:column headerText="Nombres"
+												filterBy="#{detall.nombrescompletos}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.nombrescompletos}" />
+											</p:column>
+
+										</p:dataTable>
+									</p:dialog>
+
+									<p:dialog header="Seleccione Inmueble" id="iddlgListaInmueble"
+										width="650" height="300" closable="true" closeOnEscape="true"
+										resizable="false" widgetVar="iddlgListaInmueble" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<p:dataTable var="detall" value="#{ccMB.listInmueble}"
+											emptyMessage="No existe  ningún arbitrios registrados"
+											style="width:625px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+											styleClass="ui-datatable-hor-scroll"
+											rowKey="#{detall.idinmueble}" rowIndexVar="row"
+											selection="#{ccMB.inmueble}" selectionMode="single"
+											paginator="true">
+											<p:ajax event="rowSelect"
+												listener="#{ccMB.buscaUpasXInmueble}"
+												onstart="iddlgListaInmueble.hide();visibilidadComponenetesUpaVsInmueble();"
+												update=":frmPropiedades:idoutputpanelUPA" />
+
+											<p:column headerText="Id Inmueble">
+												<h:outputText value="#{detall.idinmueble}" />
+											</p:column>
+
+											<p:column headerText="UBIGEO"
+												filterBy="#{detall.ubigeo.ubigeo}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.ubigeo.ubigeo}" />
+											</p:column>
+
+											<p:column headerText="Departamento"
+												filterBy="#{detall.ubigeo.depa}" filterMatchMode="contains">
+												<h:outputText value="#{detall.ubigeo.depa}" />
+											</p:column>
+
+											<p:column headerText="Provincia"
+												filterBy="#{detall.ubigeo.prov}" filterMatchMode="contains">
+												<h:outputText value="#{detall.ubigeo.prov}" />
+											</p:column>
+
+											<p:column headerText="Distrito"
+												filterBy="#{detall.ubigeo.dist}" filterMatchMode="contains">
+												<h:outputText value="#{detall.ubigeo.dist}" />
+											</p:column>
+
+											<p:column headerText="Dirección"
+												filterBy="#{detall.direccion}" filterMatchMode="contains">
+												<h:outputText value="#{detall.direccion}" />
+											</p:column>
+
+											<p:column headerText="Situación"
+												filterBy="#{detall.situacion}" filterMatchMode="contains">
+												<h:outputText value="#{detall.situacion}" />
+											</p:column>
+
+											<p:column headerText="Área de terreno"
+												filterBy="#{detall.areaterreno}" filterMatchMode="contains">
+												<h:outputText value="#{detall.areaterreno}" />
+											</p:column>
+
+											<p:column headerText="Área construida"
+												filterBy="#{detall.areaconstruida}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.areaconstruida}" />
+											</p:column>
+
+											<p:column headerText="Código predio"
+												filterBy="#{detall.codigopredio}" filterMatchMode="contains">
+												<h:outputText value="#{detall.codigopredio}" />
+											</p:column>
+										</p:dataTable>
+									</p:dialog>
+									<p:growl id="growlCancelarContrato" showDetail="true"
+										sticky="false" life="3000" />
+									<p:dialog header="Cancelación de contrato"
+										id="dlgCancelarContrato" width="695" height="375"
+										closable="true" closeOnEscape="true" resizable="false"
+										modal="true" showEffect="slide" hideEffect="slide" 
+										widgetVar="dlgCancelarContrato"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<div class="fondoBlancoDialogoCancelarContrato">
+
+											<div class="seccionBdialogoCancelarContrato">
+												<h:outputText value="Usuario Cancela" style="color:#168039;"/>
+												<br />
+												<p:graphicImage width="30" height="30"
+													value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+												<h:outputText value=" #{usuarioMB.usuariologueado.nombres}" style="color:#806300;" />
+												<h:outputText
+													value=" #{usuarioMB.usuariologueado.apellidopat}"  style="color:#806300;"  />
+											</div>
+											<div class="seccionCdialogoCancelarContrato">
+												<br />
+												<h:outputText value="Motivo" />
+												<br />
+												<h:inputText style="width:300px;"
+													value="#{ccMB.contenidoMensajePersonalizado}" />
+											</div>
+											<div class="seccionDdialogoCancelarContrato">
+												<h:outputText value="Notificación" />
+												<br />
+												<p:scrollPanel style="width:650px;height:150px">
+													<p:dataTable id="tablaUsuarios"
+														styleClass="noheader ui-datatable-hor-scroll"
+														value="#{ccMB.listadousuariosSeleccionados}" var="d"
+														editable="true" editMode="cell"
+														style="text-align: center;font-size:10px;"
+														emptyMessage="Agregar un usuario para notificar">
+														<p:ajax event="cellEdit" listener="#{ccMB.onCellEdit}"
+															styleClass="noheader borderless cellSpacingTableClass"
+															update="tablaUsuarios" />
+														<f:facet name="header">
+															<p:commandLink title="Agregar Usuario"
+																update="tablaUsuarios"
+																actionListener="#{ccMB.agregarUsuarioLista}">
+																<p:graphicImage width="20" height="20"
+																	value="../resources/images/monitoreoMesaPartes/addUsuario.png" />
+															</p:commandLink>
+														</f:facet>
+														<p:column>
+															<p:graphicImage id="imagenUsuario" width="35" height="35"
+																value="../resources/images/usuarios/#{d.rutaimgusr}" />
+														</p:column>
+														<p:spacer width="20px" />
+														<p:column width="99">
+															<p:cellEditor>
+																<f:facet name="output">
+																	<h:outputText value="#{d.emailusr}" />
+																</f:facet>
+																<f:facet name="input">
+																	<p:autoComplete id="idCajaUsuario"
+																		value="#{d.emailusr}" style="width:136px"
+																		completeMethod="#{ccMB.autoCompleteUsuario}"
+																		effect="fade">
+
+																	</p:autoComplete>
+																</f:facet>
+															</p:cellEditor>
+														</p:column>
+														<p:column>
+															<h:outputText value="#{d.cargo}" />
+														</p:column>
+
+														<p:column headerText="Área" width="200">
+															<h:outputText value="#{d.area.desare}" />
+														</p:column>
+
+														<p:column>
+															<p:commandLink title="Eliminar de lista"
+																actionListener="#{ccMB.eliminarUsuarioDeLista}"
+																update="tablaUsuarios">
+																<p:graphicImage width="20" height="20"
+																	value="../resources/images/monitoreoMesaPartes/#{d.contrasenausr}" />
+																<f:setPropertyActionListener value="#{d}"
+																	target="#{ccMB.selectRegistroUsuario}" />
+															</p:commandLink>
+														</p:column>
+													</p:dataTable>
+												</p:scrollPanel>
+
+
+
+											</div>
+											<div class="seccionEdialogoCancelarContrato">
+											<p:commandButton value="&nbsp;Aceptar"
+												update=":frmPropiedades,:idTablaPropiedades,growlCancelarContrato"
+												actionListener="#{ccMB.cancelarContrato}"
+												oncomplete="dlgCancelarContrato.hide()" image="icon-save">
+
+											</p:commandButton>
+											</div>
+
+<!-- 											<p:commandButton value="&nbsp;Cancelar" -->
+<!-- 												update=":frmInstitucion " -->
+<!-- 												oncomplete="dlgCancelarContrato.hide()" image="icon-cancel" /> -->
+										</div>
+
+
+									</p:dialog>
+
+
+
+
+								</h:form>
+								<p:spacer height="5"></p:spacer>
+								<h:form id="idTablaPropiedades" style="margin-top:20px;">
+									<p:dataTable var="detall" value="#{ccMB.listContrato}"
+										emptyMessage="No existe  ningún arbitrios registrados"
+										style="width:690px; font-size: 10px;  margin-left: 15px;text-aling:center;"
+										styleClass="ui-datatable-hor-scroll"
+										rowKey="#{detall.idcontrato}" rowIndexVar="row"
+										selection="#{ccMB.contrato}" selectionMode="single"
+										paginator="true">
+										<p:ajax event="rowSelect"
+											listener="#{ccMB.setearContratoSeleccionado}"
+											update=":frmPropiedades" />
+
+										<p:column headerText="Nro. Contrato"
+											filterBy="#{detall.nrocontrato}" filterMatchMode="contains">
+											<h:outputText value="#{detall.nrocontrato}" />
+										</p:column>
+
+										<p:column headerText="Dirección"
+											filterBy="#{detall.upa.inmueble.direccion}" filterMatchMode="contains">
+											<h:outputText value="#{detall.upa.direccion}" />
+										</p:column>
+
+										<p:column headerText="DISTRITO"
+											filterBy="#{detall.upa.inmueble.ubigeo.dist}"
+											filterMatchMode="contains">
+											<h:outputText value="#{detall.upa.inmueble.ubigeo.dist}" />
+										</p:column>
+
+										<p:column headerText="PROVINCIA"
+											filterBy="#{detall.upa.inmueble.ubigeo.prov}"
+											filterMatchMode="contains">
+											<h:outputText value="#{detall.upa.inmueble.ubigeo.prov}" />
+										</p:column>
+
+										<p:column headerText="DEPARTAMENTO"
+											filterBy="#{detall.upa.inmueble.ubigeo.depa}"
+											filterMatchMode="contains">
+											<h:outputText value="#{detall.upa.inmueble.ubigeo.depa}" />
+										</p:column>
+
+										<p:column headerText="Inquilino"
+											filterBy="#{detall.inquilino.nombrescompletos}"
+											filterMatchMode="contains">
+											<h:outputText value="#{detall.inquilino.nombrescompletos}" />
+										</p:column>
+
+										<p:column headerText="Inicio Contrato"
+											filterBy="#{detall.iniciocontrato}"
+											filterMatchMode="contains">
+											<h:outputText value="#{detall.iniciocontrato}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+
+										<p:column headerText="Fin Contrato"
+											filterBy="#{detall.fincontrato}" filterMatchMode="contains">
+											<h:outputText value="#{detall.fincontrato}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+
+										<p:column headerText="Estado Contrato"
+											filterBy="#{detall.estado}" filterMatchMode="contains">
+											<h:outputText value="#{detall.estado}" />
+										</p:column>
+										<p:column headerText="Fec. Creación"
+											filterBy="#{detall.fechacreacion}" filterMatchMode="contains">
+											<h:outputText value="#{detall.fechacreacion}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+
+										<p:column headerText="Fec.Modificación"
+											filterBy="#{detall.fechamodificacion}"
+											filterMatchMode="contains">
+											<h:outputText value="#{detall.fechamodificacion}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+									</p:dataTable>
+								</h:form>
+
+							</div>
+							<!-- FIN PANEL PROPIEDADES -->
+
+							<!-- PANEL INSTITUCION -->
+
+							<div id="idDivTab02" class="recau_panelPendientes">
+
+								<h:form id="frmInstitucion">
+									<p:growl id="msjInstitucion" showDetail="true" sticky="false"
+										life="4000" />
+
+									<div class="mante_gene_ContDescrip01">
+										<div class="contrato_contenidoDatos">
+											<p:outputPanel id="idoutputPanelInstitucion">
+												<div class="contrato_ColumDatos">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos"
+															value="Tipo de Contrato:" />
+														<h:outputText value="#{ccMB.contrato.tipo}" />
+													</div>
+
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="Número:" />
+														<h:outputText styleClass="txtDatos" id="idContratoNumero"
+															value="#{ccMB.contrato.nrocontrato}" />
+													</div>
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="A&ntilde;o:" />
+														<h:outputText value="#{ccMB.contrato.aniocontrato} " />
+													</div>
+												</div>
+											</p:outputPanel>
+											<div class="contrato_ColumInfo">
+												<div class="columFile">
+													<div class="u_buttonUpload">
+
+														<div style="width: 50px; height: 20px">
+
+															<p:fileUpload styleClass="ui-fileupload"
+																update="smallCarousel" style="visibility:hidden"
+																fileUploadListener="#{inquilinoMB.cargadoArchivo}"
+																mode="advanced" auto="true" sizeLimit="100000000"
+																label=""
+																allowTypes="/(\.|\/)(gif|jpe?g|dwg|exe|7z|bpm|fla|html|swf|tgz|tif|png|xlsx|xls|doc|docx|txt|avi|mp3|mpeg|ppt|pptx|rar|zip|pdf|ppt|pptx)$/">
+															</p:fileUpload>
+														</div>
+													</div>
+													<p:commandLink>
+														<p:graphicImage id="idImagenUsuario" width="106"
+															height="18"
+															value="../resources/images/inmueble/upload.png"
+															onclick="openUploadFileDialogue();" />
+													</p:commandLink>
+
+												</div>
+												<div class="columCarrusel">
+												
+													<p:carousel id="smallCarousel"
+														value="#{inquilinoMB.aaMB.displayList}" var="varFile"
+														circular="true" style="height:80px; width:162px;"
+														itemStyleClass="cuerpoCarrusel" numVisible="3">
+														<h:panelGrid columns="2" cellpadding="5"
+															style="text-align: center;">
+															<p:commandLink
+																actionListener="#{archivoadjuntoMB.descargarArchivo(varFile)}"
+																ajax="false" immediate="true">
+																<p:graphicImage id="idNotificaciones"
+																	style="float:left;"
+																	value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+																<p:fileDownload value="#{archivoadjuntoMB.filedownload}" />
+															</p:commandLink>
+															<p:commandLink title="Eliminar de lista"
+																style="float:left;"
+																action="#{inquilinoMB.aaMB.eliminarArchivodeLista}"
+																update="smallCarousel">
+																<p:graphicImage id="idNotificacioness" width="15"
+																	style="float:left; margin-bottom:15px;" height="15"
+																	value="../resources/icons/trash.png" />
+																<f:setPropertyActionListener value="#{varFile}"
+																	target="#{inquilinoMB.aaMB.archivoDelete}" />
+															</p:commandLink>
+
+															<p:tooltip for="idNotificaciones" value="#{varFile.ruta}"
+																showEffect="slide" hideEffect="slide" />
+														</h:panelGrid>
+													</p:carousel>
+
+												</div>
+											</div>
+										</div>
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<p:outputPanel id="idpanelInstitucion">
+											<div class="filaCabecera">
+												<h:outputText class="lblCabecera" value="Institución" />
+											</div>
+											<br />
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto" style="width: 370px;">
+													<h:outputText styleClass="lblDatos" value="Nombre:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoInstitucion"
+														value="#{ccMB.institucion.nombre}" />
+													<p:commandLink oncomplete="iddlgListaInstitucion.show();"
+														style="float:left;margin-right:20px;">
+														<p:graphicImage width="22" height="22"
+															value="/resources/images/upa/verInmueble.png"
+															alt="Limpiar formulario" title="buscar institución" />
+													</p:commandLink>
+												</div>
+
+											</div>
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto" style="width: 370px;">
+													<h:outputText styleClass="lblDatos" value="Tipo:" />
+													<h:outputText styleClass="txtDatos" id="idContratoInmueble"
+														value="#{ccMB.institucion.tipo}" />
+												</div>
+												<div class="filaDatoLargosCorto" style="width: 270px;">
+
+												</div>
+											</div>
+
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Direccion:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoDireccionInstitucion"
+														value="#{ccMB.institucion.direccion}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Telefono:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoTelefonoInstitucion"
+														value="#{ccMB.institucion.telefono}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="RUC:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoRucInstitucion"
+														value="#{ccMB.institucion.ruc}" />
+												</div>
+											</div>
+											<br />
+										</p:outputPanel>
+										
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										
+
+										<p:outputPanel id="idpanelRepresentante">
+											<div class="filaCabecera">
+												<h:outputText class="lblCabecera" value="Representante" />
+											</div>
+											<br />
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto" style="width: 370px;">
+													<h:outputText styleClass="lblDatos" value="Nombre:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoRepresentante"
+														value="#{ccMB.representante.nombrescompletos}" />
+													<p:commandLink oncomplete="iddlgListaRepresentante.show();"
+														style="float:left;margin-right:20px;">
+														<p:graphicImage width="22" height="22"
+															value="/resources/images/upa/verInmueble.png"
+															alt="Limpiar formulario" title="buscar inmueble" />
+													</p:commandLink>
+												</div>
+												<div class="filaDatoLargosCorto" style="width: 270px;">
+
+												</div>
+											</div>
+
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="RUC:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoRucRepresentante"
+														value="#{ccMB.representante.ruc}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="DNI:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoDniRepresentante"
+														value="#{ccMB.representante.dni}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Resolucion:" />
+													<h:inputText styleClass="txtDatos"
+														id="idContratoResolucionRepresentante"
+														value="#{inquilinoMB.inquilino.razonsocial}" />
+												</div>
+												<div class="filaDatoLargosCorto"></div>
+											</div>
+											<br />
+										</p:outputPanel>
+
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+
+										<br />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												oncomplete="dlgRegistrarInstitucion.show();" />
+										</div>
+
+									</div>
+								</h:form>
+								<h:form id="frmdlgGuardarInstitucion">
+									<p:confirmDialog message="¿Desea Guardar Contrato?"
+										header="Registro Contrato" severity="alert"
+										widgetVar="dlgRegistrarInstitucion">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmInstitucion,:frmPropiedades"
+											actionListener="#{ccMB.actualizarInstitucionContrato}"
+											oncomplete="dlgRegistrarInstitucion.hide()" image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar"
+											update=":frmInstitucion "
+											oncomplete="dlgRegistrarInstitucion.hide()"
+											image="icon-cancel" />
+									</p:confirmDialog>
+								</h:form>
+								<h:form id="frmTablaInstitucion">
+									<div class="dgaiMonitoreo_detalle"></div>
+
+
+									<p:dialog header="Seleccione institución"
+										id="iddlgListaInstitucion" width="650" height="300"
+										closable="true" closeOnEscape="true" resizable="false"
+										widgetVar="iddlgListaInstitucion" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<p:dataTable var="detall" value="#{ccMB.listInstitucion}"
+											emptyMessage="No existe  ninguna institución registrada"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+											styleClass="ui-datatable-hor-scroll"
+											rowKey="#{detall.idinstitucion}" rowIndexVar="row"
+											selection="#{ccMB.institucion}" selectionMode="single"
+											paginator="true">
+											<p:ajax event="rowSelect"
+												oncomplete="iddlgListaInstitucion.hide();"
+												update=":frmInstitucion:idpanelInstitucion" />
+
+											<p:column headerText="Nombre" filterBy="#{detall.nombre}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.nombre}" />
+											</p:column>
+
+											<p:column headerText="Ruc" filterBy="#{detall.ruc}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.ruc}" />
+											</p:column>
+
+											<p:column headerText="Tipo" filterBy="#{detall.tipo}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.tipo}" />
+											</p:column>
+
+											<p:column headerText="Teléfono" filterBy="#{detall.telefono}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.telefono}" />
+											</p:column>
+
+											<p:column headerText="Dirección"
+												filterBy="#{detall.direccion}" filterMatchMode="contains">
+												<h:outputText value="#{detall.direccion}" />
+											</p:column>
+
+
+										</p:dataTable>
+									</p:dialog>
+
+									<p:dialog header="Seleccione representante"
+										id="iddlgListaRepresentante" width="650" height="300"
+										closable="true" closeOnEscape="true" resizable="false"
+										widgetVar="iddlgListaRepresentante" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<p:dataTable var="detall" value="#{ccMB.listRepresentante}"
+											emptyMessage="No existe  ninguna institución registrada"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+											styleClass="ui-datatable-hor-scroll"
+											rowKey="#{detall.idrepresentante}" rowIndexVar="row"
+											selection="#{ccMB.representante}" selectionMode="single"
+											paginator="true">
+											<p:ajax event="rowSelect"
+												oncomplete="iddlgListaRepresentante.hide();"
+												update=":frmInstitucion:idpanelRepresentante" />
+
+											<p:column headerText="Nombre" filterBy="#{detall.nombre}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.nombrescompletos}" />
+											</p:column>
+
+											<p:column headerText="Ruc" filterBy="#{detall.ruc}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.ruc}" />
+											</p:column>
+
+											<p:column headerText="Dni" filterBy="#{detall.dni}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.dni}" />
+											</p:column>
+
+										</p:dataTable>
+									</p:dialog>
+								</h:form>
+							</div>
+							<!--FIN PANEL INSTITUCION -->
+
+
+							<div id="idDivTab03" class="recau_panelPendientes">
+								<h:form id="frmAval">
+									<div class="mante_gene_ContDescrip01">
+										<div class="contrato_contenidoDatos">
+											<p:outputPanel id="idoutputPanelAval">
+												<div class="contrato_ColumDatos">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos"
+															value="Tipo de Contrato:" />
+														<h:outputText value="#{ccMB.contrato.tipo}" />
+													</div>
+
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="Numero:" />
+														<h:outputText styleClass="txtDatos" id="idContratoNumero"
+															value="#{ccMB.contrato.nrocontrato}" />
+													</div>
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="A&ntilde;o:" />
+														<h:outputText value="#{ccMB.contrato.aniocontrato} " />
+													</div>
+												</div>
+											</p:outputPanel>
+
+
+											<div class="contrato_ColumInfo">
+												<div class="columFile">
+													<div class="u_buttonUpload">
+
+														<div style="width: 50px; height: 20px">
+
+															<p:fileUpload styleClass="ui-fileupload"
+																update="smallCarousel" style="visibility:hidden"
+																fileUploadListener="#{inquilinoMB.cargadoArchivo}"
+																mode="advanced" auto="true" sizeLimit="100000000"
+																label=""
+																allowTypes="/(\.|\/)(gif|jpe?g|dwg|exe|7z|bpm|fla|html|swf|tgz|tif|png|xlsx|xls|doc|docx|txt|avi|mp3|mpeg|ppt|pptx|rar|zip|pdf|ppt|pptx)$/">
+															</p:fileUpload>
+														</div>
+													</div>
+													<p:commandLink>
+														<p:graphicImage id="idImagenUsuario" width="106"
+															height="18"
+															value="../resources/images/inmueble/upload.png"
+															onclick="openUploadFileDialogue();" />
+													</p:commandLink>
+
+												</div>
+												<div class="columCarrusel">
+													<p:carousel id="smallCarousel"
+														value="#{inquilinoMB.aaMB.displayList}" var="varFile"
+														circular="true" style="height:80px; width:162px;"
+														itemStyleClass="cuerpoCarrusel" numVisible="3">
+														<h:panelGrid columns="2" cellpadding="5"
+															style="text-align: center;">
+															<p:commandLink
+																actionListener="#{archivoadjuntoMB.descargarArchivo(varFile)}"
+																ajax="false" immediate="true">
+																<p:graphicImage id="idNotificaciones"
+																	style="float:left;"
+																	value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+																<p:fileDownload value="#{archivoadjuntoMB.filedownload}" />
+															</p:commandLink>
+															<p:commandLink title="Eliminar de lista"
+																style="float:left;"
+																action="#{inquilinoMB.aaMB.eliminarArchivodeLista}"
+																update="smallCarousel">
+																<p:graphicImage id="idNotificacioness" width="15"
+																	style="float:left; margin-bottom:15px;" height="15"
+																	value="../resources/icons/trash.png" />
+																<f:setPropertyActionListener value="#{varFile}"
+																	target="#{inquilinoMB.aaMB.archivoDelete}" />
+															</p:commandLink>
+
+															<p:tooltip for="idNotificaciones" value="#{varFile.ruta}"
+																showEffect="slide" hideEffect="slide" />
+														</h:panelGrid>
+													</p:carousel>
+
+												</div>
+											</div>
+										</div>
+
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<p:outputPanel id="idoutputpanelCliente">
+											<div class="filaCabecera">
+												<h:outputText class="lblCabecera" value="Cliente" />
+											</div>
+											<br />
+
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto" style="width: 375px;">
+													<h:outputText styleClass="lblDatos" value="Nombres:" />
+													<h:outputText styleClass="txtDatos" id="idContratoCliente"
+														value="#{ccMB.cliente.nombres}" />
+													<p:commandLink oncomplete="iddlgListaCliente.show();"
+														style="float:left;margin-right:0px;">
+														<p:graphicImage width="22" height="22"
+															value="/resources/images/upa/verInmueble.png"
+															alt="Limpiar formulario" title="buscar inmueble" />
+													</p:commandLink>
+
+												</div>
+
+												<div class="filaDatoLargosCorto" style="width: 260px;">
+													<h:outputText styleClass="lblDatos" style="width:70px;"
+														value="Direccion:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoDireccionCliente"
+														value="#{ccMB.cliente.direccion}" />
+												</div>
+											</div>
+
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto" style="width: 375px;">
+													<h:outputText styleClass="lblDatos" value="Tipo:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoTipoCliente" value="#{ccMB.cliente.tipo}" />
+
+												</div>
+												<div class="filaDatoLargosCorto" style="width: 260px;">
+													<h:outputText styleClass="lblDatos" style="width:70px;"
+														value="RUC:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoRucCliente" value="#{ccMB.cliente.ruc}" />
+												</div>
+											</div>
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto" style="width: 375px;">
+													<h:outputText styleClass="lblDatos" value="DNI:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoDniCliente" value="#{ccMB.cliente.dni}" />
+
+												</div>
+												<div class="filaDatoLargosCorto" style="width: 260px;">
+													<h:outputText styleClass="lblDatos" style="width:70px;"
+														value="Telefono:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoTelefonoCliente"
+														value="#{ccMB.cliente.telefono}" />
+												</div>
+											</div>
+										</p:outputPanel>
+										<br />
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<p:outputPanel id="idpanelRepresentante">
+											<div class="filaCabecera">
+												<h:outputText class="lblCabecera" value="Representante" />
+											</div>
+											<br />
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto" style="width: 370px;">
+													<h:outputText styleClass="lblDatos" value="Nombres:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoRepresentante"
+														value="#{ccMB.representanteaval.nombrescompletos}" />
+													<p:commandLink oncomplete="iddlgListaRepresentante.show();"
+														style="float:left;margin-right:20px;">
+														<p:graphicImage width="22" height="22"
+															value="/resources/images/upa/verInmueble.png"
+															alt="Limpiar formulario" title="buscar inmueble" />
+													</p:commandLink>
+												</div>
+												<div class="filaDatoLargosCorto" style="width: 270px;">
+
+												</div>
+											</div>
+
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="RUC:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoRucRepresentante"
+														value="#{ccMB.representanteaval.ruc}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="DNI:" />
+													<h:outputText styleClass="txtDatos"
+														id="idContratoDniRepresentante"
+														value="#{ccMB.representanteaval.dni}" />
+												</div>
+											</div>
+
+										</p:outputPanel>
+										<br />
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<br />
+
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto" style="width: 375px;">
+												<h:outputText styleClass="lblDatos" value="Aval:" />
+												<h:inputText styleClass="txtDatos" id="idContratoAval"
+													value="#{inquilinoMB.inquilino.telefono}" />
+											</div>
+											<div class="filaDatoLargosCorto" style="width: 260px;">
+
+											</div>
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto" style="width: 375px;">
+												<h:outputText styleClass="lblDatos" value="Tipo:" />
+												<h:inputText styleClass="txtDatos" id="idContratoTipoAval"
+													value="#{inquilinoMB.inquilino.telefono}" />
+											</div>
+											<div class="filaDatoLargosCorto" style="width: 260px;">
+												<h:outputText styleClass="lblDatos" style="width:70px;"
+													value="Telefono:" />
+												<h:inputText styleClass="txtDatos"
+													id="idContratoTelefonoAval"
+													value="#{inquilinoMB.inquilino.razonsocial}" />
+											</div>
+										</div>
+
+										<br />
+										<hr width="100%" size="1" style="color: #B8B8B8;" />
+										<br />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												oncomplete="dlgRegistrarAval.show();" />
+										</div>
+
+
+									</div>
+
+									<p:confirmDialog
+										message="¿Desea grabar nuevos detalles para el contrato?"
+										header="Registro Contrato" severity="alert"
+										widgetVar="dlgRegistrarAval">
+										<center>
+											<p:commandButton value="&nbsp;Aceptar"
+												update=":frmInstitucion,:frmPropiedades,:frmAval"
+												actionListener="#{ccMB.actualizarAvalContrato}"
+												oncomplete="dlgRegistrarAval.hide()" image="icon-save">
+
+											</p:commandButton>
+											<p:spacer width="20" />
+											<p:commandButton value="&nbsp;Cancelar"
+												oncomplete="dlgRegistrarAval.hide()" image="icon-cancel" />
+										</center>
+									</p:confirmDialog>
+
+									<p:dialog header="Seleccione cliente" id="iddlgListaCliente"
+										width="650" height="300" closable="true" closeOnEscape="true"
+										resizable="false" widgetVar="iddlgListaCliente" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<p:dataTable var="detall" value="#{ccMB.listCliente}"
+											emptyMessage="No existe  ningún cliente registrados"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+											styleClass="ui-datatable-hor-scroll"
+											rowKey="#{detall.idcliente}" rowIndexVar="row"
+											selection="#{ccMB.cliente}" selectionMode="single"
+											paginator="true">
+
+											<p:ajax event="rowSelect"
+												update=":frmAval:idoutputpanelCliente"
+												oncomplete="iddlgListaCliente.hide();" />
+
+
+
+											<p:column headerText="DNI" filterBy="#{detall.dni}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.dni}" />
+											</p:column>
+
+											<p:column headerText="RUC" filterBy="#{detall.ruc}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.ruc}" />
+											</p:column>
+
+											<p:column headerText="Nombres" filterBy="#{detall.nombres}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.nombres}" />
+											</p:column>
+
+										</p:dataTable>
+									</p:dialog>
+
+
+									<p:dialog header="Seleccione representante"
+										id="iddlgListaRepresentante" width="650" height="300"
+										closable="true" closeOnEscape="true" resizable="false" 
+										widgetVar="iddlgListaRepresentante" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<p:dataTable var="detall" value="#{ccMB.listRepresentante}"
+											emptyMessage="No existe  ninguna institución registrada"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+											styleClass="ui-datatable-hor-scroll"
+											rowKey="#{detall.idrepresentante}" rowIndexVar="row"
+											selection="#{ccMB.representanteaval}" selectionMode="single"
+											paginator="true">
+											<p:ajax event="rowSelect"
+												oncomplete="iddlgListaRepresentante.hide();"
+												update=":frmAval:idpanelRepresentante" />
+
+											<p:column headerText="Nombre" filterBy="#{detall.nombre}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.nombrescompletos}" />
+											</p:column>
+
+											<p:column headerText="Ruc" filterBy="#{detall.ruc}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.ruc}" />
+											</p:column>
+
+											<p:column headerText="Dni" filterBy="#{detall.dni}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.dni}" />
+											</p:column>
+
+										</p:dataTable>
+									</p:dialog>
+
+								</h:form>
+							</div>
+							<!-- FIN DE AVAL -->
+
+							<!-- PANEL PERIODOS -->
+							<div id="idDivTab04" class="recau_panelPendientes">
+								<h:form id="frmPeriodo">
+
+									<div class="mante_gene_ContDescrip01" style="font-size: 12px;">
+										<div class="contrato_contenidoDatos">
+
+
+											<p:outputPanel id="idoutputPanelPeriodo">
+												<div class="contrato_ColumDatos">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos"
+															value="Tipo de Contrato:" />
+														<h:outputText value="#{ccMB.contrato.tipo}" />
+													</div>
+
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="N&uacute;mero:" />
+														<h:outputText styleClass="txtDatos" id="idContratoNumero"
+															value="#{ccMB.contrato.nrocontrato}" />
+													</div>
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="A&ntilde;o:" />
+														<h:outputText value="#{ccMB.contrato.aniocontrato} " />
+													</div>
+												</div>
+											</p:outputPanel>
+
+											<hr width="100%" size="1" style="color: #B8B8B8;" />
+
+											<div class="contrato_ColumDatos">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Factor de Incremento Anual:" />
+													<h:inputText value="#{ccMB.contrato.factorincrementoanual}" />
+												</div>
+											</div>
+
+											<div class="contrato_ColumDatos">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="No penalidad" />
+													<p:selectBooleanCheckbox styleClass="lblDatos"
+														value="#{ccMB.contrato.sipenalidad}" />
+												</div>
+											</div>
+
+
+											<hr width="100%" size="1" style="color: #B8B8B8;" />
+											<br />
+											<div class="mante_general_botonguardar">
+												<p:commandButton value="Guardar"
+													oncomplete="dlgRegistrarPeriodo.show();" />
+											</div>
+										</div>
+									</div>
+									<p:confirmDialog
+										message="¿Desea grabar nuevos detalles para el contrato?"
+										header="Registro Contrato" severity="alert"
+										widgetVar="dlgRegistrarPeriodo">
+										<center>
+											<p:commandButton value="&nbsp;Aceptar"
+												update=":frmInstitucion,:frmPropiedades,:frmAval,:frmGarantias,:frmPeriodo"
+												actionListener="#{ccMB.actualizarPeriodoContrato}"
+												oncomplete="dlgRegistrarPeriodo.hide()" image="icon-save">
+
+											</p:commandButton>
+											<p:spacer width="20" />
+											<p:commandButton value="&nbsp;Cancelar"
+												oncomplete="dlgRegistrarPeriodo.hide()" image="icon-cancel" />
+										</center>
+									</p:confirmDialog>
+
+
+
+
+
+								</h:form>
+							</div>
+							<!--FIN PANEL PERIODOS -->
+
+
+							<!-- PANEL GARANTIAS -->
+							<div id="idDivTab05" class="recau_panelPendientes">
+								<h:form id="frmGarantias">
+
+									<div class="mante_gene_ContDescrip01" style="font-size: 12px;">
+										<div class="contrato_contenidoDatos">
+											<p:outputPanel id="idoutputPanelGarantia">
+												<div class="contrato_ColumDatos">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos"
+															value="Tipo de Contrato:" />
+														<h:outputText value="#{ccMB.contrato.tipo}" />
+													</div>
+
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="N&uacute;mero:" />
+														<h:outputText styleClass="txtDatos" id="idContratoNumero"
+															value="#{ccMB.contrato.nrocontrato}" />
+													</div>
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="A&ntilde;o:" />
+														<h:outputText value="#{ccMB.contrato.aniocontrato} " />
+													</div>
+												</div>
+											</p:outputPanel>
+											<hr width="100%" size="1" style="color: #B8B8B8;" />
+
+											<h:panelGrid columns="2">
+												<p:column>
+													<p:commandLink oncomplete="iddlgListaCtasBancarias.show();">
+														<p:graphicImage width="22" height="22"
+															value="/resources/images/upa/verInmueble.png"
+															alt="Limpiar formulario" title="buscar cuenta bancaria"
+															style="margin-top:15px;" />
+													</p:commandLink>
+												</p:column>
+												<h:outputText value="Cuenta Bancaria"
+													style="margin-left:20px;" />
+												<p:column>
+												</p:column>
+											</h:panelGrid>
+
+											<p:outputPanel id="idoutputpanelCuentaBancaria">
+												<div class="filaDatoLargo">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos"
+															value="Id de Cta. bancaria:" />
+														<h:inputText />
+													</div>
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="Banco:" />
+														<h:outputText value="#{ccMB.ctabancaria.banco.nombre}" />
+													</div>
+												</div>
+
+												<div class="filaDatoLargo">
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="Número:" />
+														<h:outputText value="#{ccMB.ctabancaria.nroCuenta}" />
+													</div>
+													<div class="filaDatoLargosCorto">
+														<h:outputText styleClass="lblDatos" value="Moneda" />
+														<h:outputText value="#{ccMB.ctabancaria.moneda}" />
+													</div>
+												</div>
+											</p:outputPanel>
+
+											<hr width="100%" size="1" style="color: #B8B8B8;" />
+
+											<div class="filaDatoLargo">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="" value="Listado de garantías" />
+												</div>
+
+											</div>
+
+											<hr width="100%" size="1" style="color: #B8B8B8;" />
+											<br />
+											<div class="mante_general_botonguardar">
+												<p:commandButton value="Guardar"
+													oncomplete="dlgRegistrarGarantias.show();" />
+											</div>
+										</div>
+									</div>
+									<p:confirmDialog
+										message="¿Desea grabar nuevos detalles para el contrato?"
+										header="Registro Contrato" severity="alert"
+										widgetVar="dlgRegistrarGarantias">
+										<center>
+											<p:commandButton value="&nbsp;Aceptar"
+												update=":frmInstitucion,:frmPropiedades,:frmAval,:frmGarantias"
+												actionListener="#{ccMB.actualizarGarantiasContrato}"
+												oncomplete="dlgRegistrarGarantias.hide()" image="icon-save">
+
+											</p:commandButton>
+											<p:spacer width="20" />
+											<p:commandButton value="&nbsp;Cancelar"
+												oncomplete="dlgRegistrarGarantias.hide()"
+												image="icon-cancel" />
+										</center>
+									</p:confirmDialog>
+
+									<p:dialog header="Seleccione Cta. Bancaria"
+										id="iddlgListaCtasBancarias" width="650" height="300"
+										closable="true" closeOnEscape="true" resizable="false"
+										widgetVar="iddlgListaCtasBancarias" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<p:dataTable var="detall" value="#{ccMB.listCtasBancarias}"
+											emptyMessage="No existe  ninguna cuenta bancaria registrada"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+											styleClass="ui-datatable-hor-scroll"
+											rowKey="#{detall.idcuentabancaria}" rowIndexVar="row"
+											selection="#{ccMB.ctabancaria}" selectionMode="single"
+											paginator="true">
+											<p:ajax event="rowSelect"
+												oncomplete="iddlgListaCtasBancarias.hide();"
+												update=":frmGarantias:idoutputpanelCuentaBancaria" />
+
+											<p:column headerText="Nro. Cuenta"
+												filterBy="#{detall.nroCuenta}" filterMatchMode="contains">
+												<h:outputText value="#{detall.nroCuenta}" />
+											</p:column>
+
+											<p:column headerText="Banco"
+												filterBy="#{detall.banco.nombre}" filterMatchMode="contains">
+												<h:outputText value="#{detall.banco.nombre}" />
+											</p:column>
+
+											<p:column headerText="Moneda" filterBy="#{detall.moneda}"
+												filterMatchMode="contains">
+												<h:outputText value="#{detall.moneda}" />
+											</p:column>
+
+											<!-- 															        <p:column headerText="Dni" filterBy="#{detall.dni}" filterMatchMode="contains">    -->
+											<!-- 															            <h:outputText value="#{detall.dni}" />   -->
+											<!-- 															        </p:column> -->
+
+										</p:dataTable>
+									</p:dialog>
+
+								</h:form>
+							</div>
+							<!--FIN PANEL GARANTIAS -->
+
+
+
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>
+

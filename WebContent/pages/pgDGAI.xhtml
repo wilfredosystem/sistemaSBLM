@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<link href="../resources/css/estilox.css" rel="stylesheet"
+		type="text/css" />
+
+	<title>SBLM-SOCIEDAD DE BENEFICIANCIA DE LIMA METROPOLITANA </title>
+</h:head>
+<h:body>
+
+	<ui:composition template="./paginaMaestra.xhtml">
+		<ui:define name="content">
+
+
+
+			<div class="contenidoPrincipal_FondoPrincipal">
+
+				<div class="contenidoPrincipal_fondoIdentificador">
+					<!-- TITULO SUBCONTENIDO -->
+					<div class="dgaiMonitoreo_IconoIdentificador"></div>
+					<div class="contenidoPrincipal_SubContenido">
+						<label class="contenidoPrincipal_lblTituloSubContenido">DGAI</label><br />
+						<label class="contenidoPrincipal_lblSubTituloSubContenido">Monitoreo
+							- Direcci&oacute;n General de Administraci&oacute;n Inmobiliaria</label>
+					</div>
+				</div>
+				<div class="contenidoPrincipal_SubFondo">
+					<!-- CONTENIDO MODIFICABLE -->
+					<div class="contenidoPrincipal_subFondo_Icono"></div>
+					<div id="lblSubtitulo"
+						class="contenidoPrincipal_subFondo_lblTitulox">Derivacion</div>
+
+					<p:commandLink id="idDerivacion" styleClass="btnDerivacion"
+						onclick="tabDerivacion();">
+						<div class="btncentrado">Entrada</div>
+					</p:commandLink>
+					<p:commandLink id="idDespacho" styleClass="btnDespacho"
+						actionListener="#{flujodocumentoMB.listarDocumentosDerivados}"
+						onclick="tabDespacho();"
+						update=":frmDespacho,:frmDespacho:dtbDespacho">
+						<div class="btncentrado">Derivados</div>
+					</p:commandLink>
+					<p:commandLink id="idConsultas" styleClass="btnConsultas"
+						onclick="tabConsultas();"
+						actionListener="#{documentodgaiMB.listarAllDocumentos}"
+						update=":frmConsultas,:frmConsultas:dtbConsulta">
+						<div class="btncentrado">Consultas</div>
+					</p:commandLink>
+
+
+					<div class="contenidoPrincipal_fondo_formulario">
+						<div class="dgaiMonitoreo_Contenido">
+
+
+
+
+							<!-- PANEL ENTRADA -->
+
+
+							<div id="idDivDerivacion" class="recau_panelPendientes">
+
+								<h:form id="frmDerivacion">
+									<p:growl id="msjderivacion" showDetail="true" sticky="false"
+										life="4000" />
+									<p:fieldset styleClass="recau_descripPendientes">
+
+										<div class="dgaiMonitoreo_descripDerivacion">
+											<div class="dgaiMonitoreo_iconDespacho">
+												<p:graphicImage width="60" height="60"
+													value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+											</div>
+											<div class="dgaiMonitoreo_descDerivacion_detalle">
+												<h:outputText
+													style="color:#456880; font-size: 12px; font-weight:bold;"
+													value="#{usuarioMB.usuariologueado.nombres} #{usuarioMB.usuariologueado.apellidopat}" />
+												<br />
+												<h:outputText
+													style="color:#979797; font-size: 12px; font-weight:bold;"
+													value="#{usuarioMB.usuariologueado.cargo}" />
+												<br />
+												<h:outputText
+													style="color:#750101; font-size: 12px; font-weight:bold;"
+													value="&Uacute;ltimo Expediente derivado:" />
+												<br />
+												<h:outputText
+													style="color:#5c5a5a; font-size: 10px; font-weight:bold;"
+													value="#{documentodgaiMB.ultimoExpedienteDerivado}" />
+											</div>
+											<br />
+
+											<div class="dgaiMonitoreo_InfoFecha">
+												<div class="dgaiMonitoreo_fechaDespacho">
+													<p:graphicImage styleClass="dgaiMonitoreo_fechaIcono"
+														width="20" height="20"
+														value="/resources/images/dgaiMonitoreo/iconFecha.png"
+														alt="fecha" title="fecha" />
+
+													<p:inplace id="selectableInplace2" effectSpeed="fast"
+														event="click"
+														style="color:#3399cc; font-size: 12px; font-weight:bold;float:right;"
+														label="#{cmonitoreomesapartes.mesActual}">
+														<h:selectOneMenu
+															value="#{flujodocumentoMB.mesActualcapturado}">
+															<p:ajax
+																listener="#{flujodocumentoMB.cargarPendientesPorMes}"
+																update="idpendientesxmes,idderivadosxmes,dtbDerivacion" />
+															<f:selectItem itemLabel="Todos" itemValue="0" />
+															<f:selectItem itemLabel="Enero" itemValue="1" />
+															<f:selectItem itemLabel="Febrero" itemValue="2" />
+															<f:selectItem itemLabel="Marzo" itemValue="3" />
+															<f:selectItem itemLabel="Abril" itemValue="4" />
+															<f:selectItem itemLabel="Mayo" itemValue="5" />
+															<f:selectItem itemLabel="Junio" itemValue="6" />
+															<f:selectItem itemLabel="Julio" itemValue="7" />
+															<f:selectItem itemLabel="Agosto" itemValue="8" />
+															<f:selectItem itemLabel="Setiembre" itemValue="9" />
+															<f:selectItem itemLabel="Octubre" itemValue="10" />
+															<f:selectItem itemLabel="Noviembre" itemValue="11" />
+															<f:selectItem itemLabel="Diciembre" itemValue="12" />
+														</h:selectOneMenu>
+
+													</p:inplace>
+												</div>
+												<br />
+												<div class="dgaiMonitoreo_totalDespacho">
+													<h:outputText id="idpendientesxmes"
+														style="color:#017514; font-size: 12px; font-weight:bold;"
+														value="#{flujodocumentoMB.numeroPendientesMes} Pendientes" />
+													<br />
+													<h:outputText id="idderivadosxmes"
+														style="color:#e3b411; font-size: 12px; font-weight:bold;"
+														value="#{flujodocumentoMB.numeroDerivadosMes} Derivados" />
+												</div>
+											</div>
+
+										</div>
+									</p:fieldset>
+									<div class="dgaiMonitoreo_detalle" >
+										<p:dataTable id="dtbDerivacion" var="docDer"
+											value="#{documentodgaiMB.listaDocumentosSinDerivar}"
+											rowKey="#{docDer.iddocumento}"
+											selection="#{documentodgaiMB.listadocumentos}"
+											paginator="true"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-align: center;"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+											styleClass="ui-datatable-hor-scroll" emptyMessage="No tiene documentos pendientes">
+
+											<p:column selectionMode="multiple" width="15" />
+
+
+											<p:column headerText="F. Recepción" width="50">
+												<h:outputText value="#{docDer.fecharegistro}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Nro. Documento" width="200">
+												<h:outputText value="#{docDer.titulo}" />
+											</p:column>
+
+											<p:column headerText="Despacho" width="100">
+												<h:outputText value="#{docDer.nombreremitente}" />
+											</p:column>
+<!-- 											<p:column headerText="Asunto" width="100"> -->
+<!-- 												<h:outputText value="#{docDer.asunto}" /> -->
+<!-- 											</p:column> -->
+											<p:column headerText="Asunto / Descripción" width="400">
+												<h:outputText value="#{docDer.descripcion}" />
+											</p:column>
+											<p:column width="30">
+												<p:commandButton icon="ui-icon-search"
+												actionListener="#{documentodgaiMB.cargarArchivosDocumento(docDer.iddocumento)}"
+													update=":frmDlgDetalleDerivacion:iddlgDetalleDerivacion"
+													oncomplete="dlgDetalleDerivacion.show()" title="Ver">
+													<f:setPropertyActionListener value="#{docDer}"
+														target="#{documentodgaiMB.documentoseleccionado}" />
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+									</div>
+
+
+									<div class="dgaiMonitoreo_botonesDer">
+
+										<div class="btnDeriva">
+											<p:growl id="growlDeriva" showDetail="true" sticky="true" />
+											<p:commandLink
+												action="#{documentodgaiMB.verificarItemSeleccionado}"
+												actionListener="#{documentodgaiMB.setearDescripcion}"
+												update=":frmDlgDerivacion:displayMulti , :frmDlgDerivacion:iddlgDerivacion,:frmDlgDerivacion:descripcionDocumento, :frmDespacho:dtbDespacho,growlDeriva">
+												<p:graphicImage
+													value="/resources/images/dgaiMonitoreo/btnDeriva.png"
+													alt="Limpiar formulario" title="Deriva" />
+											</p:commandLink>
+										</div>
+									</div>
+								</h:form>
+								
+								<!--  DETALLE ENTRADA-->
+								<h:form id="frmDlgDetalleDerivacion">
+									<p:dialog
+										header="#{documentodgaiMB.documentoseleccionado.titulo}"
+										id="iddlgDetalleDerivacion" width="620" height="320"
+										closable="true" closeOnEscape="true" resizable="false"
+										widgetVar="dlgDetalleDerivacion" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+
+
+										<div class="dgai_DlgDetalle">
+											<h:panelGrid columns="2" cellpadding="4"
+												style="font-size: 10pt; font-weight: bold">
+												<h:outputText value="Descripción:" style="color:#2F7501;" />
+												<h:outputText
+													value="#{documentodgaiMB.documentoseleccionado.descripcion}"
+													style="font-size: 8pt;color:#5C5A5A;" />
+												<h:outputText value="Fecha Registro:" style="color:#2F7501;" />
+												<h:outputText
+													value="#{documentodgaiMB.documentoseleccionado.fechadocumento}"
+													style="font-size: 8pt; font-weight: bold; color:#5C5A5A;">
+													<f:convertDateTime pattern="EEEEEEE dd 'de' MMMM 'de' yyyy" />
+												</h:outputText>
+
+												<h:outputText value="Nº folios:" style="color:#2F7501;" />
+												<h:outputText
+													value="#{documentodgaiMB.documentoseleccionado.numerofolio}"
+													style="font-size: 8pt;color:#5C5A5A;" />
+
+												<h:outputText value="Asunto:" style="color:#2F7501;" />
+												<h:outputText
+													value="#{documentodgaiMB.documentoseleccionado.asunto}"
+													style="font-size: 8pt;color:#5C5A5A;">
+												</h:outputText>
+
+												<h:outputText value="Despacho:" style="color:#2F7501;" />
+												<h:outputText
+													value="#{documentodgaiMB.documentoseleccionado.nombreremitente}"
+													style="font-size: 8pt;color:#5C5A5A;" />
+	
+											<p:spacer height="20"/>
+											</h:panelGrid>
+											
+											<div style="margin-left: 30px;">
+											<div style="color: #3B9ECD">Documentos de Referencia</div>
+											<p:scrollPanel id="pnlScrContenido"
+												style="width:500px;height:auto;max-height:120px;font-size: 9px; text-align:center;"
+												mode="native">
+
+												<p:dataTable id="tablaAdjuntos2"
+													value="#{documentodgaiMB.listaAdjuntoDocumento}"
+													var="varFile" emptyMessage="No existen Documentos Adjuntos...." >
+													<p:column headerText="Tipo">
+														<h:outputText value="#{varFile.ruta}" />
+													</p:column>
+													<p:column headerText="Nombre">
+														<p:commandLink
+															actionListener="#{documentodgaiMB.descargarArchivo(varFile)}"
+															ajax="false" immediate="true">
+															<p:graphicImage width="20" height=""
+																value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+
+															<p:fileDownload value="#{documentodgaiMB.filedownload}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Creador">
+														<h:outputText value="#{varFile.usuarioCreador}" />
+													</p:column>
+													<p:column headerText="F. Creación">
+														<h:outputText value="#{varFile.fechaCreacion}">
+															<f:convertDateTime
+																pattern="EEEEEEE dd 'de' MMMM 'de' yyyy 'a las ' hh:mm a" />
+														</h:outputText>
+													</p:column>
+
+												</p:dataTable>
+
+
+											</p:scrollPanel>
+											</div>
+										</div>
+
+									</p:dialog>
+								</h:form>
+								<!-- DIALOGO ENVIO ENTRADA-->
+						<h:form id="frmDlgDerivacion">
+
+									<p:dialog id="iddlgDerivacion" width="690" height="410"
+										closable="true" closeOnEscape="true" resizable="false"
+										widgetVar="dlgDerivacion" modal="true" 
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+											<div class="dgaiMonitoreo_iconDlgDerivacion" style="margin-left: 5px;">
+												<div style="color:#750101; font-size: 12px; font-weight:bold;margin-top:20px;margin-top:10px;margin-left:35px;">Derivacion</div>	
+											</div>
+											<br />
+											
+											<p:scrollPanel id="s"
+												style="width:650px;height:auto;font-size: 9px; margin-left: 10px;margin-top:20px;"
+												mode="native">
+																							<p:selectOneMenu id="displayMulti" style="width:180px"
+												value="#{documentodgaiMB.iddocumento}">
+
+												<f:selectItems var="docum2"
+													value="#{documentodgaiMB.listadocumentos}"
+													itemLabel="#{docum2.titulo}"
+													itemValue="#{docum2.iddocumento}" />
+
+												<p:ajax
+													update="descripcionDocumento,datalist,pnlScrContenido"
+													listener="#{documentodgaiMB.seleccionIdDocumento}"
+													process="@this" />
+											</p:selectOneMenu>
+											
+											<br /> <br />
+											<h:outputText
+												style="color:#2f7501; font-size: 12px; font-weight:bold;"
+												value="Descripcion Expediente:" />
+											<br />
+											<h:panelGrid columns="1" cellpadding="2">
+												<h:outputText id="descripcionDocumento"
+													style="color:#5c5a5a; font-size: 10px; font-weight:bold;"
+													value="#{documentodgaiMB.descripcionDocumento}" />
+											</h:panelGrid>
+											</p:scrollPanel>
+											
+											<p:scrollPanel id="pnlScrContenido"
+												style="width:650px;height:auto;font-size: 9px; text-align:center;margin-left: 10px;margin-top:20px;"
+												mode="native">
+												
+												<div style="color: #3B9ECD;margin-top: 20px;">Documentos de Referencia</div>
+												<p:dataTable id="datalist"
+													value="#{documentodgaiMB.listaAdjuntoDocumento}"
+													var="varFile" emptyMessage="No Existen Archivos adjuntos....">
+													
+													<p:column headerText="Tipo">
+														<p:commandLink
+															actionListener="#{documentodgaiMB.descargarArchivo(varFile)}"
+															ajax="false" immediate="true">
+															<p:graphicImage width="20" height=""
+																value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+
+															<p:fileDownload value="#{documentodgaiMB.filedownload}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Nombre">
+														<h:outputText value="#{varFile.ruta}" />
+													</p:column>
+													<p:column headerText="Creador">
+														<h:outputText value="#{varFile.usuarioCreador}" />
+													</p:column>
+													<p:column headerText="F. Creación">
+														<h:outputText value="#{varFile.fechaCreacion}">
+															<f:convertDateTime
+																pattern="EEEEEEE dd 'de' MMMM 'de' yyyy 'a las ' hh:mm a" />
+														</h:outputText>
+													</p:column>
+												</p:dataTable>
+
+											</p:scrollPanel>
+										
+											
+											<div  style="margin-left: 10px; margin-top: 20px;">
+										<p:scrollPanel style="width:650px;height:120px">
+												<p:dataTable id="tablaUsuarios" styleClass="noheader ui-datatable-hor-scroll"
+												value="#{flujodocumentoMB.listadousuariosSeleccionados}"
+												var="d" editable="true" editMode="cell"
+												style="text-align: center;font-size:10px;"  emptyMessage="Agregar un usuario destino">
+												<p:ajax event="cellEdit"
+													listener="#{flujodocumentoMB.onCellEdit}"
+													styleClass="noheader borderless cellSpacingTableClass"
+													update="tablaUsuarios" />
+												<f:facet name="header">
+														<p:commandLink title="Agregar Usuario" update="tablaUsuarios"
+															actionListener="#{flujodocumentoMB.agregarUsuarioLista}">
+															<p:graphicImage width="20" height="20" value="../resources/images/monitoreoMesaPartes/addUsuario.png" />
+														</p:commandLink>
+												</f:facet>
+												<p:column>
+													<p:graphicImage id="imagenUsuario" width="35" height="35"
+														value="../resources/images/usuarios/#{d.rutaimgusr}" />
+												</p:column>
+												<p:spacer width="20px" />
+												<p:column width="99">
+													<p:cellEditor>
+														<f:facet name="output">
+															<h:outputText value="#{d.emailusr}" />
+														</f:facet>
+														<f:facet name="input">
+															<p:autoComplete id="idCajaUsuario" value="#{d.emailusr}"
+																style="width:136px"
+																completeMethod="#{flujodocumentoMB.autoCompleteUsuario}"
+																effect="fade">
+																
+															</p:autoComplete>
+														</f:facet>
+													</p:cellEditor>
+												</p:column>
+												<p:column>
+													<h:outputText value="#{d.cargo}" />
+												</p:column>
+												
+												<p:column headerText="Área" width="200">
+													<h:outputText value="#{d.area.desare}"/>
+												</p:column>
+												
+												<p:column headerText="Perfil" width="88">
+												<p:cellEditor>
+												<f:facet name="output">
+															<h:outputText value="#{d.usrmod}" />
+												</f:facet>
+												<f:facet name="input">
+												<p:selectOneMenu  id="A" style="width: 80px;" value="#{d.usrmod}" effect="fade">
+															<f:selectItem itemLabel="Seleccione Perfil" itemValue="0" />
+															<f:selectItems value="#{flujodocumentoMB.perfilesusuario}" var="perf" itemLabel="#{perf.perfil.nombreperfil}"
+																itemValue="#{perf.perfil.nombreperfil}" />
+												</p:selectOneMenu>
+												</f:facet>
+												</p:cellEditor>				
+												</p:column>
+												
+												<p:column>
+													<p:commandLink title="Eliminar de lista"
+														actionListener="#{flujodocumentoMB.eliminarUsuarioDeLista}"
+														update="tablaUsuarios">
+														<p:graphicImage  width="20" height="20" value="../resources/images/monitoreoMesaPartes/#{d.contrasenausr}"/>
+														<f:setPropertyActionListener value="#{d}"
+															target="#{flujodocumentoMB.selectRegistroUsuario}" />
+													</p:commandLink>
+												</p:column>
+											</p:dataTable>
+										</p:scrollPanel>
+
+										</div>
+											<div style="margin-left:600px; margin-top:10px;">
+												<div style="width: 50px;">
+													<p:commandButton value="Enviar"  onclick="widgetDlgConfirmEnvio.show();"/>
+												</div>
+										</div>
+											
+									</p:dialog>
+									
+									<p:confirmDialog id="confirm" header="SBLM" severity="alert"
+												message="¿Está seguro de enviar derivar expediente?"
+												widgetVar="widgetDlgConfirmEnvio">
+												<center>
+													<p:commandButton id="btnGrabar" value="Aceptar"
+														actionListener="#{flujodocumentoMB.registrarFlujoDocumento}"
+														update=":frmDespacho:dtbDespacho, :frmDespacho,:frmDespacho:flsDespacho,:frmDerivacion:dtbDerivacion, :frmDerivacion"
+														onclick="blockpage();widgetDlgConfirmEnvio.hide();dlgDerivacion.hide();"
+														oncomplete="unblockpage();">
+														<f:setPropertyActionListener value="#{docum}"
+															target="#{flujodocumentoMB.documentoenviado}" />
+													</p:commandButton>
+													<p:spacer width="10" />
+													<p:commandButton value="Cancelar"
+														onclick="widgetDlgConfirmEnvio.hide()" />
+												</center>
+									</p:confirmDialog>
+								</h:form>
+
+
+							</div>
+							<!-- PANEL DERIVACION -->
+
+
+
+							<div id="idDivDespacho" class="recau_panelPendientes">
+
+								<h:form id="frmDespacho">
+									<p:fieldset id="flsDespacho"
+										styleClass="recau_descripPendientes">
+
+										<div class="dgaiMonitoreo_descripDespacho">
+											<div class="dgaiMonitoreo_iconDespacho">
+												<p:graphicImage width="60" height="60"
+													value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+											</div>
+											<div class="dgaiMonitoreo_descDespacho_detalle">
+												<h:outputText
+													style="color:#456880; font-size: 12px; font-weight:bold;"
+													value="#{usuarioMB.usuariologueado.nombres} #{usuarioMB.usuariologueado.apellidopat}" />
+												<br />
+												<h:outputText
+													style="color:#979797; font-size: 12px; font-weight:bold;"
+													value="#{usuarioMB.usuariologueado.cargo}" />
+												<br />
+												<h:outputText
+													style="color:#750101; font-size: 12px; font-weight:bold;"
+													value="&Uacute;ltimo Expediente despachado:" />
+												<br />
+												<h:outputText
+													style="color:#5c5a5a; font-size: 10px; font-weight:bold;"
+													value="#{documentodgaiMB.ultimoExpedienteDespachado}" />
+											</div>
+
+											<div class="dgaiMonitoreo_InfoFecha">
+												<div class="dgaiMonitoreo_fechaDespacho">
+													<p:graphicImage styleClass="dgaiMonitoreo_fechaIcono"
+														width="20" height="20"
+														value="/resources/images/dgaiMonitoreo/iconFecha.png"
+														alt="fecha" title="fecha" />
+
+													<p:inplace id="selectableInplace2" effectSpeed="fast"
+														event="click"
+														style="color:#3399cc; font-size: 12px; font-weight:bold;float:right;"
+														label="#{cmonitoreomesapartes.mesActual}">
+														<h:selectOneMenu
+															value="#{flujodocumentoMB.mesActualcapturado}">
+															<p:ajax
+																listener="#{flujodocumentoMB.cargarDerivadosPorMes}"
+																update="idnumeroAprobadosMes,idnumeroProcesoMes,idnumeroRechazadosMes,dtbDespacho" />
+															<f:selectItem itemLabel="Todos" itemValue="0" />
+															<f:selectItem itemLabel="Enero" itemValue="1" />
+															<f:selectItem itemLabel="Febrero" itemValue="2" />
+															<f:selectItem itemLabel="Marzo" itemValue="3" />
+															<f:selectItem itemLabel="Abril" itemValue="4" />
+															<f:selectItem itemLabel="Mayo" itemValue="5" />
+															<f:selectItem itemLabel="Junio" itemValue="6" />
+															<f:selectItem itemLabel="Julio" itemValue="7" />
+															<f:selectItem itemLabel="Agosto" itemValue="8" />
+															<f:selectItem itemLabel="Setiembre" itemValue="9" />
+															<f:selectItem itemLabel="Octubre" itemValue="10" />
+															<f:selectItem itemLabel="Noviembre" itemValue="11" />
+															<f:selectItem itemLabel="Diciembre" itemValue="12" />
+														</h:selectOneMenu>
+
+													</p:inplace>
+												</div>
+												<br />
+												<div class="dgaiMonitoreo_totalDespacho">
+													<p:commandLink style="text-decoration: none;"
+														update=":frmDespacho:dtbDespacho"
+														actionListener="#{flujodocumentoMB.filtrarAprobadosMes}">
+														<h:outputText id="idnumeroAprobadosMes"
+															style="color:#017514; font-size: 12px; font-weight:bold;"
+															value="#{flujodocumentoMB.numeroAprobadosMes} Aprobados" />
+													</p:commandLink>
+													<br />
+													<p:commandLink style="text-decoration: none;"
+														update=":frmDespacho:dtbDespacho"
+														actionListener="#{flujodocumentoMB.filtrarProcesoMes}">
+														<h:outputText id="idnumeroProcesoMes"
+															style="color:#e3b411; font-size: 12px; font-weight:bold;"
+															value="#{flujodocumentoMB.numeroProcesoMes} En Proceso" />
+													</p:commandLink>
+													<br />
+													<p:commandLink style="text-decoration: none;"
+														update=":frmDespacho:dtbDespacho"
+														actionListener="#{flujodocumentoMB.filtrarRechazadosMes}">
+														<h:outputText id="idnumeroRechazadosMes"
+															style="color:#5a0000; font-size: 12px; font-weight:bold;"
+															value="#{flujodocumentoMB.numeroRechazadosMes} Rechazados" />
+													</p:commandLink>
+												</div>
+											</div>
+
+										</div>
+									</p:fieldset>
+									<div class="dgaiMonitoreo_detalle">
+										<p:dataTable id="dtbDespacho" var="doc"
+											value="#{flujodocumentoMB.documentoDerivados}"
+											rowKey="#{doc.iddocumento}"
+											selection="#{flujodocumentoMB.listaDerivadosSeleccionados}"
+											paginator="true"
+											style="width:690px; font-size: 10px; margin: 0px 0px 0px 0px; text-align:center;overflow:auto;"
+											emptyMessage="no existen registros"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10"
+											rowStyleClass="#{(doc.respuesta  == 'RECHAZADO') ? 'redx' : 'bluex'}"
+											scrollWidth="690" styleClass="ui-datatable-hor-scroll">
+											<p:ajax event="rowSelect" update=""
+												listener="#{flujodocumentoMB.metodo2}" />
+											<p:ajax event="rowToggle"
+												listener="#{flujodocumentoMB.onRowToggle}" update="" />
+
+											<p:column>
+												<p:rowToggler />
+											</p:column>
+											<p:column selectionMode="multiple" />
+
+											<p:column headerText="Situacion"
+												styleClass="#{(doc.respuesta=='RECHAZADO')? 'colorRechazado':((doc.respuesta=='APROBADO')?'colorAprobado':((doc.respuesta=='EN PROCESO')?'colorEnProceso' : 'ninguno'))}">
+												<h:outputText
+													value="#{(doc.respuesta=='RECHAZADO')? 'RECHAZADO':(doc.respuesta=='APROBADO')?'APROBADO':'EN PROCESO'}" />
+											</p:column>
+											<p:column headerText="F. Aprobacion/Rechazo">
+												<h:outputText value="#{doc.fechaaprobacionrechazo}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Nro. Documento">
+												<h:outputText value="#{doc.titulo}" />
+											</p:column>
+
+
+											<p:column headerText="Procedencia" style=" text-align:left;">
+												<h:outputText value="#{doc.descripcion}" />
+											</p:column>
+
+
+											<p:column headerText="F. Derivacion">
+												<h:outputText value="#{doc.fechaderivaciondgai}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:rowExpansion>
+												<div style="text-align: center;">
+
+													<p:dataList id="display" type="definition"
+														value="#{flujodocumentoMB.flujoDocumentoIndex}"
+														var="varFlujo">
+														<p:panel style="width:auto; float:left;"
+															header="#{varFlujo.usuario.nombres} #{varFlujo.usuario.apellidopat} #{varFlujo.usuario.apellidomat}">
+															<h:panelGrid cellspacing="0">
+																<p:graphicImage width="30" height="30"
+																	value="../resources/images/usuarios/#{varFlujo.usuario.rutaimgusr}" />
+																<!-- 																<p:graphicImage width="20" height="20" -->
+																<!-- 																	value="/resources/images/dgaiMonitoreo/#{varFlujo.estadoenvio}RevisadoDocumento.png" -->
+																<!-- 																	title="Activo" /> -->
+																<h:outputText value="#{varFlujo.respuesta}" />
+																<p:commandLink title="Notificar"
+																	oncomplete="dlgNotificacion.show();"
+																	action="#{flujodocumentoMB.inicializarNotificaciónPersonalizable(varFlujo.usuario.idusuario)}">
+
+																	<img width="20" height="20"
+																		src="../resources/images/dgaiMonitoreo/cartaNotificar.png"></img>
+
+																</p:commandLink>
+															</h:panelGrid>
+														</p:panel>
+													</p:dataList>
+
+												</div>
+											</p:rowExpansion>
+
+
+										</p:dataTable>
+
+									</div>
+									<div class="dgaiMonitoreo_botones">
+										<div class="btnDespachar">
+											<p:commandLink
+												actionListener="#{flujodocumentoMB.inicializarDespacho}"
+												action="#{flujodocumentoMB.verificarExistenciaFlujoDespacho}"
+												update="frmDespacho,:frmDlgDespachar:iddlgDespachar,growlRechazo">
+												<p:graphicImage
+													value="/resources/images/dgaiMonitoreo/btnDespachar.png"
+													alt="Despachar" title="Despachar" />
+											</p:commandLink>
+										</div>
+										<p:growl id="growlRechazo" showDetail="true" sticky="true" />
+										<div class="btnRechazar">
+											<p:commandLink
+												actionListener="#{flujodocumentoMB.inicializarRechazo}"
+												action="#{flujodocumentoMB.verificarExistenciaFlujoRechazo}"
+												update=":frmDlgRechazar:iddlgRechazar,growlRechazo">
+												<p:graphicImage
+													value="/resources/images/dgaiMonitoreo/btnRechazar.png"
+													alt="Rechazar" title="Rechazar" />
+											</p:commandLink>
+										</div>
+									</div>
+								</h:form>
+
+								<!-- DIALOGO DESPACHAR-->
+								<h:form id="frmDlgDespachar">
+									<p:dialog id="iddlgDespachar" width="450" height="342"
+										closable="true" closeOnEscape="true" resizable="true"
+										widgetVar="dlgDespachar" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<div class="dgaiMonitoreo_dlgTitulo">
+											<div class="dgaiMonitoreo_iconDlgDespachar"></div>
+
+											<div class="dgaiMonitoreo_TituloContador">
+												<h:outputText
+													style="color:#750101; font-size: 12px; font-weight:bold;"
+													value="Despacho" />
+											</div>
+										</div>
+
+
+										<div class="dgaiMonitoreo_TituloContador">
+											<h:outputText
+												style="color:#2f7501; font-size: 12px; font-weight:bold;"
+												value="Expediente:" />
+
+											<p:selectOneMenu id="comboDocumentosRechazar"
+												style="width:180px"
+												value="#{flujodocumentoMB.iddocSeleccionadoDerivados}">
+
+												<f:selectItems var="docum2"
+													value="#{flujodocumentoMB.listaDerivadosSeleccionados}"
+													itemLabel="#{docum2.titulo}"
+													itemValue="#{docum2.iddocumento}" />
+
+												<p:ajax
+													update="descripcionDocumentoDespachar,idlistaAdjuntosRechazar"
+													listener="#{flujodocumentoMB.seleccionIdDocumento}"
+													process="@this" />
+											</p:selectOneMenu>
+
+
+											<br />
+											<h:outputText
+												style="color:#2f7501; font-size: 12px; font-weight:bold;"
+												value="Descripcion Expediente:" />
+
+											<br />
+
+											<h:panelGrid columns="1" cellpadding="2">
+												<h:outputText id="descripcionDocumentoDespachar"
+													style="color:#5c5a5a; font-size: 10px; font-weight:bold;"
+													value="#{flujodocumentoMB.descripcionDocumentoDespacho}" />
+											</h:panelGrid>
+
+											<br /> <br />
+
+											<div style="color: #3B9ECD">Documentos de Referencia</div>
+											<p:scrollPanel
+												style="width:350px;height:auto;font-size: 9px;"
+												mode="native">
+												
+												<p:dataTable id="idlistaAdjuntosRechazar"
+														value="#{flujodocumentoMB.listaAdjuntoDocumentoDerivados}"
+														var="varFile" emptyMessage="No existen Archivos adjuntos...">
+														<p:column headerText="Tipo">
+
+															<p:commandLink
+																actionListener="#{documentodgaiMB.descargarArchivo(varFile)}"
+																ajax="false" immediate="true">
+																<p:graphicImage width="20" height="20"
+																	value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+																<p:fileDownload value="#{documentodgaiMB.filedownload}" />
+															</p:commandLink>
+														</p:column>
+
+														<p:column headerText="Nombre">
+															<h:outputText value="#{varFile.ruta}" />
+														</p:column>
+
+														<p:column headerText="Creador">
+															<h:outputText value="#{varFile.usuarioCreador}" />
+														</p:column>
+														<p:column headerText="F. Creación">
+															<h:outputText value="#{varFile.fechaCreacion}">
+																<f:convertDateTime
+																	pattern="EEEEEEE dd 'de' MMMM 'de' yyyy 'a las ' hh:mm a" />
+															</h:outputText>
+														</p:column>
+													</p:dataTable>
+												
+											</p:scrollPanel>
+
+										</div>
+
+
+										<div class="dgaiMonitoreo_botonEnviarDlgDer">
+											<p:commandButton value="Enviar"
+												update=":frmDespacho:dtbDespacho, :frmDespacho"
+												oncomplete="dlgDespachar.hide();"
+												actionListener="#{flujodocumentoMB.regresarMesaPartes}">
+											</p:commandButton>
+										</div>
+									</p:dialog>
+								</h:form>
+
+
+								<!-- DIALOGO RECHAZAR-->
+								<h:form id="frmDlgRechazar">
+									<p:dialog id="iddlgRechazar" width="450" height="342"
+										closable="true" closeOnEscape="true" resizable="false"
+										widgetVar="dlgRechazar" modal="true"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+										<br />
+
+										<div class="dgaiMonitoreo_dlgTitulo">
+											<div class="dgaiMonitoreo_iconDlgRechazar"></div>
+
+											<div class="dgaiMonitoreo_TituloContador">
+												<h:outputText
+													style="color:#750101; font-size: 12px; font-weight:bold;"
+													value="Rechazar " />
+											</div>
+										</div>
+
+										<div class="dgaiMonitoreo_TituloContador">
+
+											<h:outputText
+												style="color:#2f7501; font-size: 12px; font-weight:bold;"
+												value="Descripcion rechazo:" />
+											<br />
+										</div>
+
+										<div class="dgaiMonitoreo_detalleDlg">
+											<p:inputTextarea style="width:325px; height:60px;"
+												autoResize="false"
+												value="#{flujodocumentoMB.comentarioRechazo}">
+											</p:inputTextarea>
+										</div>
+
+										<div class="dgaiMonitoreo_DlgTablaDer">
+											<p:scrollPanel
+												style="width:350px;height:120px;font-size: 9px;"
+												mode="native">
+												<p:dataTable id="dtbDlgDerivacionDet" var="flujo"
+													value="#{flujodocumentoMB.flujoDocumentoIndex}"
+													rowKey="#{flujo.idflujodocumento}"
+													selection="#{flujodocumentoMB.usuarioSeleccionadosfljDoc}"
+													style="font-size: 10px;"
+													emptyMessage="No existen registros">
+
+													<p:column selectionMode="multiple" style="width:2%" />
+													<p:column headerText="Usuario">
+														<h:outputText
+															value="#{flujo.usuario.nombres} #{usu.apellidopat}" />&nbsp;
+														
+													</p:column>
+													<p:column headerText="Cargo">
+														<h:outputText value="#{flujo.usuario.cargo}" />
+													</p:column>
+												</p:dataTable>
+											</p:scrollPanel>
+										</div>
+
+
+										<p:commandButton value="Enviar"
+											style="margin-left: 330px; margin-top:10px;"
+											update=":frmDespacho:dtbDespacho,:frmDespacho:flsDespacho, :frmDespacho,:frmDerivacion:dtbDerivacion, :frmDerivacion"
+											actionListener="#{flujodocumentoMB.notificarRechazo}"
+											oncomplete="dlgRechazar.hide();">
+										</p:commandButton>
+									</p:dialog>
+								</h:form>
+
+							</div>
+
+
+							<!-- PANEL CONSULTAS -->
+							<div id="idDivConsultas" class="recau_panelPendientes">
+
+								<h:form id="frmConsultas">
+									<p:fieldset styleClass="recau_descripPendientes">
+
+										<div class="dgaiMonitoreo_Consultas">
+
+											<div class="dgaiMonitoreo_lblRangoFechas">
+												<h:outputText
+													style="color:#525252; font-size: 12px; font-weight:bold;"
+													value="Rango de Fechas" />
+
+												<p:spacer width="24" height="0" />
+												<p:calendar value="#{documentodgaiMB.fechaInicio}"
+													id="popupButtonCalIni" style="width:100px;"
+													validatorMessage="Ingresar una fecha correcta"
+													converterMessage="Formato adecuado:dd-mm-yyyy"
+													showOn="button" pattern="dd/MM/yyyy" effect="slide">
+												</p:calendar>
+
+
+												<p:calendar value="#{documentodgaiMB.fechaFin}"
+													id="popupButtonCalIni2" style="width:100px;"
+													validatorMessage="Ingresar una fecha correcta"
+													converterMessage="Formato adecuado:dd-mm-yyyy"
+													showOn="button" pattern="dd/MM/yyyy" effect="slide">
+												</p:calendar>
+												<p:commandButton value="Buscar" disabled="false"
+													icon="ui-icon-search" update="dtbConsulta"
+													actionListener="#{documentodgaiMB.busquedaIntervaloFecha}" />
+											</div>
+										</div>
+									</p:fieldset>
+									<div class="dgaiMonitoreo_detalle">
+										<p:dataTable id="dtbConsulta" var="docDer"
+											rowKey="#{docDer.iddocumento}"
+											selection="#{documentodgaiMB.documentoseleccionado}"
+											selectionMode="single"
+											value="#{documentodgaiMB.listAllDocumentos}" paginator="true"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-align:center;"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+											styleClass="ui-datatable-hor-scroll">
+
+											<p:ajax event="rowSelect"
+												update=":frmConsultas:iddlgDetalleConsulta"
+												oncomplete="dlgDetalleConsulta.show()"
+												listener="#{documentodgaiMB.cargarArchivosDocumento}" />
+
+											<p:column headerText="Situacion" width="50"
+												filterBy="#{docDer.respuesta}" filterMatchMode="contains"
+												styleClass="#{(docDer.respuesta=='RECHAZADO')? 'colorRechazado':((docDer.respuesta=='APROBADO')?'colorAprobado':((docDer.respuesta=='EN PROCESO')?'colorEnProceso' : 'ninguno'))}">
+												<h:outputText
+													value="#{(docDer.respuesta=='RECHAZADO')? 'RECHAZADO':(docDer.respuesta=='APROBADO')?'APROBADO':'EN PROCESO'}" />
+											</p:column>
+											<p:column headerText="Nro. Documento"
+												filterStyle="width:150px;" filterBy="#{docDer.titulo}"
+												filterMatchMode="contains">
+												<h:outputText value="#{docDer.titulo}" />
+											</p:column>
+
+											<p:column headerText="Despacho" width="300"
+												filterBy="#{docDer.nombreremitente}"
+												filterMatchMode="contains">
+												<h:outputText value="#{docDer.nombreremitente}" />
+											</p:column>
+<!-- 											<p:column headerText="Asunto" width="100" -->
+<!-- 												filterBy="#{docDer.asunto}" filterMatchMode="contains"> -->
+<!-- 												<h:outputText value="#{docDer.asunto}" /> -->
+<!-- 											</p:column> -->
+											<p:column headerText="Asunto / Descripción"
+												style="text-align:left;" filterStyle="width:300px;"
+												filterBy="#{docDer.descripcion}" filterMatchMode="contains">
+												<h:outputText value="#{docDer.descripcion}" />
+											</p:column>
+
+											<p:column headerText="F. Registro" width="90">
+												<h:outputText value="#{docDer.fechadocumento}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+										</p:dataTable>
+
+									</div>
+
+									<!-- DIALOGO DETALLE consultas-->
+
+									<p:dialog id="iddlgDetalleConsulta"
+										header="#{documentodgaiMB.documentoseleccionado.titulo}"
+										closable="true" closeOnEscape="true" resizable="false" modal="true"
+										widgetVar="dlgDetalleConsulta" width="600" height="342"
+										style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+										<div class="dtbDespacho" style="margin: 10px;">
+											<div>
+												<p:graphicImage width="30" height="30"
+													value="../resources/images/dgaiMonitoreo/iconoLupa.png" />
+												Detalle
+											</div>
+
+
+											<h:panelGrid columns="2" cellpadding="2"
+												style="font-size: 9pt; font-weight: bold">
+												<h:outputText value="Descripción:" style="color:#2F7501;" />
+												<h:outputText
+													value="#{documentodgaiMB.documentoseleccionado.descripcion}"
+													style="font-size: 10px;color:#5C5A5A;" />
+												<h:outputText value="Fecha Registro:" style="color:#2F7501;" />
+												<h:outputText
+													value="#{documentodgaiMB.documentoseleccionado.fechadocumento}"
+													style="font-size: 10px;color:#5C5A5A;">
+													<f:convertDateTime pattern="EEEEEEE dd 'de' MMMM 'de' yyyy" />
+												</h:outputText>
+
+											</h:panelGrid>
+											<br />
+											<div style="color: #59A7D4;">
+												<h:outputText value="Documentos de referencia" />
+												<p:spacer height="10" />
+												<p:scrollPanel
+													style="width:auto;height:auto;font-size: 9px;text-align:center; margin-top:5px;"
+													mode="native">
+													<p:dataTable id="datalistx"
+														value="#{documentodgaiMB.listaAdjuntoDocumento}"
+														var="varFile" emptyMessage="No existen Archivos adjuntos...">
+														<p:column headerText="Tipo">
+
+															<p:commandLink
+																actionListener="#{documentodgaiMB.descargarArchivo(varFile)}" oncomplete="dlgDetalleConsulta.show();"
+																ajax="false" >
+																<p:graphicImage width="20" height="20"
+																	value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+																<p:fileDownload value="#{documentodgaiMB.filedownload}" />
+															</p:commandLink>
+														</p:column>
+
+														<p:column headerText="Nombre">
+															<h:outputText value="#{varFile.ruta}" />
+														</p:column>
+
+														<p:column headerText="Creador">
+															<h:outputText value="#{varFile.usuarioCreador}" />
+														</p:column>
+														<p:column headerText="F. Creación">
+															<h:outputText value="#{varFile.fechaCreacion}">
+																<f:convertDateTime
+																	pattern="EEEEEEE dd 'de' MMMM 'de' yyyy 'a las ' hh:mm a" />
+															</h:outputText>
+														</p:column>
+													</p:dataTable>
+												
+												</p:scrollPanel>
+
+
+											</div>
+
+										</div>
+
+									</p:dialog>
+
+								</h:form>
+
+							</div>
+
+
+							<h:form id="frmDlgNotificacionPersonalizable">
+								<p:dialog id="iddlgNotificacion" width="420" height="250"
+									closable="true" closeOnEscape="true" resizable="false"
+									widgetVar="dlgNotificacion" modal="true"
+									style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+									<br />
+
+									<div class="dgaiMonitoreo_dlgTitulo">
+										<div class="dgaiMonitoreo_iconDlgRechazar"></div>
+
+										<div class="dgaiMonitoreo_TituloContador">
+											<h:outputText
+												style="color:#750101; font-size: 12px; font-weight:bold;"
+												value="Notificación " />
+										</div>
+									</div>
+
+									<div class="dgaiMonitoreo_TituloContador">
+
+										<h:outputText
+											style="color:#2f7501; font-size: 12px; font-weight:bold;"
+											value="Descripcion notificación:" />
+										<br />
+									</div>
+
+									<div class="dgaiMonitoreo_detalleDlg">
+										<p:inputTextarea style="width:325px; height:60px;"
+											autoResize="false" counter="counterSMS"
+											value="#{flujodocumentoMB.contenidoMensajePersonalizado}"
+											counterTemplate="{0} caracteres faltantes" maxlength="75">
+										</p:inputTextarea>
+										<div style="color: #0000FF">
+											<h:outputText id="counterSMS" />
+										</div>
+									</div>
+
+									<p:commandButton value="Enviar"
+										style="margin-left: 330px; margin-top:10px;"
+										update=":frmDespacho:dtbDespacho,:frmDespacho:flsDespacho, :frmDespacho,:frmDerivacion:dtbDerivacion, :frmDerivacion"
+										actionListener="#{flujodocumentoMB.enviarNotificaciónPersonalizable}"
+										oncomplete="dlgNotificacion.hide();">
+									</p:commandButton>
+								</p:dialog>
+							</h:form>
+						</div>
+
+
+					</div>
+
+
+
+
+				</div>
+
+
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

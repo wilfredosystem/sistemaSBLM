@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<f:view contentType="text/html">
+	<h:head onblur="self.focus()">
+		<meta http-equiv="content-type" content="text/html;charset=ISO-8859-1" />
+		<link href="../resources/css/estilo.css" rel="stylesheet"
+			type="text/css" />
+		<script type="text/javascript" src="../resources/js/reloadPage.js" />
+
+		<title>SBLM</title>
+	</h:head>
+	<h:body>
+		<f:view contentType="text/html">
+			<ui:composition template="./paginaMaestra.xhtml">
+				<ui:define name="content">
+					<h:form id="formDocumento">
+
+						<div class="contenidoPrincipal_FondoPrincipal">
+
+							<div class="contenidoPrincipal_fondoIdentificador">
+								<!-- TITULO SUBCONTENIDO -->
+								<div class="iconoMesaPartesCabecera"></div>
+								<div class="contenidoPrincipal_SubContenido">
+									<label class="contenidoPrincipal_lblTituloSubContenido">Mesa
+										de Partes</label><br /> <label
+										class="contenidoPrincipal_lblSubTituloSubContenido">Monitoreo
+										- Mesa de Partes</label>
+								</div>
+							</div>
+
+							<div class="contenidoPrincipal_SubFondo">
+
+								<div class="imagenAtendidosMesaPartes">
+									<p:spacer width="100" height="8" />
+									<h:outputText id="idTipo"
+										value="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Pendientes"
+										style="font-size: 10pt" />
+								</div>
+
+								<p:commandLink onclick="Tipo1();"
+									styleClass="text-decoration:none;" oncomplete="ocultar2();"
+									actionListener="#{cmonitoreomesapartes.listarGrillaInit}">
+									<div id="idPendientes" class="botonPendiente"
+										style="background-color: #ffc600; text-decoration: none;">
+										<h:outputText value="Pendientes" style="font-size: 10pt" />
+									</div>
+								</p:commandLink>
+
+								<p:commandLink onclick="Tipo2();"
+									styleClass="text-decoration:none;" oncomplete="ocultar();"
+									style="padding-top:-100px"
+									actionListener="#{cmonitoreomesapartes.listarGrillaInitAtendido}"
+									update=":formDocumento:tablaRevisado">
+									<div id="idAtendidos" class="botonAtendido"
+										style="background-color: #fed02e; text-decoration: none;">
+										<h:outputText value="Atendidos" style="font-size: 10pt;" />
+									</div>
+								</p:commandLink>
+
+
+
+
+								<div id="clsRevisado" class="clsRevisado"
+									style="display: visible">
+
+									<div class="fondoBlancoCuerpoMesaPartes">
+
+										<div id="clsUno" class="clsUno" style="display: visible">
+
+											<p:fieldset id="flsPendientes"
+												styleClass="recau_descripPendientes">
+												<div class="dgaiMonitoreo_descripDerivacion">
+													<div class="dgaiMonitoreo_iconDespacho">
+														<p:graphicImage width="60" height="60"
+															value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+													</div>
+													<div class="dgaiMonitoreo_descDespacho_detalle">
+														<h:outputText
+															style="color:#456880; font-size: 12px; font-weight:bold;"
+															value="#{usuarioMB.usuariologueado.nombres} #{usuarioMB.usuariologueado.apellidopat}" />
+														<br />
+														<h:outputText
+															style="color:#979797; font-size: 12px; font-weight:bold;"
+															value="#{usuarioMB.usuariologueado.cargo}" />
+														<br />
+														<h:outputText
+															style="color:#3399cc; font-size: 10px; font-weight:bold;"
+															value="Ultimo despacho:" />
+														<br />
+														<h:outputText id="idultmDespa"
+															style="color:#3399cc; font-size: 10px; font-weight:bold;"
+															value="#{cmonitoreomesapartes.ultimodespacho}" />
+													</div>
+
+													<div class="dgaiMonitoreo_InfoFecha">
+														<div class="dgaiMonitoreo_fechaDespacho">
+															<p:graphicImage styleClass="dgaiMonitoreo_fechaIcono"
+																width="20" height="20"
+																value="/resources/images/dgaiMonitoreo/iconFecha.png"
+																alt="fecha" title="fecha" />
+
+															<p:inplace id="selectableInplace2" effectSpeed="fast"
+																event="click"
+																style="color:#3399cc; font-size: 12px; font-weight:bold;float:right;"
+																label="#{cmonitoreomesapartes.mesActual}">
+																<h:selectOneMenu
+																	value="#{cmonitoreomesapartes.mesActualcapturado}">
+																	<p:ajax
+																		listener="#{cmonitoreomesapartes.cargarPendientesPorMes}"
+																		update="idnumatendidosmes,idnumpendientesmes,dtbDespacho" />
+																	<f:selectItem itemLabel="Todos" itemValue="0" />
+																	<f:selectItem itemLabel="Enero" itemValue="1" />
+																	<f:selectItem itemLabel="Febrero" itemValue="2" />
+																	<f:selectItem itemLabel="Marzo" itemValue="3" />
+																	<f:selectItem itemLabel="Abril" itemValue="4" />
+																	<f:selectItem itemLabel="Mayo" itemValue="5" />
+																	<f:selectItem itemLabel="Junio" itemValue="6" />
+																	<f:selectItem itemLabel="Julio" itemValue="7" />
+																	<f:selectItem itemLabel="Agosto" itemValue="8" />
+																	<f:selectItem itemLabel="Setiembre" itemValue="9" />
+																	<f:selectItem itemLabel="Octubre" itemValue="10" />
+																	<f:selectItem itemLabel="Noviembre" itemValue="11" />
+																	<f:selectItem itemLabel="Diciembre" itemValue="12" />
+																</h:selectOneMenu>
+
+															</p:inplace>
+														</div>
+														<br />
+														<h:outputText id="idnumatendidosmes"
+															style="color:#017514; font-size: 12px; font-weight:bold;float:right;"
+															value="#{cmonitoreomesapartes.nroAtendidoMes} Despachados" />
+														<br />
+														<div class="dgaiMonitoreo_totalDespacho">
+															<h:outputText id="idnumpendientesmes"
+																style="color:#e3b411; font-size: 12px; font-weight:bold;"
+																value="#{cmonitoreomesapartes.nroPendienteMes} Pendientes" />
+															<br />
+														</div>
+													</div>
+
+												</div>
+											</p:fieldset>
+											<div class="dgaiMonitoreo_detalle">
+												<p:dataTable id="dtbDespacho" var="objetomodulo"
+													rowkey="#{objetomodulo.iddocumento+''}"
+													selection="#{cmonitoreomesapartes.selectRegistrosDocumentos}"
+													value="#{cmonitoreomesapartes.compDataModelDocumento}"
+													paginator="true" emptyMessage="no existen registros"
+													style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+													paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+													currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+													rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+													styleClass="ui-datatable-hor-scroll" filteredValue="#{cmonitoreomesapartes.filtroCompDataModelDocumento}">
+
+													<p:column selectionMode="multiple" width="20"></p:column>
+													<p:column headerText="F. Registro" width="60">
+														<h:outputText value="#{objetomodulo.fechadocumento}">
+															<f:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText>
+													</p:column>
+													<p:column headerText="Nro. Documento" width="400"
+													filterBy="#{objetomodulo.titulo}"  filterStyle="width:200px;"  
+													filterMatchMode="contains">
+														<h:outputText value="#{objetomodulo.titulo}" />
+													</p:column>
+													<p:column headerText="Despacho" width="100">
+														<h:outputText value="#{objetomodulo.nombreremitente}" />
+													</p:column>
+													<p:column headerText="Asunto / Descripción">
+														<h:outputText value="#{objetomodulo.descripcion}" />
+													</p:column>
+
+													<p:column width="25">
+														<p:commandButton icon="ui-icon-search"
+															actionListener="#{cmonitoreomesapartes.cargarArchivosDocumento(objetomodulo.iddocumento)}"
+															update=":formDocumento:display,:formDocumento:panelGrid,:formDocumento:scrollPanel" 
+															oncomplete="dialogDetalleDocumento.show()" title="Ver">
+															<f:setPropertyActionListener value="#{objetomodulo}"
+																target="#{cmonitoreomesapartes.selectRegistroDocumento}" />
+														</p:commandButton>
+													</p:column>
+												</p:dataTable>
+											</div>
+
+											<p:spacer height="16" />
+											<div style="padding-left: 630px; padding-bottom: 20px;">
+												<p:growl id="growlNotifica" showDetail="true" sticky="false"
+													life="3000" />
+												<p:commandLink
+													action="#{cmonitoreomesapartes.verificarItemSeleccionado}"
+													actionListener="#{cmonitoreomesapartes.setearDescripcion}"
+													update=":formDocumento:idultmDespa,:formDocumento:flsPendientes,flsPendientes,:idForm:idDialog,:idForm:idDesc,growlNotifica">
+													<p:graphicImage
+														value="/resources/images/monitoreoMesaPartes/botonNotifica.png"
+														alt="Limpiar formulario" title="Despachar" />
+												</p:commandLink>
+											</div>
+
+
+											<p:dialog
+												header="#{cmonitoreomesapartes.selectRegistroDocumento.titulo}"
+												id="display" widgetVar="dialogDetalleDocumento" modal="true"
+												resizable="false"  showEffect="slideDown"
+												hideEffect="slide" width="600" height="300" 
+												style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+												<div style="padding: 10px">
+													<h:panelGrid id="panelGrid" columns="2" cellpadding="4"
+														style="font-size: 10pt; font-weight: bold">
+														<h:outputText style="color:#5a0000" value="Asunto/Descripción:" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.descripcion}"
+															style="font-size: 8pt;color:#017514;" />
+														<h:outputText style="color:#5a0000"
+															value="Fecha Registro:" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.fechadocumento}"
+															style="font-size: 10pt; font-weight: bold;color:#017514;">
+															<f:convertDateTime
+																pattern="EEEEEEE dd 'de' MMMM 'de' yyyy" />
+														</h:outputText>
+
+														<h:outputText style="color:#5a0000" value="Nº folios:" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.numerofolio}"
+															style="font-size: 8pt;color:#017514;" />
+
+														<h:outputText style="color:#5a0000" value="Asunto:" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.asunto}"
+															style="font-size: 8pt;color:#017514;">
+														</h:outputText>
+
+														<h:outputText style="color:#5a0000" value="Despacho:" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.nombreremitente}"
+															style="font-size: 8pt;color:#017514;" />
+													<p:spacer height="20"></p:spacer>
+													</h:panelGrid>
+													
+													
+											<div style="margin-left: 50px;">
+											<div style="color: #3B9ECD">Documentos de Referencia</div>
+											<p:scrollPanel id="scrollPanel"
+												style="width:450px;height:auto;max-height:120px;font-size: 9px; text-align:center;"
+												mode="native">
+
+												<p:dataTable id="tablaAdjuntos"
+													value="#{cmonitoreomesapartes.listaAdjuntoDocumento}"
+													var="varFile" emptyMessage="No existen Documentos Adjuntos...." >
+													<p:column headerText="Tipo">
+														<h:outputText value="#{varFile.ruta}" />
+													</p:column>
+													<p:column headerText="Nombre">
+														<p:commandLink
+															actionListener="#{documentodgaiMB.descargarArchivo(varFile)}"
+															ajax="false" immediate="true">
+															<p:graphicImage width="20" height=""
+																value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+
+															<p:fileDownload value="#{documentodgaiMB.filedownload}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Creador">
+														<h:outputText value="#{varFile.usuarioCreador}" />
+													</p:column>
+													<p:column headerText="F. Creación">
+														<h:outputText value="#{varFile.fechaCreacion}">
+															<f:convertDateTime
+																pattern="EEEEEEE dd 'de' MMMM 'de' yyyy 'a las ' hh:mm a" />
+														</h:outputText>
+													</p:column>
+
+												</p:dataTable>
+
+
+											</p:scrollPanel>
+											</div>
+												</div>
+											</p:dialog>
+										</div>
+									</div>
+								</div>
+
+								<div id="clsRevisado" class="clsRevisado"
+									style="display: visible; float: left;">
+
+									<div class="fondoBlancoCuerpoMesaPartes2">
+
+										<div id="clsDos" class="clsDos" style="display: none;">
+
+											<p:fieldset styleClass="recau_descripPendientes">
+												<div class="dgaiMonitoreo_descripDerivacion">
+													<div class="dgaiMonitoreo_iconDespacho">
+														<p:graphicImage width="60" height="60"
+															value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+													</div>
+													<div class="dgaiMonitoreo_descDespacho_detalle">
+														<h:outputText
+															style="color:#456880; font-size: 12px; font-weight:bold;"
+															value="#{usuarioMB.usuariologueado.nombres} #{usuarioMB.usuariologueado.apellidopat}" />
+														<br />
+														<h:outputText
+															style="color:#979797; font-size: 12px; font-weight:bold;"
+															value="#{usuarioMB.usuariologueado.cargo}" />
+														<br />
+														<h:outputText
+															style="color:#3399cc; font-size: 10px; font-weight:bold;"
+															value="Ultimo despacho:" />
+														<br />
+														<h:outputText
+															style="color:#3399cc; font-size: 10px; font-weight:bold;"
+															value="#{cmonitoreomesapartes.ultimodespacho}" />
+													</div>
+
+													<div class="dgaiMonitoreo_InfoFecha">
+														<div class="dgaiMonitoreo_fechaDespacho">
+															<p:graphicImage styleClass="dgaiMonitoreo_fechaIcono"
+																width="20" height="20"
+																value="/resources/images/dgaiMonitoreo/iconFecha.png"
+																alt="fecha" title="fecha" />
+
+															<p:inplace id="selectableInplace" effectSpeed="fast"
+																event="click"
+																style="color:#3399cc; font-size: 12px; font-weight:bold;float:right;"
+																label="#{cmonitoreomesapartes.mesActual}">
+																<h:selectOneMenu
+																	value="#{cmonitoreomesapartes.mesActualcapturado}">
+																	<p:ajax
+																		listener="#{cmonitoreomesapartes.cargarAtendidosPorMes}"
+																		update="fechaAprobadosMes,fechaProcesoMes,fechaRechazadosMes,tablaRevisado" />
+																	<f:selectItem itemLabel="Todos" itemValue="0" />
+																	<f:selectItem itemLabel="Enero" itemValue="1" />
+																	<f:selectItem itemLabel="Febrero" itemValue="2" />
+																	<f:selectItem itemLabel="Marzo" itemValue="3" />
+																	<f:selectItem itemLabel="Abril" itemValue="4" />
+																	<f:selectItem itemLabel="Mayo" itemValue="5" />
+																	<f:selectItem itemLabel="Junio" itemValue="6" />
+																	<f:selectItem itemLabel="Julio" itemValue="7" />
+																	<f:selectItem itemLabel="Agosto" itemValue="8" />
+																	<f:selectItem itemLabel="Setiembre" itemValue="9" />
+																	<f:selectItem itemLabel="Octubre" itemValue="10" />
+																	<f:selectItem itemLabel="Noviembre" itemValue="11" />
+																	<f:selectItem itemLabel="Diciembre" itemValue="12" />
+																</h:selectOneMenu>
+
+															</p:inplace>
+														</div>
+														<br />
+														<div class="dgaiMonitoreo_totalDespacho">
+															<p:commandLink style="text-decoration: none;"
+																update=":formDocumento:tablaRevisado"
+																id="fechaAprobadosMes"
+																actionListener="#{cmonitoreomesapartes.filtrarAprobadosMes}">
+																<h:outputText
+																	style="color:#017514; font-size: 12px; font-weight:bold;"
+																	value="#{cmonitoreomesapartes.nroAprobadoMes} Aprobados" />
+
+															</p:commandLink>
+															<br />
+															<p:commandLink style="text-decoration: none;"
+																update=":formDocumento:tablaRevisado"
+																id="fechaProcesoMes"
+																actionListener="#{cmonitoreomesapartes.filtrarProcesoMes}">
+																<h:outputText
+																	style="color:#e3b411; font-size: 12px; font-weight:bold;"
+																	value="#{cmonitoreomesapartes.nroProcesoMes} En Proceso" />
+															</p:commandLink>
+															<br />
+															<p:commandLink style="text-decoration: none;"
+																update=":formDocumento:tablaRevisado"
+																id="fechaRechazadosMes"
+																actionListener="#{cmonitoreomesapartes.filtrarRechazadosMes}">
+																<h:outputText
+																	style="color:#5a0000; font-size: 12px; font-weight:bold;"
+																	value="#{cmonitoreomesapartes.nroRechazadoMes} Rechazados" />
+															</p:commandLink>
+														</div>
+													</div>
+												</div>
+											</p:fieldset>
+											<div class="dgaiMonitoreo_detalle">
+
+												<p:dataTable id="tablaRevisado" var="objetomodulo"
+													rowkey="#{objetomodulo.iddocumento+''}"
+													value="#{cmonitoreomesapartes.compDataModelDocumento}"
+													paginator="true" emptyMessage="no existen registros"
+													style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+													paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+													currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+													rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+													styleClass="ui-datatable-hor-scroll">
+
+c													<p:column headerText="Estado"
+														style="max-width:100px; width:100px"
+														styleClass="#{(objetomodulo.respuesta=='RECHAZADO')? 'colorRechazado':((objetomodulo.respuesta=='APROBADO')?'colorAprobado':((objetomodulo.respuesta=='EN PROCESO')?'colorEnProceso' : 'ninguno'))}">
+														<h:outputText
+															value="#{(objetomodulo.respuesta=='RECHAZADO')? 'RECHAZADO':(objetomodulo.respuesta=='APROBADO')?'APROBADO':'EN PROCESO'}" />
+													</p:column>
+													<p:column headerText="F. Atención"
+														style="max-width:100px; width:70px">
+														<h:outputText value="#{objetomodulo.fecharegistro}">
+															<f:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText>
+													</p:column>
+													<p:column headerText="F. Aprobacion/Rechazo">
+														<h:outputText
+															value="#{objetomodulo.fechaaprobacionrechazo}">
+															<f:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText>
+													</p:column>
+													<p:column headerText="Nro. Documento"
+														style="max-width:300px; width:200px">
+														<h:outputText value="#{objetomodulo.titulo}" />
+													</p:column>
+													<p:column headerText="Despacho"
+														style="max-width:200px; width:200px">
+														<h:outputText value="#{objetomodulo.nombreremitente}" />
+													</p:column>
+<!-- 													<p:column headerText="Asunto" -->
+<!-- 														style="max-width:300px; width:300px"> -->
+<!-- 														<h:outputText value="#{objetomodulo.asunto}" /> -->
+<!-- 													</p:column> -->
+													<p:column headerText="Asunto / Descripción"
+														>
+														<h:outputText value="#{objetomodulo.descripcion}" />
+													</p:column>
+
+
+
+													<p:column style="width:15px">
+														<p:commandButton icon="ui-icon-search"
+															actionListener="#{cmonitoreomesapartes.cargarArchivosDocumento(objetomodulo.iddocumento)}"
+															update=":formDocumento:display2,:formDocumento:panelGrid2,:formDocumento:pnlScrContenido"
+															oncomplete="dialogDetalleDocumento.show()" title="Ver">
+															<f:setPropertyActionListener value="#{objetomodulo}"
+																target="#{cmonitoreomesapartes.selectRegistroDocumento}" />
+														</p:commandButton>
+													</p:column>
+
+												</p:dataTable>
+											</div>
+
+
+											<p:dialog
+												header="#{cmonitoreomesapartes.selectRegistroDocumento.titulo}"
+												id="display2" widgetVar="dialogDetalleDocumento" modal="true"
+												resizable="false" showEffect="slideDown" hideEffect="slide"
+												width="600" height="300"
+												style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+												
+												<div style="padding: 10px">
+												
+													<h:panelGrid id="panelGrid2" columns="2" cellpadding="4"
+														style="font-size: 10pt; font-weight: bold">
+														<h:outputText value="Asunto/Descripción:" style="color:#5a0000" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.descripcion}"
+															style="font-size: 8pt; font-weight: bold;color:#017514;" />
+														<h:outputText value="Estado:" style="color:#5a0000" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.respuesta}"
+															style="font-size: 8pt; font-weight: bold;color:#017514;">
+															<f:convertDateTime
+																pattern="EEEEEEE dd 'de' MMMM 'de' yyyy" />
+														</h:outputText>
+														<h:outputText value="Fecha Registro:"
+															style="color:#5a0000" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.fechadocumento}"
+															style="font-size: 8pt; font-weight: bold;color:#017514;">
+															<f:convertDateTime
+																pattern="EEEEEEE dd 'de' MMMM 'de' yyyy" />
+														</h:outputText>
+														<h:outputText value="Nº folios:" style="color:#5a0000" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.numerofolio}"
+															style="font-size: 8pt; font-weight: bold;color:#017514;" />
+
+														<h:outputText value="Asunto:" style="color:#5a0000" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.asunto}"
+															style="font-size: 8pt; font-weight: bold;color:#017514;">
+														</h:outputText>
+
+														<h:outputText value="Despacho:" style="color:#5a0000" />
+														<h:outputText
+															value="#{cmonitoreomesapartes.selectRegistroDocumento.nombreremitente}"
+															style="font-size: 8pt;" />
+													<p:spacer height="20"></p:spacer>
+													</h:panelGrid>
+													
+													
+											<div style="margin-left: 50px;">
+											<div style="color: #3B9ECD">Documentos de Referencia</div>
+											<p:scrollPanel id="pnlScrContenido"
+												style="width:450px;height:auto;max-height:120px;font-size: 9px; text-align:center;"
+												mode="native">
+
+												<p:dataTable id="tablaAdjuntos2"
+													value="#{cmonitoreomesapartes.listaAdjuntoDocumento}"
+													var="varFile" emptyMessage="No existen Documentos Adjuntos...." >
+													<p:column headerText="Tipo">
+														<h:outputText value="#{varFile.ruta}" />
+													</p:column>
+													<p:column headerText="Nombre">
+														<p:commandLink
+															actionListener="#{documentodgaiMB.descargarArchivo(varFile)}"
+															ajax="false" immediate="true">
+															<p:graphicImage width="20" height=""
+																value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+
+															<p:fileDownload value="#{documentodgaiMB.filedownload}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Creador">
+														<h:outputText value="#{varFile.usuarioCreador}" />
+													</p:column>
+													<p:column headerText="F. Creación">
+														<h:outputText value="#{varFile.fechaCreacion}">
+															<f:convertDateTime
+																pattern="EEEEEEE dd 'de' MMMM 'de' yyyy 'a las ' hh:mm a" />
+														</h:outputText>
+													</p:column>
+
+												</p:dataTable>
+												
+											<div style="margin-top: 15px;">
+											</div>
+
+											</p:scrollPanel>
+											</div>
+													
+												</div>
+											</p:dialog>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</h:form>
+
+					<h:form id="idForm">
+
+
+						<p:dialog id="idDialog" widgetVar="dialogSeleccionDocumento" 
+							styleClass="process_msg" header="" modal="true"
+							style="border-width:9px;border-style:solid;  border-color:#ffc600;font-size:10px; "
+							width="550" height="390" >
+
+
+							<div style="margin: 15px;">
+
+								<p:graphicImage id="idNotificaciones"
+									value="../resources/images/monitoreoMesaPartes/iconoParlanteMesaPartes.png" />
+								<div style="margin-top: -15px; margin-left: 30px;">Notificaciones</div>
+								<div style="margin-top: 15px; width: 200px;">
+									<h:panelGrid columns="2" cellpadding="2">
+										<h:outputText style="color:#017514" value="Expediente: " />
+										<p:selectOneMenu id="idNombrePerfil"
+											value="#{cmonitoreomesapartes.iddocumento}"
+											style="width:180px">
+											<f:selectItems
+												value="#{cmonitoreomesapartes.selectRegistrosDocumentos}"
+												var="perfilItem" itemLabel="#{perfilItem.titulo}"
+												itemValue="#{perfilItem.iddocumento}" />
+											<p:ajax update=":idForm:idDesc,datalist"
+												listener="#{cmonitoreomesapartes.seleccionIdDocumento}"
+												process="@this" />
+										</p:selectOneMenu>
+									</h:panelGrid>
+								</div>
+
+								<div class="dialogMonitoreo"
+									style="font-family: fantasy; padding-top: 10px;">
+
+									<h:panelGrid columns="1" cellpadding="2">
+										<h:outputText style="color:#017514"
+											value="Descripción del Expediente: " />
+										<h:outputText id="idDesc"
+											value="#{cmonitoreomesapartes.descripcionDocumento}"
+											style="font-size: 10px; color:#979797" />
+									</h:panelGrid>
+								</div>
+
+
+								<p:spacer height="10"></p:spacer>
+								<p:growl id="messagesAgregarUsuario" showDetail="true" life="4000" />
+								<p:commandLink title="Agregar Usuario" update="tablaUsuarios"
+									actionListener="#{cmonitoreomesapartes.agregarUsuarioLista}"
+									style="margin-left:398px;">
+									<p:graphicImage width="20" height="20" value="../resources/images/monitoreoMesaPartes/addUsuario.png" />
+									
+<!-- 									<img width="20" height="20" -->
+<!-- 										src=""></img> -->
+								</p:commandLink>
+
+								<p:scrollPanel style="width:450px; height:auto" mode="native">
+									<p:dataTable id="tablaUsuarios"
+										value="#{cmonitoreomesapartes.listaUsuarioSeleccionados}"
+										var="d" editable="true" editMode="cell"
+										style="text-align: center;" styleClass="noheader">
+										<p:ajax event="cellEdit"
+											listener="#{cmonitoreomesapartes.onCellEdit}"
+											styleClass="noheader borderless cellSpacingTableClass"
+											update="tablaUsuarios,:idForm:messagesAgregarUsuario" />
+
+										<p:column>
+											<p:graphicImage id="imagenUsuario" width="35" height="35"
+												value="../resources/images/usuarios/#{d.rutaimgusr}" />
+										</p:column>
+										<p:spacer width="20px" />
+										<p:column>
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{d.emailusr}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:autoComplete id="idCajaUsuario" value="#{d.emailusr}"
+														style="width:136px"
+														completeMethod="#{cauditoria.autoCompleteUsuario}"
+														effect="fade">
+													</p:autoComplete>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column>
+											<h:outputText value="#{d.cargo}" />
+										</p:column>
+										<p:column>
+											<p:commandLink title="Eliminar de lista"
+												actionListener="#{cmonitoreomesapartes.eliminarUsuarioDeLista}"
+												update="tablaUsuarios">
+												<p:graphicImage  width="20" height="20" value="../resources/images/monitoreoMesaPartes/#{d.contrasenausr}"/>
+												<f:setPropertyActionListener value="#{d}"
+													target="#{cmonitoreomesapartes.selectRegistroUsuario}" />
+											</p:commandLink>
+										</p:column>
+									</p:dataTable>
+								</p:scrollPanel>
+
+								<p:spacer height="10"></p:spacer>
+
+								<p:spacer width="0" height="20" />
+								<p:scrollPanel
+									style="width:450px;height:auto;max-height: 300px;"
+									mode="native">
+									<p:fileUpload
+										fileUploadListener="#{cmonitoreomesapartes.subirDocumento}"
+										mode="advanced" update=":idForm:datalist"
+										dragDropSupport="false" multiple="true" sizeLimit="1000000055"
+										fileLimit="3"
+										allowTypes="/(\.|\/)(gif|jpe?g|dwg|exe|7z|bpm|fla|html|swf|tgz|tif|png|xlsx|xls|doc|docx|txt|avi|mp3|mpeg|ppt|pptx|rar|zip|pdf|ppt|pptx)$/"
+										label="Elegir Documento(s)" uploadLabel="Agregar Documento"
+										cancelLabel="Cancelar" />
+								</p:scrollPanel>
+
+								<p:spacer height="10"></p:spacer>
+
+								<p:scrollPanel
+									style="width:450px;height:auto;max-height: 200px;"
+									mode="native">
+									<p:dataTable id="datalist"
+										value="#{cmonitoreomesapartes.displayList}" var="varFile" styleClass="noheader" style="text-align: center;"
+										emptyMessage="No se ha adjuntado ningún archivos">
+
+										<p:column>
+											<p:graphicImage width="20" height="20" id="idNotificaciones"
+												value="../resources/icons/tipoArchivo/#{varFile.rutaIcono}" />
+										</p:column>
+										<p:column>
+											<h:outputText value="#{varFile.descExt}" />
+										</p:column>
+
+										<p:column>
+											<p:commandLink title="Eliminar de lista"
+												action="#{cmonitoreomesapartes.onCarDrop(varFile)}"
+												update=":idForm:datalist">
+												<p:graphicImage id="idNotificacioness" width="15"
+													height="15" value="../resources/icons/trash.png" />
+												<f:setPropertyActionListener value="#{varFile}"
+													target="#{cmonitoreomesapartes.archivoDelete}" />
+											</p:commandLink>
+										</p:column>
+
+
+									</p:dataTable>
+
+								</p:scrollPanel>
+
+								<p:spacer height="10"></p:spacer>
+								<div style="margin-left: 375px;">
+									<p:commandButton icon="ui-icon-save"
+										onclick="widgetDlgConfirmEnvio.show()" value="Enviar"
+										title="Ver" />
+								</div>
+							</div>
+						</p:dialog>
+<!-- 						<p:blockUI block="confirm" trigger="btnGrabar" > -->
+<!-- 						<p:graphicImage width="25" height="25" value="../resources/icons/ajax-loader.gif" /> -->
+<!-- 						</p:blockUI> -->
+						<p:growl id="messagesEnviado" showDetail="true" life="4000" />
+						<p:confirmDialog id="confirm" header="SBLM" severity="alert"
+							message="¿Está seguro de enviar derivar documento(s)?"
+							widgetVar="widgetDlgConfirmEnvio">
+							<center>
+								<p:commandButton id="btnGrabar" value="Aceptar"
+									actionListener="#{cmonitoreomesapartes.actualizarEstado}"
+									action="#{cmonitoreomesapartes.mensajeEnvio}"  onclick="blockpage();widgetDlgConfirmEnvio.hide();dialogSeleccionDocumento.hide();"
+									oncomplete="unblockpage();"
+									update=":formDocumento,messagesEnviado" />
+								<p:spacer width="10" />
+								<p:commandButton value="Cancelar"
+									onclick="widgetDlgConfirmEnvio.hide()" />
+							</center>
+						</p:confirmDialog>
+						
+					</h:form>
+
+				</ui:define>
+			</ui:composition>
+		</f:view>
+	</h:body>
+</f:view>
+</html>

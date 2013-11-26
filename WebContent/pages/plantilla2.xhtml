@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<title>SBLM</title>
+</h:head>
+<h:body>
+	<ui:composition template="./paginaMaestra.xhtml">
+		<ui:define name="content">
+
+
+			<div class="contenidoPrincipal_FondoPrincipal">
+
+				<div class="contenidoPrincipal_fondoIdentificador">
+					<!-- TITULO SUBCONTENIDO -->
+					<div class="administrador_paginasIcono"></div>
+					<div class="contenidoPrincipal_SubContenido">
+						<label class="contenidoPrincipal_lblTituloSubContenido">Arrendamiento/Autoval&uacute;o</label><br />
+						<label class="contenidoPrincipal_lblSubTituloSubContenido">Monitoreo-Arrendamiento
+							y Autoval&uacute;o</label>
+					</div>
+				</div>
+				<div class="arrendamiento_fondoOpciones">
+					<div class="arren_submenuOpciones">
+						<p:commandLink id="idarren_submenOpc1"
+							styleClass="arren_submenOpc1" onclick="tabDerivacion();">
+							<p:graphicImage
+								value="/resources/images/arrendamiento/arren_opc1Submenu.png"
+								alt="Limpiar formulario" title="Deriva" />
+						</p:commandLink>
+						<p:commandLink id="idarren_submenOpc2"
+							styleClass="arren_submenOpc2" onclick="tabDerivacion();">
+							<p:graphicImage
+								value="/resources/images/arrendamiento/arren_opc2Submenu.png"
+								alt="Limpiar formulario" title="Deriva" />
+						</p:commandLink>
+						<p:commandLink id="idarren_submenOpc3"
+							styleClass="arren_submenOpc3" onclick="tabDerivacion();">
+							<p:graphicImage
+								value="/resources/images/arrendamiento/arren_opc3Submenu.png"
+								alt="Limpiar formulario" title="Deriva" />
+						</p:commandLink>
+						<p:commandLink id="idarren_submenOpc4"
+							styleClass="arren_submenOpc4" onclick="tabDerivacion();">
+							<p:graphicImage
+								value="/resources/images/arrendamiento/arren_opc4Submenu.png"
+								alt="Limpiar formulario" title="Deriva" />
+						</p:commandLink>
+					</div>
+					<div class="arren_submenuItems">
+						<p:commandLink id="idarren_bandejaSubmenu"
+							styleClass="arren_bandejaSubmenu" onclick="tabDerivacion();">
+							<p:graphicImage styleClass="arren_imgsubmenbandeja"
+								value="/resources/images/arrendamiento/arren_bandejaSubmenu.png"
+								alt="Bandeja" title="Bandeja" />
+							<h:outputText style="float:left;margin-left:5px; margin-top:2px;"
+								value="Bandeja" />
+						</p:commandLink>
+						<p:commandLink id="idarren_cartasSubmenu"
+							styleClass="arren_cartasSubmenu" onclick="tabDerivacion();">
+							<p:graphicImage styleClass="arren_imgsubmencartas"
+								value="/resources/images/arrendamiento/arren_cartasSubmenu.png"
+								alt="cartas" title="cartas" />
+							<h:outputText style="float:left;margin-left:5px; margin-top:5px;"
+								value="Cartas" />
+						</p:commandLink>
+						<p:commandLink id="idarren_arbitriosSubmenu"
+							styleClass="arren_arbitriosSubmenu" onclick="tabDerivacion();">
+							<p:graphicImage styleClass="arren_imgsubmenarbitrios"
+								value="/resources/images/arrendamiento/arren_arbitriosSubmenu.png"
+								alt="arbitrios" title="arbitrios" />
+							<h:outputText style="float:left;margin-left:5px; margin-top:7px;"
+								value="arbitrios" />
+						</p:commandLink>
+
+					</div>
+				</div>
+				<div class="contenidoPrincipal_SubFondo">
+
+					<!-- CONTENIDO MODIFICABLE -->
+					<div class="contenidoPrincipal_subFondo_Icono"></div>
+					<div id="lblSubtitulo"
+						class="contenidoPrincipal_subFondo_lblTitulox">Derivacion</div>
+
+					<p:commandLink id="idDerivacion" styleClass="btnDerivacion"
+						onclick="tabDerivacion();">
+						<div class="btncentrado">Derivaci&oacute;n</div>
+					</p:commandLink>
+					<p:commandLink id="idDespacho" styleClass="btnDespacho"
+						onclick="tabDespacho();">
+						<div class="btncentrado">Despacho</div>
+					</p:commandLink>
+					<p:commandLink id="idConsultas" styleClass="btnConsultas"
+						onclick="tabConsultas();">
+						<div class="btncentrado">Consultas</div>
+					</p:commandLink>
+					<div class="contenidoPrincipal_fondo_formulario">
+						<div class="dgaiMonitoreo_Contenido">
+							<!-- PANEL DERIVACION -->
+							<div id="idDivDerivacion">aa</div>
+							<!-- PANEL DESPACHO -->
+							<div id="idDivDespacho">bb</div>
+							<!-- PANEL CONSULTAS -->
+							<div id="idDivConsultas">cc</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<link href="../resources/css/estilo.css" rel="stylesheet"
+		type="text/css" />
+	<title>SBLM</title>
+</h:head>
+<h:body>
+
+
+	<!-- PANEL REPORTES -->
+	<div id="idDivReporteCobranza" class="recau_panelPendientes">
+
+		<div class="mante_gene_ContDescrip01">
+			<div class="cobranza_cartera_contenidoDatos">
+				<div class="cartera_ColumDatos">
+
+					<h:form id="frmdlgGuardarReporteCobranza">
+						<div class="filaDatoLargo"
+							style="background-color: #CECECE; width: 490px; float: left;">
+							<div class="columLargo">
+								<h:outputText class="lblDatos" value="Reporte de Carteras" />
+
+							</div>
+						</div>
+						<div class="filaDatoLargosCorto" style="margin: 20px 0 0 0;">
+							<div style="width: 370px;">
+								<h:outputText styleClass="lblDatos" value="Numero Cartera:" />
+								<p:selectOneMenu styleClass="cbxDatos" id="idCarteraReporte"
+									onchange="limpiarvalidacion()" panelStyle="width:150px"
+									style="width:160px" filter="true" filterMatchMode="startsWith"
+									value="#{carteraMB.cartera.idcartera}">
+									<f:selectItem itemLabel="Seleccione numero Cartera"
+										itemValue="0" />
+									<f:selectItems value="#{carteraMB.carteras}" var="ca"
+										itemValue="#{ca.idcartera}" itemLabel="#{ca.numero}">
+									</f:selectItems>
+									<p:ajax listener="#{carteraMB.mostrarReporteCartera}"
+										update=":frmTablaReporteCobranza:tablaReporteCobranza, :frmTablaReporteCobranza" />
+								</p:selectOneMenu>
+
+							</div>
+						</div>
+						<div style="float: right; margin: 15px 50px 15px 0;">
+							<p:commandLink oncomplete="dlgBuscarContrato.show();"
+								actionListener="#{carteraMB.PDF}" ajax="false"
+								style="float:left;margin-left:5px;">
+								<p:graphicImage width="28" height="28"
+									value="/resources/icons/tipoArchivo/pdf.png"
+									alt="reporte cartera" title="reporte cartera" />
+							</p:commandLink>
+							<p:commandLink oncomplete="dlgBuscarContrato.show();"
+								actionListener="#{carteraMB.Excel}" ajax="false"
+								style="float:left;margin-left:5px;">
+								<p:graphicImage width="28" height="28"
+									value="/resources/icons/tipoArchivo/xls.png"
+									alt="Detalle Contrato" title="detalle Contrato" />
+							</p:commandLink>
+						</div>
+					</h:form>
+
+					<h:form id="frmTablaReporteCobranza">
+						<p:growl id="msjCarteradetalle" showDetail="true" sticky="false"
+							life="4000" />
+						<div class="dgaiMonitoreo_detalle">
+
+							<p:dataTable id="tablaReporteCobranza" var="dcar"
+								value="#{carteraMB.detallecarteras}"
+								filteredValue="#{carteraMB.filtrocuotas}" paginator="true"
+								stickyHeader="true"
+								emptyMessage="NO EXISTEN DETALLES DE CARTERA"
+								style="width:435px; font-size: 10px;  text-align:center;"
+								paginatorTemplate="Reg. por p&aacute;gina: {RowsPerPageDropdown}  &nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp;   {CurrentPageReport}"
+								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+								rowsPerPageTemplate="10,15,20" rows="10" paginatorPosition="top"
+								scrollWidth="435" styleClass="ui-datatable-hor-scroll">
+
+
+								<p:ajax event="filter" update="@this"
+									listener="#{carteraMB.capturarFiltro}" />
+								<p:column headerText="Numero Carteraxxzz">
+									<h:outputText value="#{dcar.cartera.numero}" />
+								</p:column>
+
+								<p:column headerText="Inquilinoxx"
+									filterBy="#{dcar.contrato.inquilino.nombrescompletos}">
+									<h:outputText
+										value="#{dcar.contrato.inquilino.nombrescompletos}" />
+								</p:column>
+								<p:column headerText="Inmueble"
+									filterBy="#{dcar.contrato.upa.inmueble.numregistrosbn}">
+									<h:outputText
+										value="#{dcar.contrato.upa.inmueble.numregistrosbn}" />
+								</p:column>
+								<p:column headerText="Direccion UPA">
+									<h:outputText value="#{dcar.contrato.upa.direccion}" />
+								</p:column>
+								<p:column headerText="Distrito">
+									<h:outputText value="#{cu.contrato.upa.inmueble.ubigeo.dist}" />
+								</p:column>
+								<p:column headerText="Provincia">
+									<h:outputText value="#{dcar.contrato.upa.inmueble.ubigeo.prov}" />
+								</p:column>
+								<p:column headerText="Dpto.">
+									<h:outputText value="#{dcar.contrato.upa.inmueble.ubigeo.depa}" />
+								</p:column>
+								<p:column headerText="Uso">
+									<h:outputText value="#{dcar.contrato.upa.uso.descripcion}" />
+								</p:column>
+								<p:column headerText="Monto (S/)">
+									<h:outputText value="#{dcar.rentasoles}" />
+								</p:column>
+								<p:column headerText="Monto ($)">
+									<h:outputText value="#{dcar.rentadolar}" />
+								</p:column>
+								<p:column headerText="mora">
+									<h:outputText value="#{dcar.mora}" />
+								</p:column>
+
+								<p:column headerText="Fecha Vencimiento">
+									<h:outputText value="#{dcar.fechavencimiento}" />
+								</p:column>
+								<p:column headerText="F. Creacion">
+									<h:outputText value="#{dcar.feccre}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Usuario creador">
+									<h:outputText value="#{cu.usrcre}" />
+								</p:column>
+								<p:column headerText="F. Modificacion">
+									<h:outputText value="#{dcar.fecmod}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Usuario Modificador">
+									<h:outputText value="#{dcar.usrmod}" />
+								</p:column>
+
+							</p:dataTable>
+						</div>
+					</h:form>
+
+
+					<!-- 			REPORTE PAGOS POR CONTRAtO-->
+
+					<h:form id="frmReportePagos">
+						<div class="filaDatoLargo"
+							style="background-color: #CECECE; width: 490px; float: left;margin-bottom:20px;">
+							<div class="columLargo">
+								<h:outputText class="lblDatos" style="width: 300px;"
+									value="Reporte de Pagos por contrato" />
+
+							</div>
+						</div>
+						<div  style="margin: 40px 0 0 0;">
+							<div class="filaDatoLargosCorto">
+								<h:outputText styleClass="lblDatos" value="Numero Cartera:" />
+								<p:selectOneMenu styleClass="cbxDatos" id="idCarteraCobrador"
+									onchange="limpiarvalidacion()" panelStyle="width:150px"
+									style="width:188px" filter="true" filterMatchMode="startsWith"
+									value="#{carteraMB.cartera.idcartera}">
+									<f:selectItem itemLabel="Seleccione numero Cartera"
+										itemValue="0" />
+									<f:selectItems value="#{carteraMB.carteras}" var="ca"
+										itemValue="#{ca.idcartera}" itemLabel="#{ca.numero}">
+									</f:selectItems>
+									<p:ajax listener="#{carteraMB.cargarContratosxcartera2}" 
+										event="change" update="idContratoreport"
+										/>
+								</p:selectOneMenu>
+							</div>
+							<div class="filaDatoLargosCorto">
+								<h:outputText styleClass="lblDatos" value="Numero Contrato:" />
+								<p:selectOneMenu styleClass="cbxDatos" id="idContratoreport"
+									onchange="limpiarvalidacion()" panelStyle="width:150px"
+									style="width: 188px;  font-size: 11px;" filter="true"
+									filterMatchMode="startsWith"
+									value="#{carteraMB.contrato.idcontrato}">
+									<f:selectItem itemLabel="Seleccione Numero Contrato"
+										itemValue="0" />
+									<f:selectItems value="#{carteraMB.contratosxcartera}" var="con"
+										itemValue="#{con.idcontrato}" itemLabel="#{con.nrocontrato}">
+									</f:selectItems>
+									<p:ajax listener="#{carteraMB.mostrarDetallecuotaxContrato}"
+										update=":frmTablaReportePagoxContrato:tablaReportePagoxcontrato,:frmTablaReportePagoxContrato" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+						<div style="float: right; margin: 15px 50px 15px 0;">
+							<p:commandLink oncomplete="dlgBuscarContrato.show();"
+								actionListener="#{carteraMB.PDFReporteDetalleCuotaPorContrato}" ajax="false" 
+								style="float:left;margin-left:5px;">
+								<p:graphicImage width="28" height="28"
+									value="/resources/icons/tipoArchivo/pdf.png"
+									alt="Detalle Contrato" title="detalle Contrato" />
+							</p:commandLink>
+							<p:commandLink oncomplete="dlgBuscarContrato.show();"
+								actionListener="#{carteraMB.ExcelReporteDetalleCuotaPorContrato}" ajax="false"
+								style="float:left;margin-left:5px;">
+								<p:graphicImage width="28" height="28"
+									value="/resources/icons/tipoArchivo/xls.png"
+									alt="Detalle Contrato" title="detalle Contrato" />
+							</p:commandLink>
+						</div>
+					</h:form>
+
+					<h:form id="frmTablaReportePagoxContrato">
+						<p:growl id="msjCarteradetalle" showDetail="true" sticky="false"
+							life="4000" />
+						<div class="dgaiMonitoreo_detalle">
+
+							<p:dataTable id="tablaReportePagoxcontrato" var="dcuo"
+								value="#{carteraMB.detallecuotaxcontrato}"
+								 paginator="true"
+								stickyHeader="true"
+								emptyMessage="NO EXISTEN DETALLES DE CARTERA"
+								style="width:435px; font-size: 10px;  text-align:center;"
+								paginatorTemplate="Reg. por p&aacute;gina: {RowsPerPageDropdown}  &nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp;   {CurrentPageReport}"
+								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+								rowsPerPageTemplate="10,15,20" rows="10" paginatorPosition="top"
+								scrollWidth="435" styleClass="ui-datatable-hor-scroll">
+
+
+								<p:column headerText="Monto Soles">
+									<h:outputText value="#{dcuo.montosoles}" />
+								</p:column>
+
+								<p:column headerText="Monto Dolares">
+									<h:outputText
+										value="#{dcuo.montodolar}" />
+								</p:column>
+								<p:column headerText="Fecha Registro">
+									<h:outputText
+										value="#{dcuo.fecharegistro}" />
+								</p:column>
+								
+
+							</p:dataTable>
+						</div>
+					</h:form>
+				</div>
+				<h:form>
+					<div class="cartera_ColumInfo">
+
+						<div class="paginaInteriorCartera">
+							<div class="subcontenidoCreador_Cabecera" style="width: 172px;">
+
+								<div class="subcontenidoInfo_descripcionTitulo">Usuario
+									Creador</div>
+							</div>
+
+							<div class="subcontenidoInfo_detContenidoNombre"
+								style="width: 180px">
+
+								<div class="detalleTopfiltroDerecha2"
+									style="width: 80px; text-align: right;">
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila1"
+										style="font-size:9pt" value="#{carteraMB.usuariocreador}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila2"
+										value="#{carteraMB.cargo}" />
+									<br />
+									<h:outputText styleClass="subcontenidoInfo_detUsuarioFila3"
+										value="#{carteraMB.fecha}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</div>
+								<div class="iconoUserCreador">
+									<p:graphicImage width="60" height="60"
+										value="../resources/images/usuarios/#{usuarioMB.usuariologueado.rutaimgusr}" />
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+		</div>
+
+	</div>
+</h:body>
+</html>

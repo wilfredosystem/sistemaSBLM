@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<title>SBLM</title>
+</h:head>
+<h:body>
+	<ui:composition template="./paginaMaestra.xhtml">
+		<ui:define name="content">
+
+
+			<div class="contenidoPrincipal_FondoPrincipal">
+
+				<div class="contenidoPrincipal_fondoIdentificador">
+					<!-- TITULO SUBCONTENIDO -->
+					<div class="recaudacion_iconoTitulo"></div>
+					<div class="contenidoPrincipal_SubContenido">
+						<label class="contenidoPrincipal_lblTituloSubContenido">Recaudación/Autoval&uacute;o</label><br />
+						<label class="contenidoPrincipal_lblSubTituloSubContenido">Monitoreo-Recaudación
+							y Autoval&uacute;o</label>
+					</div>
+				</div>
+				<div class="menuAzul_fondoOpciones">
+					<div class="menuAzul_submenuOpciones">
+						<p:commandLink id="idmenuAzul_submenOpc1"
+							onclick="window.location.href='/sistemaSBLM/pages/pgRecaudacionSupervisor.jsf'"
+							styleClass="menuAzul_submenOpc1" oncomplete="tabDerivacion();">
+							<p:graphicImage
+								value="/resources/images/recaudacion/menuAzul_opc1Submenu.png"
+								alt="Bandeja" title="Supervisor" />
+						</p:commandLink>
+						<p:commandLink id="idmenuAzul_submenOpc2"
+							onclick="window.location.href='/sistemaSBLM/pages/pgRecaudacionCobranza.jsf'"
+							styleClass="menuAzul_submenOpc2" oncomplete="tabDerivacion();">
+							<p:graphicImage
+								value="/resources/images/recaudacion/menuAzul_opc2Submenu.png"
+								alt="Cobranzas" title="Recaudacion" />
+						</p:commandLink>
+						<p:commandLink id="idmenuAzul_submenOpc3"
+							onclick="window.location.href='/sistemaSBLM/pages/pgRecaudacionAutovaluo.jsf'"
+							styleClass="menuAzul_submenOpc3" oncomplete="tabDerivacion();">
+							<p:graphicImage
+								value="/resources/images/recaudacion/menuAzul_opc3Submenu.png"
+								alt="Arbitrios" title="Autovaluo" />
+						</p:commandLink>
+
+					</div>
+
+					<div class="menuAzul_submenuItems">
+
+
+						<p:commandLink id="idmenuAzul_arbitriosSubmenu"
+							styleClass="menuAzul_arbitriosSubmenu"
+							oncomplete="tabDerivacion();">
+							<p:graphicImage styleClass="menuAzul_imgsubmenarbitrios"
+								width="22" height="22"
+								value="/resources/images/recaudacion/ico_b.png" alt="arbitrios"
+								title="arbitrios" />
+							<h:outputText
+								style="float:left;margin-left:5px; margin-top:7px;color:white;"
+								value="Arbitrios" />
+						</p:commandLink>
+						<p:commandLink id="idmenuAzul_bandejaSubmenu"
+							onclick="window.location.href='/sistemaSBLM/pages/pgRecaudacionAutovaluo.jsf'"
+							styleClass="menuAzul_bandejaSubmenu"
+							oncomplete="tabDerivacion();">
+							<p:graphicImage styleClass="menuAzul_imgsubmenbandeja"
+								value="/resources/images/recaudacion/menuAzul_bandejaSubmenu.png"
+								alt="Bandeja" title="Bandeja" />
+							<h:outputText style="float:left;margin-left:5px; margin-top:2px;"
+								value="Bandeja" />
+						</p:commandLink>
+
+					</div>
+				</div>
+				<div class="contenidoPrincipal_SubFondo">
+
+					<!-- contenido MODIFICABLE -->
+					<div class="autovaluo_iconoSubTitulo">
+						<h:outputText id="arren_lblSubtituloDesc2"
+							style="float:left;margin-left:48px; margin-top:18px;font-size:10px;"
+							value="Arbitrios" />
+					</div>
+					<div id="arren_lblSubtitulo"
+						class="contenidoPrincipal_subFondo_lblTitulox">
+						<h:outputText style="float:left;margin-left:5px; margin-top:2px;"
+							value="Autovalúo" />
+					</div>
+
+
+					<p:commandLink id="idDivCartas" styleClass="botonActivadoArbitrio"
+						style="background-color: #fed02e;">
+						<div class="btncentrado">Reporte</div>
+					</p:commandLink>
+					<p:commandLink id="idDivRegistro"
+						style="background-color: #fed02e;"
+						styleClass="botonDesactivadoArbitrio"
+						onclick="window.location.href='/sistemaSBLM/pages/pgRecaudacionAutovaluoRegistroCarta.jsf'"
+						oncomplete="tabRegistro_recauAutovaluoArbitrio();">
+						<div class="btncentrado">Cartas</div>
+					</p:commandLink>
+					<p:commandLink id="idDivReporte"
+						styleClass="botonDesactivadoArbitrio"
+						style="background-color: #ffc600;">
+						<div class="btncentrado">Registro</div>
+					</p:commandLink>
+					<div class="contenidoPrincipal_fondo_formulario">
+						<div class="contenidoPrincipal_ContenedorBlano">
+
+							<!--###################################################################-->
+							<!-- ########################### PANEL  ###################### -->
+							<div id="idpanel_recauAutovaluoRegistro"
+								class="recau_panelPendientes">
+								<h:form >
+								<div class="registroArbitrioCabeceraSubPestania">
+
+									<p:commandLink id="idDivR" styleClass="btnRegistroArbitrio"
+										style="background-color: #4ABBF4;"
+										update=":idTablaConsultaArbitrio:contenido,:idTablaConsultaArbitrio:mensajex"
+										actionListener="#{recaudacionautovaluoarbitrioMB.listarArbitrioConsulta}"
+										oncomplete="subTabConsulta_recauAutovaluo_Arbitrio()">
+										<div class="btncentrado" style="margin-top: 3px;">
+											Consulta
+											<p:graphicImage width="20" height="20"
+												value="../resources/images/recaudacion/autovaluo/buscarRegistro.png" />
+										</div>
+									</p:commandLink>
+									<p:commandLink id="idDiv" styleClass="btnRegistroArbitrio"
+										onclick="subTabRegistro_recauAutovaluo_Arbitrio();">
+										<div class="btncentrado" style="margin-top: 3px;">
+											Registro
+											<p:graphicImage width="20" height="20"
+												value="../resources/images/recaudacion/autovaluo/nuevoregistro.png" />
+										</div>
+									</p:commandLink>
+
+								</div>
+								</h:form>
+								<div id="idsubpanel_recauAutovaluoRegistro" style="margin-left:30px;">
+									<h:form id="formPanelRegistroArbitrio">
+
+										<div class="registroArbitrioSubPestaniaIzquierdo">
+											<h:panelGrid columns="1">
+												<h:panelGrid columns="2">
+													<h:outputText value="Cabecera" />
+												</h:panelGrid>
+												<h:panelGrid columns="2">
+													<h:outputText value="Registro de Arbitrio" />
+													<p:commandLink oncomplete="iddlgListaUpa.show();">
+													<p:graphicImage width="20" height="20"
+														value="/resources/images/upa/verInmueble.png" 
+														alt="Nuevo" title="limpiar" style="margin-left:10px;" /> 
+													</p:commandLink>
+												</h:panelGrid>
+
+											</h:panelGrid>
+											<p:spacer height="20" />
+											<h:panelGrid columns="2" style="height:45px;">
+												<h:panelGrid columns="1">
+													<h:outputText value="Clave Upa" style="color: #4C4C4C;font-size:13px;"/>
+													<h:outputText id="idclave" style="width:200px;"
+														value="#{recaudacionautovaluoarbitrioMB.contratoSeleccionado.upa.idupa}" />
+												</h:panelGrid>
+
+											</h:panelGrid>
+
+											<h:panelGrid id="locacion" columns="3" style="height:45px;">
+												<h:panelGrid columns="1">
+													<h:outputText value="Departamento" style="color: #4C4C4C;font-size:13px;"/>
+													<h:outputText style="width: 150px;  font-size: 11px;"
+														id="cbxLstDptos" readonly="true"
+														value="#{recaudacionautovaluoarbitrioMB.contratoSeleccionado.upa.inmueble.ubigeo.depa}">
+													</h:outputText>
+
+												</h:panelGrid>
+
+												<h:panelGrid columns="1" style="margin-left:20px;">
+													<h:outputText value="Provincia" style="color: #4C4C4C;font-size:13px;" />
+
+													<h:outputText id="idcomboprovincia" readonly="true"
+														style="width: 150px;  font-size: 11px;"
+														value="#{recaudacionautovaluoarbitrioMB.contratoSeleccionado.upa.inmueble.ubigeo.prov}">
+													</h:outputText>
+												</h:panelGrid>
+
+												<h:panelGrid columns="1" style="margin-left:30px;">
+													<h:outputText value="Distrito" style="color: #4C4C4C;font-size:13px;" />
+													<h:outputText id="idcombodistrito" readonly="true"
+														style="width: 150px;  font-size: 11px;"
+														value="#{recaudacionautovaluoarbitrioMB.contratoSeleccionado.upa.inmueble.ubigeo.dist}">
+													</h:outputText>
+												</h:panelGrid>
+
+
+											</h:panelGrid>
+
+
+											<h:panelGrid columns="3" style="height:45px;">
+												<h:panelGrid columns="1" style="margin-left:0px;">
+													<h:outputText value="Dirección" style="color: #4C4C4C;font-size:13px;"/>
+													<h:outputText id="idintdtostand" style="width:300px;" readonly="true"
+														value="#{recaudacionautovaluoarbitrioMB.contratoSeleccionado.upa.inmueble.direccion}" />
+												</h:panelGrid>
+
+											</h:panelGrid>
+
+											<h:panelGrid columns="3" style="height:45px;">
+												<h:panelGrid columns="1">
+													<h:outputText value="Uso:" style="color: #4C4C4C;font-size:13px;"/>
+													<h:outputText id="idcombouso"
+														style="width: 120px;  font-size: 11px;" readonly="true"
+														value="#{recaudacionautovaluoarbitrioMB.contratoSeleccionado.upa.uso.descripcion}">
+
+													</h:outputText>
+
+												</h:panelGrid>
+												<h:panelGrid columns="1" style="margin-left:90px;">
+													<h:outputText value="Moneda" style="color: #4C4C4C;font-size:13px;" />
+													<p:selectOneMenu id="idcombomoneda"
+														style="width: 60px;  font-size: 11px;"
+														value="#{recaudacionautovaluoarbitrioMB.arbitrio.moneda}">
+
+														<f:selectItem itemLabel="S/" itemValue="false" />
+														<f:selectItem itemLabel="$" itemValue="true" />
+													</p:selectOneMenu>
+
+												</h:panelGrid>
+												<h:panelGrid columns="1" style="margin-left:30px;">
+													<h:outputText value="Monto a Pagar" style="color: #4C4C4C;font-size:13px;" />
+													<h:inputText id="idmonto" style="width:120px;"
+														value="#{recaudacionautovaluoarbitrioMB.arbitrio.monto}" />
+												</h:panelGrid>
+											</h:panelGrid>
+
+											<h:panelGrid columns="3" style="height:45px;">
+												<h:panelGrid columns="1">
+													<h:outputText value="Inquilino:" style="color: #4C4C4C;font-size:13px;"/>
+
+													<h:outputText id="idCajaInquilino" style="width:150px;" readonly="true"
+														value="#{recaudacionautovaluoarbitrioMB.contratoSeleccionado.inquilino.nombrescompletos}"
+														effect="fade">
+													</h:outputText>
+												</h:panelGrid>
+
+											</h:panelGrid>
+
+											<br />
+											
+											<p:commandButton value="Guardar" style="margin-left:3px;"
+												onclick="validacionRecaudacionArbitrio();" />
+										<p:growl id="growlGrabadoExitoso" showDetail="true" sticky="true" />
+
+										</div>
+										
+										<p:dialog header="Seleccione Upa" id="iddlgListaUpa"
+											width="655" height="300" closable="true" closeOnEscape="true"
+											resizable="false" widgetVar="iddlgListaUpa" modal="true"
+											style="border-width:9px;border-style:solid;  border-color:#ffc600; ">
+
+											<p:dataTable var="detall"
+												value="#{recaudacionautovaluoarbitrioMB.listaContratos}"
+												emptyMessage="No existe  ningún arbitrios registrados"
+												style="width:625px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+												styleClass="ui-datatable-hor-scroll"
+												rowKey="#{detall.idcontrato}" rowIndexVar="row"
+												selection="#{recaudacionautovaluoarbitrioMB.contratoSeleccionado}"
+												selectionMode="single" paginator="true">
+												<p:ajax event="rowSelect" oncomplete="iddlgListaUpa.hide();"
+													update=":formPanelRegistroArbitrio" />
+												<!-- 															        <p:column headerText="Clave">   -->
+												<!-- 															            <h:outputText value="#{detall.clave}" />   -->
+												<!-- 															        </p:column> -->
+
+												<p:column headerText="DEPARTAMENTO">
+													<h:outputText value="#{detall.upa.inmueble.ubigeo.depa}" />
+												</p:column>
+
+												<p:column headerText="PROVINCIA">
+													<h:outputText value="#{detall.upa.inmueble.ubigeo.prov}" />
+												</p:column>
+
+												<p:column headerText="DISTRITO">
+													<h:outputText value="#{detall.upa.inmueble.ubigeo.dist}" />
+												</p:column>
+
+												<p:column headerText="Dirección"
+													filterBy="#{detall.upa.direccion}"
+													filterMatchMode="contains">
+													<h:outputText value="#{detall.upa.inmueble.direccion}" />
+												</p:column>
+
+												<p:column headerText="Inquilino"
+													filterBy="#{detall.inquilino.nombrescompletos}"
+													filterMatchMode="contains">
+													<h:outputText value="#{detall.inquilino.nombrescompletos}" />
+												</p:column>
+
+												<p:column headerText="Uso"
+													filterBy="#{detall.upa.uso.descripcion}"
+													filterMatchMode="contains">
+													<h:outputText value="#{detall.upa.uso.descripcion}" />
+												</p:column>
+
+											</p:dataTable>
+										</p:dialog>
+									</h:form>
+									<h:form>
+										<p:confirmDialog id="dialoGuardar" header="SBLM"
+											severity="alert" message="Está seguro de guardar arbitrio"
+											widgetVar="widgetDlgConfirmGuardarArbitrio">
+
+											<center>
+												<p:commandButton id="btnGrabar" value="Aceptar"
+													actionListener="#{recaudacionautovaluoarbitrioMB.grabarCabeceraArbitrio}"
+													oncomplete="widgetDlgConfirmGuardarArbitrio.hide();"
+													update=":formPanelRegistroArbitrio,:idTablaConsultaArbitrio:contenido,:formFichero:smallCarousel">
+												</p:commandButton>
+												<p:spacer width="10" />
+												<p:commandButton value="Cancelar"
+													onclick="widgetDlgConfirmGuardarArbitrio.hide()" />
+											</center>
+										</p:confirmDialog>
+									</h:form>
+									<h:form id="formFichero">
+
+										<div class="registroArbitrioSubPestaniaDerecho">
+											<p:outputPanel
+												style="visibility: #{recaudacionautovaluoarbitrioMB.usuarioCreador.rutaimgusr==null ? 'hidden' : 'visible'}">
+												<div class="paginaInteriorArbitrios">
+													<div class="subcontenidoCreador_Cabecera">
+
+														<div class="subcontenidoInfo_descripcionTitulo">
+															Usuario Creador</div>
+													</div>
+
+													<div class="subcontenidoInfo_detContenidoNombre">
+														<div class="subcontenidoInfo_Arbitrio_nombres">
+															<h:outputText
+																styleClass="subcontenidoInfo_detUsuarioFila2"
+																value="#{recaudacionautovaluoarbitrioMB.usuarioCreador.nombres} #{recaudacionautovaluoarbitrioMB.usuarioCreador.apellidopat}" />
+
+														</div>
+
+														<div class="subcontenidoInfo_Arbitrio_foto">
+															<p:graphicImage width="30" height="30"
+																value="../resources/images/usuarios/#{recaudacionautovaluoarbitrioMB.usuarioCreador.rutaimgusr}" />
+														</div>
+
+
+														<h:outputText
+															styleClass="subcontenidoInfo_detUsuarioFila3"
+															style="margin-left:64px;"
+															value="#{recaudacionautovaluoarbitrioMB.arbitrio.fechacreacion}">
+															<f:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText>
+
+													</div>
+
+
+												</div>
+											</p:outputPanel>
+
+
+											<div style="margin-left: 45px;">
+												<div style="width: 150px; height: 20px; font-size: 10px;">
+													<div style="text-align: right; margin-left: 0px;">
+														Agregar Carta
+														<p:commandLink>
+															<p:graphicImage width="20" height="20"
+																value="/resources/images/recaudacionarbitrios/agregar.png"
+																alt="Nuevo" title="limpiar"
+																onclick="openUploadFileDialogue();" />
+														</p:commandLink>
+													</div>
+												</div>
+
+												<p:carousel id="smallCarousel"
+													value="#{recaudacionautovaluoarbitrioMB.displayList}"
+													var="varFile" styleClass="yourCarouselSelectorArbitrio"
+													circular="true" headerText="Cartas"
+													itemStyleClass="cuerpoCarruselArbitrio"
+													style="margin-top:22px;height:80px; width:106px;"
+													numVisible="4">
+													<h:panelGrid columns="1" cellpadding="5">
+														<p:commandLink
+															rendered="#{varFile.extensionarchivo.rutaIcono=='blank.jpg' ? 'false':'true'}">
+															<p:graphicImage width="25" height="25"
+																id="idNotificaciones"
+																value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+														</p:commandLink>
+
+														<p:commandLink title="Eliminar de lista"
+															rendered="#{varFile.extensionarchivo.rutaIcono=='blank.jpg' ? 'false':'true'}"
+															style="float:left;"
+															action="#{recaudacionautovaluoarbitrioMB.eliminarArchivodeLista}"
+															update="smallCarousel">
+															<p:graphicImage id="idNotificacioness" width="15"
+																height="15" value="../resources/icons/trash.png" />
+															<f:setPropertyActionListener value="#{varFile}"
+																target="#{recaudacionautovaluoarbitrioMB.archivoDelete}" />
+														</p:commandLink>
+
+														<p:tooltip for="idNotificaciones" value="#{varFile.ruta}"
+															showEffect="slide" hideEffect="slide" />
+
+													</h:panelGrid>
+												</p:carousel>
+
+
+											</div>
+										</div>
+
+
+
+
+										<p:growl id="idfileupload" showDetail="true" sticky="true" />
+										<p:fileUpload update="smallCarousel,idfileupload"
+											fileUploadListener="#{recaudacionautovaluoarbitrioMB.cargarArchivo}"
+											style="visibility:hidden; width:0px;height:0px;"
+											mode="advanced" auto="true" sizeLimit="100000000"
+											allowTypes="/(\.|\/)(gif|jpe?g|dwg|exe|7z|bpm|fla|html|swf|tgz|tif|png|xlsx|xls|doc|docx|txt|avi|mp3|mpeg|ppt|pptx|rar|zip|pdf|ppt|pptx)$/">
+										</p:fileUpload>
+
+									</h:form>
+
+
+
+
+
+									<div class="registroArbitrioSubPestaniaInferior"
+										style="font-size: 10px;">
+										<h:form id="idTablaArbitrio">
+
+											<div style="text-align: center; margin: 20px;">
+
+												<div style="text-align: right;">
+													Agregar Pago
+													<p:growl id="growlAgregarpago" showDetail="true"
+														sticky="true" />
+													<p:commandLink
+														action="#{recaudacionautovaluoarbitrioMB.validarIdArbitrioSeleccionado}"
+														update="growlAgregarpago">
+														<p:graphicImage width="20" height="20"
+															value="/resources/images/recaudacionarbitrios/agregar.png"
+															alt="Nuevo" title="limpiar" />
+													</p:commandLink>
+												</div>
+
+
+
+												<br />
+
+												<p:dataTable var="detall"
+													value="#{recaudacionautovaluoarbitrioMB.listadetalleArbitrio}"
+													emptyMessage="No existe  ningún pago registrado"
+													style="text-align: center;" rowIndexVar="row">
+
+													<p:column headerText="N°">
+														<h:outputText value="#{row + 1}" />
+													</p:column>
+
+													<p:column headerText="Monto Pagado">
+
+														<h:outputText value="#{detall.montopagado}" />
+													</p:column>
+
+													<p:column headerText="Año">
+														<h:outputText value="#{detall.periodoanio}" />
+													</p:column>
+
+													<p:column headerText="Periodo">
+														<h:outputText value="#{detall.periodo}" />
+													</p:column>
+
+													<p:column headerText="F. Registro">
+														<h:outputText value="#{detall.fecharegistro}">
+															<f:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText>
+													</p:column>
+												</p:dataTable>
+											</div>
+										</h:form>
+
+
+
+									</div>
+
+
+
+
+									<h:form id="formDialogoPago">
+
+										<p:dialog header="Ingrese detalle de pago"
+											id="iddlgDetallePago" width="450" height="300"
+											closable="true" closeOnEscape="true" resizable="false"
+											widgetVar="dlgDetallePago" modal="true"
+											style="border-width:10px;border-style:solid;  border-color:#ffc600; margin:15px;">
+
+											<div
+												style="width: 430px; height: 280px; background-color: white;">
+												<br />
+												<h:panelGrid columns="1">
+													<p:row>
+
+														<h:outputText value="Moneda" />
+														<h:outputText value="Monto" style="margin-left:45px;" />
+													</p:row>
+
+													<p:row>
+														<h:selectOneMenu id="idcombomoneda"
+															style="width: 60px;  font-size: 11px; "
+															value="#{recaudacionautovaluoarbitrioMB.detalleArbitrio.moneda}">
+															<f:selectItem itemLabel="S/" itemValue="false" />
+															<f:selectItem itemLabel="$" itemValue="true" />
+														</h:selectOneMenu>
+														<h:inputText style="width:100px;margin-left:30px; "
+															value="#{recaudacionautovaluoarbitrioMB.detalleArbitrio.montopagado}" />
+
+													</p:row>
+
+												</h:panelGrid>
+												<br />
+
+												<h:panelGrid columns="1">
+													<h:outputText value="Fecha Pago:" />
+													<p:calendar styleClass="styleWidthCalendar"
+														value="#{recaudacionautovaluoarbitrioMB.detalleArbitrio.fecharegistro}" />
+												</h:panelGrid>
+
+												<br />
+
+												<h:panelGrid columns="1">
+													<h:outputText value="Periodo de Pago:" />
+												</h:panelGrid>
+
+												<h:panelGrid columns="6">
+
+													<p:selectOneMenu style="width:100px;margin-left:10px;"
+														value="#{recaudacionautovaluoarbitrioMB.detalleArbitrio.periodoinicial}">
+														<f:selectItems
+															value="#{recaudacionautovaluoarbitrioMB.listameses}" />
+													</p:selectOneMenu>
+													<h:outputText style="margin-left:10px;" value="al" />
+													<p:selectOneMenu style="width:100px;margin-left:10px;"
+														value="#{recaudacionautovaluoarbitrioMB.detalleArbitrio.periodofinal}">
+														<f:selectItems
+															value="#{recaudacionautovaluoarbitrioMB.listameses}" />
+													</p:selectOneMenu>
+													<h:outputText style="margin-left:10px;" value="del" />
+
+													<p:selectOneMenu style="width:80px;margin-left:10px;"
+														value="#{recaudacionautovaluoarbitrioMB.detalleArbitrio.periodoanio}">
+														<f:selectItems
+															value="#{recaudacionautovaluoarbitrioMB.listAnio}" />
+													</p:selectOneMenu>
+													<div style="width: 20px;"></div>
+												</h:panelGrid>
+
+												<br />
+
+												<h:panelGrid columns="1">
+													<h:outputText value="Observaciones:" />
+													<h:inputText style="width:400px;"
+														value="#{recaudacionautovaluoarbitrioMB.detalleArbitrio.observacion}" />
+												</h:panelGrid>
+												<br />
+
+												<p:commandButton style="margin-left:345px;" value="Enviar"
+													oncomplete="widgetDlgConfirmGuardarDetalleArbitrio.show();" />
+
+											</div>
+
+										</p:dialog>
+
+										<p:growl id="growlGrabadoDetalleExitoso" showDetail="true"
+											sticky="true" />
+										<p:confirmDialog id="dialoGuardar" header="SBLM"
+											severity="alert"
+											message="Está seguro de agregar pago para el arbitrio"
+											widgetVar="widgetDlgConfirmGuardarDetalleArbitrio">
+
+											<center>
+												<p:commandButton id="btnGrabar" value="Aceptar"
+													actionListener="#{recaudacionautovaluoarbitrioMB.grabarDetalleArbitrio}"
+													oncomplete="widgetDlgConfirmGuardarDetalleArbitrio.hide();"
+													update="growlGrabadoDetalleExitoso,:idTablaArbitrio,:formDialogoPago:iddlgDetallePago,:idTablaConsultaArbitrio:contenido">
+												</p:commandButton>
+												<p:spacer width="10" />
+												<p:commandButton value="Cancelar"
+													onclick="widgetDlgConfirmGuardarDetalleArbitrio.hide()" />
+											</center>
+										</p:confirmDialog>
+									</h:form>
+								</div>
+
+								<div id="idsubpanel_recauAutovaluoConsultaArbitrio">
+
+									<div style="margin-left: 20px; margin-top: 40px;">
+										<h:panelGrid columns="1">
+											<h:panelGrid columns="2">
+												<h:outputText value="Consulta" />
+											</h:panelGrid>
+											<h:panelGrid columns="2">
+												<h:outputText value="Reporte General" />
+
+											</h:panelGrid>
+
+										</h:panelGrid>
+										<p:spacer height="20" />
+										
+									</div>
+
+
+
+									<h:form id="idTablaConsultaArbitrio">
+										<p:growl id="mensajex" showDetail="true" 
+											sticky="true" />
+										<div class="exportarArbitrio">
+											<h:commandLink
+												actionListener="#{recaudacionautovaluoarbitrioMB.Excel}">
+												<p:graphicImage value="/resources/icons/tipoArchivo/xls.png" />
+											</h:commandLink>
+
+											<h:commandLink
+												actionListener="#{recaudacionautovaluoarbitrioMB.PDF}">
+												<p:graphicImage value="/resources/icons/tipoArchivo/pdf.png" />
+											</h:commandLink>
+
+										</div>
+
+
+										<div
+											style="text-align: center; margin: 10px; font-size: 10px;">
+
+
+											<p:dataTable id="contenido" var="detall"
+												value="#{recaudacionautovaluoarbitrioMB.listaArbitriosConsulta}"
+												emptyMessage="No existe  ningún arbitrios registrados"
+												style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;text-aling:center;"
+												styleClass="ui-datatable-hor-scroll"
+												rowKey="#{detall.idarbitrio}" rowIndexVar="row"
+												paginator="true"
+												filteredValue="#{recaudacionautovaluoarbitrioMB.listafiltroArbitriosConsulta}">
+
+												<p:column headerText="N°">
+													<h:outputText value="#{row + 1}" />
+												</p:column>
+
+												<p:column headerText="Clave">
+													<h:outputText value="#{detall.clave}" />
+												</p:column>
+
+												<p:column headerText="Inquilino"
+													filterBy="#{detall.contrato.inquilino.nombrescompletos}"
+													filterMatchMode="contains">
+													<h:outputText
+														value="#{detall.contrato.inquilino.nombrescompletos}" />
+												</p:column>
+
+												<p:column headerText="Dirección">
+													<h:outputText value="#{detall.contrato.upa.inmueble.direccion}" />
+												</p:column>
+
+												<p:column headerText="Distrito">
+													<h:outputText value="#{detall.contrato.upa.inmueble.ubigeo.dist}" />
+												</p:column>
+
+												<p:column headerText="Provincia">
+													<h:outputText value="#{detall.contrato.upa.inmueble.ubigeo.prov}" />
+												</p:column>
+
+												<p:column headerText="Departamento">
+													<h:outputText value="#{detall.contrato.upa.inmueble.ubigeo.depa}" />
+												</p:column>
+
+												<p:column headerText="TOTAL">
+													<h:outputText value="#{detall.total}" />
+												</p:column>
+
+												<!-- 															        <p:column headerText="F. Registro">   -->
+												<!-- 															            <h:outputText value="#{detall.fecharegistro}" />   -->
+												<!-- 															        </p:column> -->
+
+												<p:column width="30">
+													<p:commandButton icon="ui-icon-search"
+														actionListener="#{recaudacionautovaluoarbitrioMB.obtenerArbitrio(detall.idarbitrio)}"
+														onclick="subTabRegistro_recauAutovaluoArbitrio();"
+														update=":formPanelRegistroArbitrio,:idTablaArbitrio,:formFichero"
+														title="Ver">
+													</p:commandButton>
+												</p:column>
+											</p:dataTable>
+										</div>
+									</h:form>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

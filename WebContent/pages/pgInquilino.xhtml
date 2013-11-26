@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<link href="../resources/css/estilox.css" rel="stylesheet"
+		type="text/css" />
+
+	<title>SBLM-SOCIEDAD DE BENEFICIANCIA DE LIMA METROPOLITANA x</title>
+</h:head>
+<h:body>
+
+	<ui:composition template="./paginaMaestra.xhtml">
+		<ui:define name="content">
+
+
+
+			<div class="contenidoPrincipal_FondoPrincipal">
+
+				<div class="contenidoPrincipal_fondoIdentificador">
+					<!-- TITULO SUBCONTENIDO -->
+					<div class="inmueble_IconoIdentificador"></div>
+					<div class="contenidoPrincipal_SubContenido">
+						<label class="contenidoPrincipal_lblTituloSubContenido">MANTENIMIENTOS</label><br />
+						<label class="contenidoPrincipal_lblSubTituloSubContenido">Inquilinos</label>
+					</div>
+				</div>
+				<div class="contenidoPrincipal_SubFondo">
+					<!-- CONTENIDO MODIFICABLE -->
+					<div class="inmueble_subFondo_Icono"></div>
+					<div id="lblSubtitulo"
+						class="contenidoPrincipal_subFondo_lblTitulox">Datos
+						Generales</div>
+
+					<p:commandLink id="idGeneralInqui" styleClass="btnDerivacion"
+						onclick="tabGeneralInqui();">
+						<div class="btncentrado">Generales</div>
+					</p:commandLink>
+					<p:commandLink id="idAdicionalInqui" styleClass="btnDespacho"
+						onclick="tabAdicionalInqui();"
+						actionListener="#{inquilinoMB.cargarUltimoregistro}"
+						update=":frmAdicional,:frmTablaAdicional:dtbAdicional">
+						<div class="btncentrado">Adicionales</div>
+					</p:commandLink>
+					<p:commandLink id="idCalificaInqui" styleClass="btnConsultas"
+						onclick="tabCalificaInqui();"
+						actionListener="#{inquilinoMB.cargarUltimoregistro}"
+						update=":frmCalifica,:frmTablaCalifica:dtbCalifica">
+						<div class="btncentrado">Califica</div>
+					</p:commandLink>
+
+
+					<div class="contenidoPrincipal_fondo_formulario">
+						<div class="dgaiMonitoreo_Contenido">
+
+
+
+
+							<!-- PANEL GENERAL -->
+
+
+							<div id="idDivGeneralInqui" class="recau_panelPendientes">
+								<h:form>
+									<div class="filaBtnNuevo">
+										<p:commandLink actionListener="#{inquilinoMB.limpiarCampos}"
+											style="margin-right:20px;" update=":frmGeneral">
+											<p:graphicImage
+												value="/resources/images/perfil/nuevo_mas.png"
+												alt="Limpiar formulario" title="limpiar" />
+										</p:commandLink>
+									</div>
+								</h:form>
+								<h:form id="frmGeneral">
+									<p:growl id="msjgeneral" showDetail="true" sticky="false"
+										life="4000" />
+
+									<div class="mante_gene_ContDescrip01">
+										<div class="inqui_contenidoDatos">
+											<div class="inqui_ColumDatos">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Tipo de Persona(*):" />
+													<p:selectOneMenu styleClass="cbxDatos"
+														id="inquiTipoPersona" onchange="limpiarvalidacion()"
+														style="width: 188px;  font-size: 11px;"
+														value="#{inquilinoMB.inquilino.tipopersona.idtipopersona}">
+														<f:selectItem itemLabel="Seleccione Tipo Persona"
+															itemValue="0" />
+														<f:selectItems value="#{inquilinoMB.listaTipoPersona}"
+															var="tp" itemLabel="#{tp.descripcion}"
+															itemValue="#{tp.idtipopersona}">
+														</f:selectItems>
+													</p:selectOneMenu>
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Tipo de Entidad (*):" />
+													<p:selectOneMenu styleClass="cbxDatos"
+														id="inquiTipoEntidad" onchange="limpiarvalidacion()"
+														style="width: 188px;  font-size: 11px;"
+														value="#{inquilinoMB.inquilino.tipoentidad.idtipoentidad}">
+														<f:selectItem itemLabel="Seleccione Tipo Entidad"
+															itemValue="0" />
+														<f:selectItems value="#{inquilinoMB.listaTipoEntidad}"
+															var="te" itemLabel="#{te.descripcion}"
+															itemValue="#{te.idtipoentidad}">
+														</f:selectItems>
+													</p:selectOneMenu>
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Razon Social:" />
+													<p:inputText styleClass="txtDatos" id="inquiRazonSocial"
+														value="#{inquilinoMB.inquilino.razonsocial}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Apellido Paterno(*):" />
+													<p:inputText styleClass="txtDatos" id="inquiApPaterno"
+														value="#{inquilinoMB.inquilino.apellidopat}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Apellido Materno(*):" />
+													<p:inputText styleClass="txtDatos" id="inquiApMaterno"
+														value="#{inquilinoMB.inquilino.apellidomat}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Nombres(*):" />
+													<p:inputText styleClass="txtDatos" id="inquiNombres"
+														value="#{inquilinoMB.inquilino.nombre}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="DNI(*):" />
+													<p:inputText styleClass="txtDatos" id="inquiDni"
+														maxlength="8" value="#{inquilinoMB.inquilino.dni}">
+														<p:ajax event="blur"
+															listener="#{inquilinoMB.validarRepetido(inquilinoMB.inquilino.dni)}"
+															update=":frmCalifica:msjTecnico" />
+													</p:inputText>
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Carnet extranjeria:" />
+													<p:inputText styleClass="txtDatos" id="inquiCarnetEx"
+														value="#{inquilinoMB.inquilino.carnetextranjeria}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="R.U.C.:" />
+													<p:inputText styleClass="txtDatos" id="inquiRuc"
+														value="#{inquilinoMB.inquilino.ruc}" />
+												</div>
+											</div>
+											<div class="inqui_ColumInfo">
+												<div class="columFile">
+													<div class="u_buttonUpload">
+
+														<div style="width: 50px; height: 20px">
+
+															<p:fileUpload styleClass="ui-fileupload"
+																update="smallCarousel" style="visibility:hidden"
+																fileUploadListener="#{inquilinoMB.cargadoArchivo}"
+																mode="advanced" auto="true" sizeLimit="100000000"
+																label=""
+																allowTypes="/(\.|\/)(gif|jpe?g|dwg|exe|7z|bpm|fla|html|swf|tgz|tif|png|xlsx|xls|doc|docx|txt|avi|mp3|mpeg|ppt|pptx|rar|zip|pdf|ppt|pptx)$/">
+															</p:fileUpload>
+														</div>
+													</div>
+													<p:commandLink>
+														<p:graphicImage id="idImagenUsuario" width="106"
+															height="18"
+															value="../resources/images/inmueble/upload.png"
+															onclick="openUploadFileDialogue();" />
+													</p:commandLink>
+
+												</div>
+												<div class="columCarrusel">
+													<p:carousel id="smallCarousel"
+														value="#{inquilinoMB.aaMB.displayList}" var="varFile"
+														circular="true" style="height:80px; width:162px;"
+														itemStyleClass="cuerpoCarrusel" numVisible="3">
+														<h:panelGrid columns="2" cellpadding="5"
+															style="text-align: center;">
+															<p:commandLink
+																rendered="#{varFile.extensionarchivo.rutaIcono=='vacio.png' ? 'false':'true'}"
+																actionListener="#{archivoadjuntoMB.descargarArchivo(varFile)}"
+																ajax="false" immediate="true">
+																<p:graphicImage id="idNotificaciones"
+																	style="float:left;"
+																	value="../resources/icons/tipoArchivo/#{varFile.extensionarchivo.rutaIcono}" />
+
+																<p:fileDownload value="#{archivoadjuntoMB.filedownload}" />
+
+
+															</p:commandLink>
+															<p:commandLink title="Eliminar de lista"
+																rendered="#{varFile.extensionarchivo.rutaIcono=='vacio.png' ? 'false':'true'}"
+																style="float:left;"
+																action="#{inquilinoMB.aaMB.eliminarArchivodeLista}"
+																update="smallCarousel">
+
+																<p:graphicImage id="idNotificacioness" width="15"
+																	style="float:left; margin-bottom:15px;" height="15"
+																	value="../resources/icons/trash.png" />
+																<f:setPropertyActionListener value="#{varFile}"
+																	target="#{inquilinoMB.aaMB.archivoDelete}" />
+															</p:commandLink>
+
+															<p:tooltip for="idNotificaciones" value="#{varFile.ruta}"
+																showEffect="slide" hideEffect="slide" />
+														</h:panelGrid>
+													</p:carousel>
+
+												</div>
+
+											</div>
+										</div>
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera" value="Domicilio" />
+										</div>
+										<div class="filaDatoLargo">
+											<div class="columLargo">
+												<h:outputText class="lblDatos" value="Direcci&oacute;n(*):" />
+												<p:inputText styleClass="txtDatosLargo" id="inquiDireccion"
+													value="#{inquilinoMB.inquilino.direccion}" />
+											</div>
+										</div>
+										<div class="filaDatoLargo">
+											<div class="columLargo">
+												<h:outputText class="lblDatos" value="Referencia:" />
+												<p:inputText styleClass="txtDatosLargo" id="inquiReferencia"
+													value="#{inquilinoMB.inquilino.referencia}" />
+											</div>
+										</div>
+										<br />
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera"
+												value="Ubicaci&oacute;n Geografica" />
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Departamento(*):" />
+												<p:selectOneMenu styleClass="cbxDatos"
+													onchange="limpiarvalidacion()"
+													style="width: 188px;  font-size: 11px;" id="cbxLstDptos"
+													value="#{inquilinoMB.inquilino.dpto}">
+													<f:selectItem itemLabel="Seleccione Departamento"
+														itemValue="0" />
+													<f:selectItems value="#{inmuebleMB.listaDptos}" var="dpto"
+														itemLabel="#{dpto}" itemValue="#{dpto}">
+													</f:selectItems>
+													<p:ajax listener="#{inquilinoMB.cargarComboProvincias}"
+														update=":frmGeneral:cbxLstProvincias" />
+												</p:selectOneMenu>
+											</div>
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Provincia(*):" />
+												<p:selectOneMenu styleClass="cbxDatos"
+													onchange="limpiarvalidacion()"
+													style="width: 188px;  font-size: 11px;"
+													id="cbxLstProvincias"
+													value="#{inquilinoMB.inquilino.provincia}">
+													<f:selectItem itemLabel="Seleccione provincia"
+														itemValue="0" />
+													<f:selectItems value="#{inmuebleMB.listaProvincias}"
+														var="provi" itemLabel="#{provi}" itemValue="#{provi}">
+													</f:selectItems>
+													<p:ajax listener="#{inquilinoMB.cargarComboDistritos}"
+														update=":frmGeneral:cbxLstDistritos" />
+												</p:selectOneMenu>
+											</div>
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Distrito(*):" />
+												<p:selectOneMenu styleClass="cbxDatos"
+													onchange="limpiarvalidacion()"
+													style="width: 188px;  font-size: 11px;"
+													id="cbxLstDistritos"
+													value="#{inquilinoMB.inquilino.distrito}">
+													<f:selectItem itemLabel="Seleccione distrito" itemValue="0" />
+													<f:selectItems value="#{inmuebleMB.listaDistritos}"
+														var="distri" itemLabel="#{distri}" itemValue="#{distri}">
+													</f:selectItems>
+
+												</p:selectOneMenu>
+											</div>
+											<div class="filaDatoLargosCorto"></div>
+										</div>
+										<br />
+										<p:separator />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												oncomplete="validacioGeneralInqui();" />
+										</div>
+									</div>
+								</h:form>
+								<h:form id="frmdlgGuardarInquilinoGeneral">
+									<p:confirmDialog message="¿Desea Guardar Inquilino?"
+										header="Registro Inquilino" severity="alert"
+										widgetVar="dlgRegistrarInquilinoGeneral">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmTablaGeneral:dtbGeneralInqui, :frmGeneral"
+											actionListener="#{inquilinoMB.registrarInquilino}"
+											oncomplete="dlgRegistrarInquilinoGeneral.hide()"
+											image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar" update=":frmGeneral "
+											oncomplete="dlgRegistrarInquilinoGeneral.hide()"
+											image="icon-cancel" />
+
+									</p:confirmDialog>
+								</h:form>
+								<h:form id="frmTablaGeneral">
+									<div class="dgaiMonitoreo_detalle">
+										<p:dataTable id="dtbGeneralInqui" var="inqui"
+											value="#{inquilinoMB.inquilinos}"
+											rowKey="#{inqui.idinquilino}"
+											selection="#{inquilinoMB.inquilino}" selectionMode="single"
+											stickyHeader="true" paginator="true"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+											styleClass="ui-datatable-hor-scroll">
+											<p:ajax event="rowSelect"
+												listener="#{inquilinoMB.onRowSelect}" update=":frmGeneral" />
+											<p:column headerText="Tipo Persona">
+												<h:outputText value="#{inqui.tipopersona.descripcion}" />
+											</p:column>
+
+											<p:column headerText="Tipo Entidad">
+												<h:outputText value="#{inqui.tipoentidad.descripcion}" />
+											</p:column>
+
+											<p:column headerText="Razon Social">
+												<h:outputText value="#{inqui.razonsocial}" />
+											</p:column>
+											<p:column headerText="Apellido Paterno">
+												<h:outputText value="#{inqui.apellidopat}" />
+											</p:column>
+											<p:column headerText="Apellido Materno">
+												<h:outputText value="#{inqui.apellidomat}" />
+											</p:column>
+											<p:column headerText="Nombres">
+												<h:outputText value="#{inqui.nombre}" />
+											</p:column>
+											<p:column headerText="DNI">
+												<h:outputText value="#{inqui.dni}" />
+											</p:column>
+											<p:column headerText="Carnet extranjeria">
+												<h:outputText value="#{inqui.carnetextranjeria}" />
+											</p:column>
+											<p:column headerText="RUC">
+												<h:outputText value="#{inqui.ruc}" />
+											</p:column>
+											<p:column headerText="Direccion">
+												<h:outputText value="#{inqui.direccion}" />
+											</p:column>
+											<p:column headerText="Referencia">
+												<h:outputText value="#{inqui.referencia}" />
+											</p:column>
+											<p:column headerText="Dpto.">
+												<h:outputText value="#{inqui.dpto}" />
+											</p:column>
+											<p:column headerText="Provincia">
+												<h:outputText value="#{inqui.provincia}" />
+											</p:column>
+											<p:column headerText="Distrito">
+												<h:outputText value="#{inqui.distrito}" />
+											</p:column>
+
+											<p:column headerText="F. Creacion">
+												<h:outputText value="#{inqui.feccre}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario creador">
+												<h:outputText value="#{inqui.usrcre}" />
+											</p:column>
+											<p:column headerText="F. Modificacion">
+												<h:outputText value="#{inqui.fecmod}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario Modificador">
+												<h:outputText value="#{inqui.usrmod}" />
+											</p:column>
+											<p:column width="15">
+												<p:commandButton
+													oncomplete="dlgEliminarInquilinoGeneral.show();"
+													style="margin-left:-4px;" update=":frmGeneral"
+													image="icon-delete" title="Eliminar">
+													<f:setPropertyActionListener value="#{inqui}"
+														target="#{inquilinoMB.inquilinocapturado}" />
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+									</div>
+
+								</h:form>
+								<h:form id="frmEliminarInquilinoGeneral">
+
+									<p:confirmDialog id="dlgEliminar"
+										message="¿Desea eliminar registro de inquilino?"
+										header="Eliminar Inquilino" severity="alert"
+										widgetVar="dlgEliminarInquilinoGeneral">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmTablaGeneral:dtbGeneralInqui, :frmGeneral "
+											actionListener="#{inquilinoMB.eliminarInquilino}"
+											oncomplete="dlgEliminarInquilinoGeneral.hide()"
+											image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar" update=":frmGeneral"
+											oncomplete="dlgEliminarInquilinoGeneral.hide()"
+											image="icon-cancel" />
+
+									</p:confirmDialog>
+								</h:form>
+							</div>
+
+
+							<!-- PANEL ADICIONAL -->
+
+							<div id="idDivAdicionalInqui" class="recau_panelPendientes">
+
+								<h:form id="frmAdicional">
+									<p:growl id="msjRegistral" showDetail="true" sticky="false"
+										life="4000" widgetVar="msjRegistralx" />
+									<div class="mante_gene_ContDescrip01">
+										<div class="inqui_contenidoDatos">
+											<div class="inqui_ColumDatos">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Tipo de Persona:" />
+													<p:selectOneMenu styleClass="cbxDatos"
+														id="inquiTipoPersona" disabled="true"
+														style="width: 188px;  font-size: 11px;"
+														value="#{inquilinoMB.inquilino.tipopersona.idtipopersona}">
+														<f:selectItem itemLabel="Seleccione Tipo Persona"
+															itemValue="0" />
+														<f:selectItems value="#{inquilinoMB.listaTipoPersona}"
+															var="tp" itemLabel="#{tp.descripcion}"
+															itemValue="#{tp.idtipopersona}">
+														</f:selectItems>
+													</p:selectOneMenu>
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Tipo de Entidad:" />
+													<p:selectOneMenu styleClass="cbxDatos"
+														id="inquiTipoEntidad" disabled="true"
+														style="width: 188px;  font-size: 11px;"
+														value="#{inquilinoMB.inquilino.tipoentidad.idtipoentidad}">
+														<f:selectItem itemLabel="Seleccione Tipo Entidad"
+															itemValue="0" />
+														<f:selectItems value="#{inquilinoMB.listaTipoEntidad}"
+															var="te" itemLabel="#{te.descripcion}"
+															itemValue="#{te.idtipoentidad}">
+														</f:selectItems>
+													</p:selectOneMenu>
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Razon Social:" />
+													<p:inputText styleClass="txtDatos" id="inquiRazonSocial"
+														disabled="true"
+														value="#{inquilinoMB.inquilino.razonsocial}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Apellido Paterno:" />
+													<p:inputText styleClass="txtDatos" id="inquiApPaterno"
+														disabled="true"
+														value="#{inquilinoMB.inquilino.apellidopat}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Apellido Materno:" />
+													<p:inputText styleClass="txtDatos" id="inquiApMaterno"
+														disabled="true"
+														value="#{inquilinoMB.inquilino.apellidomat}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Nombres:" />
+													<p:inputText styleClass="txtDatos" id="inquiNombres"
+														disabled="true" value="#{inquilinoMB.inquilino.nombre}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="DNI:" />
+													<p:inputText styleClass="txtDatos" id="inquiDni"
+														disabled="true" value="#{inquilinoMB.inquilino.dni}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Carnet extranjeria:" />
+													<p:inputText styleClass="txtDatos" id="inquiCarnetEx"
+														disabled="true"
+														value="#{inquilinoMB.inquilino.carnetextranjeria}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="R.U.C.:" />
+													<p:inputText styleClass="txtDatos" id="inquiRuc"
+														disabled="true" value="#{inquilinoMB.inquilino.ruc}" />
+												</div>
+											</div>
+											<div class="inqui_ColumInfo"></div>
+										</div>
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera"
+												value="Datos Complementarios" />
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Tel&eacute;fono:" />
+												<p:inputText styleClass="txtDatos" id="inquiTelefono"
+													value="#{inquilinoMB.inquilino.telefono}" />
+											</div>
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Celular:" />
+												<p:inputText styleClass="txtDatos" id="inquiCelular"
+													maxlength="9" value="#{inquilinoMB.inquilino.celular}" />
+											</div>
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos"
+													value="P&aacute;gina Web:" />
+												<p:inputText styleClass="txtDatos" id="inquiWeb"
+													value="#{inquilinoMB.inquilino.paginaweb}" />
+											</div>
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Email:" />
+												<p:inputText styleClass="txtDatos" id="inquiEmail"
+													value="#{inquilinoMB.inquilino.email}" />
+											</div>
+										</div>
+										<br />
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera" value="Estado" />
+										</div>
+
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Estado:" />
+
+												<p:selectOneMenu styleClass="cbxDatos"
+													style="width: 188px;  font-size: 11px;"
+													value="#{inquilinoMB.inquilino.estado}" id="cbxLstEstado">
+													<f:selectItem itemLabel="Seleccione estado" itemValue="0" />
+													<f:selectItem itemLabel="Estado 1" itemValue="Estado 1" />
+													<f:selectItem itemLabel="Estado 2" itemValue="Estado 2" />
+												</p:selectOneMenu>
+
+											</div>
+											<div class="filaDatoLargosCorto">
+
+												<h:outputText class="lblHabilitado" value="Habilitado" />
+												<p:selectBooleanCheckbox styleClass="chkHabilitado"
+													value="#{inquilinoMB.inquilino.opchabilitado}" />
+											</div>
+										</div>
+										<br />
+										<p:separator />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												oncomplete="validacionAdicionalInqui();" />
+										</div>
+									</div>
+								</h:form>
+								<h:form id="frmdlgGuardarInquilinoAdicional">
+									<p:confirmDialog message="¿Desea Guardar Inquilino?"
+										header="Registro Inquilino" severity="alert"
+										widgetVar="dlgRegistrarInquilinoAdicional">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmTablaAdicional:dtbAdicional, :frmAdicional"
+											actionListener="#{inquilinoMB.registrarInquilino}"
+											oncomplete="dlgRegistrarInquilinoAdicional.hide()"
+											image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar"
+											update=":frmAdicional "
+											oncomplete="dlgRegistrarInquilinoAdicional.hide()"
+											image="icon-cancel" />
+
+									</p:confirmDialog>
+								</h:form>
+								<h:form id="frmTablaAdicional">
+									<div class="dgaiMonitoreo_detalle">
+
+										<p:dataTable id="dtbAdicional" var="inqui"
+											value="#{inquilinoMB.inquilinos}"
+											rowKey="#{inqui.idinquilino}"
+											selection="#{inquilinoMB.inquilino}" selectionMode="single"
+											stickyHeader="true" paginator="true"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+											styleClass="ui-datatable-hor-scroll">
+											<p:ajax event="rowSelect"
+												listener="#{inquilinoMB.onRowSelect}" update=":frmAdicional" />
+											<p:column headerText="Tipo Persona">
+												<h:outputText value="#{inqui.tipopersona.descripcion}" />
+											</p:column>
+
+											<p:column headerText="Tipo Entidad">
+												<h:outputText value="#{inqui.tipoentidad.descripcion}" />
+											</p:column>
+
+											<p:column headerText="Razon Social">
+												<h:outputText value="#{inqui.razonsocial}" />
+											</p:column>
+											<p:column headerText="Apellido Paterno">
+												<h:outputText value="#{inqui.apellidopat}" />
+											</p:column>
+											<p:column headerText="Apellido Materno">
+												<h:outputText value="#{inqui.apellidomat}" />
+											</p:column>
+											<p:column headerText="Nombres">
+												<h:outputText value="#{inqui.nombre}" />
+											</p:column>
+											<p:column headerText="DNI">
+												<h:outputText value="#{inqui.dni}" />
+											</p:column>
+											<p:column headerText="Carnet extranjeria">
+												<h:outputText value="#{inqui.carnetextranjeria}" />
+											</p:column>
+											<p:column headerText="RUC">
+												<h:outputText value="#{inqui.ruc}" />
+											</p:column>
+											<p:column headerText="Direccion">
+												<h:outputText value="#{inqui.direccion}" />
+											</p:column>
+											<p:column headerText="Referencia">
+												<h:outputText value="#{inqui.referencia}" />
+											</p:column>
+											<p:column headerText="Dpto.">
+												<h:outputText value="#{inqui.dpto}" />
+											</p:column>
+											<p:column headerText="Provincia">
+												<h:outputText value="#{inqui.provincia}" />
+											</p:column>
+											<p:column headerText="Distrito">
+												<h:outputText value="#{inqui.distrito}" />
+											</p:column>
+
+											<p:column headerText="F. Creacion">
+												<h:outputText value="#{inqui.feccre}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario creador">
+												<h:outputText value="#{inqui.usrcre}" />
+											</p:column>
+											<p:column headerText="F. Modificacion">
+												<h:outputText value="#{inqui.fecmod}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario Modificador">
+												<h:outputText value="#{inqui.usrmod}" />
+											</p:column>
+										</p:dataTable>
+
+									</div>
+
+								</h:form>
+							</div>
+
+
+							<!-- PANEL CALIFICACION -->
+							<div id="idDivCalificaInqui" class="recau_panelPendientes">
+
+								<h:form id="frmCalifica">
+									<p:growl id="msjTecnico" showDetail="true" sticky="false"
+										life="4000" widgetVar="msjTecnicox" />
+									<div class="mante_gene_ContDescrip01">
+										<div class="inqui_contenidoDatos">
+											<div class="inqui_ColumDatos">
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Tipo de Persona:" />
+													<p:selectOneMenu styleClass="cbxDatos"
+														id="inquiTipoPersona" disabled="true"
+														style="width: 188px;  font-size: 11px;"
+														value="#{inquilinoMB.inquilino.tipopersona.idtipopersona}">
+														<f:selectItem itemLabel="Seleccione Tipo Persona"
+															itemValue="0" />
+														<f:selectItems value="#{inquilinoMB.listaTipoPersona}"
+															var="tp" itemLabel="#{tp.descripcion}"
+															itemValue="#{tp.idtipopersona}">
+														</f:selectItems>
+													</p:selectOneMenu>
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Tipo de Entidad:" />
+													<p:selectOneMenu styleClass="cbxDatos"
+														id="inquiTipoEntidad" disabled="true"
+														style="width: 188px;  font-size: 11px;"
+														value="#{inquilinoMB.inquilino.tipoentidad.idtipoentidad}">
+														<f:selectItem itemLabel="Seleccione Tipo Entidad"
+															itemValue="0" />
+														<f:selectItems value="#{inquilinoMB.listaTipoEntidad}"
+															var="te" itemLabel="#{te.descripcion}"
+															itemValue="#{te.idtipoentidad}">
+														</f:selectItems>
+													</p:selectOneMenu>
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Razon Social:" />
+													<p:inputText styleClass="txtDatos" id="inquiRazonSocial"
+														disabled="true"
+														value="#{inquilinoMB.inquilino.razonsocial}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Apellido Paterno:" />
+													<p:inputText styleClass="txtDatos" id="inquiApPaterno"
+														disabled="true"
+														value="#{inquilinoMB.inquilino.apellidopat}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Apellido Materno:" />
+													<p:inputText styleClass="txtDatos" id="inquiApMaterno"
+														disabled="true"
+														value="#{inquilinoMB.inquilino.apellidomat}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="Nombres:" />
+													<p:inputText styleClass="txtDatos" id="inquiNombres"
+														disabled="true" value="#{inquilinoMB.inquilino.nombre}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="DNI:" />
+													<p:inputText styleClass="txtDatos" id="inquiDni"
+														disabled="true" value="#{inquilinoMB.inquilino.dni}" />
+
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos"
+														value="Carnet extranjeria:" />
+													<p:inputText styleClass="txtDatos" id="inquiCarnetEx"
+														disabled="true"
+														value="#{inquilinoMB.inquilino.carnetextranjeria}" />
+												</div>
+												<div class="filaDatoLargosCorto">
+													<h:outputText styleClass="lblDatos" value="R.U.C.:" />
+													<p:inputText styleClass="txtDatos" id="inquiRuc"
+														disabled="true" value="#{inquilinoMB.inquilino.ruc}" />
+												</div>
+											</div>
+											<div class="inqui_ColumInfo"></div>
+										</div>
+										<p:separator />
+										<div class="filaCabecera">
+											<h:outputText class="lblCabecera"
+												value="Datos Complementarios" />
+										</div>
+										<div class="filaDatoLargo">
+											<div class="filaDatoLargosCorto">
+												<h:outputText styleClass="lblDatos" value="Concepto:" />
+												<p:inputText styleClass="txtDatos" id="inquiConcepto"
+													value="#{inquilinoMB.califica.concepto}" />
+											</div>
+											<div class="filaDatoLargosCorto" style="width: 270px;">
+												<h:outputText styleClass="lblDatos"
+													style="text-align:rightx;" value="Calificacion:" />
+												<p:rating value="#{inquilinoMB.califica.califica}"
+													style="text-align:right">
+
+												</p:rating>
+
+												<p:commandLink rendered="#{!perfilmoduloMB.mostrarboton}"
+													id="btnAgregarCalifica" update=":frmCalifica"
+													action="#{inquilinoMB.agregarCalifica}"
+													style="float:left;margin-top:-8px; margin-left:20px;">
+													<p:graphicImage value="/resources/icons/mas.png" width="30"
+														height="30" alt="Agregar modulo" title="Agregar Modulo" />
+													<f:param name="id" value="123" />
+												</p:commandLink>
+												
+											</div>
+
+											<div
+												style="float: left; height: auto; width: 400px; margin-left: 30px;">
+												<p:dataTable id="tablaCalifica" var="cal"
+													rendered="#{inquilinoMB.mostrarTablaCalifica}"
+													value="#{inquilinoMB.listacalifica}"
+													rowKey="#{cal.idcalifica}"
+													
+													style="font-size: 10px;float:left;width:390px;margin-top:5px; text-align:center;">
+													
+													<p:column headerText="Concepto" style="width:50%">
+														<h:outputText value="#{cal.concepto}" />
+													</p:column>
+													<p:column headerText="Calificacion" style="width:25%;">
+														<h:outputText value="#{cal.califica}" />
+													</p:column>
+
+													<p:column style="text-align: center;" width="20">
+														<p:commandButton image="icon-delete" title="Eliminar"
+															update="tablaCalifica"
+															action="#{inquilinoMB.quitarCalifica}">
+															<f:setPropertyActionListener value="#{cal}"
+																target="#{inquilinoMB.calificacionquitado}" />
+														</p:commandButton>
+													</p:column>
+												</p:dataTable>
+											</div>
+										</div>
+
+
+										<br />
+										<p:separator style="float:left; width:670px" />
+										<div class="mante_general_botonguardar">
+											<p:commandButton value="Guardar"
+												oncomplete="validacionCalificaInqui();" />
+										</div>
+									</div>
+
+								</h:form>
+								<h:form id="frmdlgGuardarInquilinoCalifica">
+									<p:confirmDialog message="¿Desea Guardar Inquilino?"
+										header="Registro Inmueble" severity="alert"
+										widgetVar="dlgRegistrarInquilinoCalifica">
+
+										<p:commandButton value="&nbsp;Aceptar"
+											update=":frmTablaCalifica:dtbCalifica, :frmCalifica"
+											actionListener="#{inquilinoMB.registrarInquilino}"
+											oncomplete="dlgRegistrarInquilinoCalifica.hide()"
+											image="icon-save">
+
+										</p:commandButton>
+										<p:commandButton value="&nbsp;Cancelar"
+											update=":frmAdicional "
+											oncomplete="dlgRegistrarInquilinoCalifica.hide()"
+											image="icon-cancel" />
+
+									</p:confirmDialog>
+								</h:form>
+								<h:form id="frmTablaCalifica">
+									<div class="dgaiMonitoreo_detalle">
+										<p:dataTable id="dtbCalifica" var="inqui"
+											value="#{inquilinoMB.inquilinos}"
+											rowKey="#{inqui.idinquilino}"
+											selection="#{inquilinoMB.inquilino}" selectionMode="single"
+											stickyHeader="true" paginator="true"
+											style="width:690px; font-size: 10px;  margin: 0px 0px 0px 0px;"
+											paginatorTemplate=" Ir a p&aacute;gina: {JumpToPageDropdown} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} &nbsp;&nbsp; Registros por p&aacute;gina: {RowsPerPageDropdown}  &nbsp;  {CurrentPageReport}"
+											currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} Registros"
+											rowsPerPageTemplate="10,15,20" rows="10" scrollWidth="690"
+											styleClass="ui-datatable-hor-scroll">
+											<p:ajax event="rowSelect"
+												listener="#{inquilinoMB.onRowSelect}" update=":frmCalifica" />
+
+											<p:column headerText="Tipo Persona">
+												<h:outputText value="#{inqui.tipopersona.descripcion}" />
+											</p:column>
+
+											<p:column headerText="Tipo Entidad">
+												<h:outputText value="#{inqui.tipoentidad.descripcion}" />
+											</p:column>
+
+											<p:column headerText="Razon Social">
+												<h:outputText value="#{inqui.razonsocial}" />
+											</p:column>
+											<p:column headerText="Apellido Paterno">
+												<h:outputText value="#{inqui.apellidopat}" />
+											</p:column>
+											<p:column headerText="Apellido Materno">
+												<h:outputText value="#{inqui.apellidomat}" />
+											</p:column>
+											<p:column headerText="Nombres">
+												<h:outputText value="#{inqui.nombre}" />
+											</p:column>
+											<p:column headerText="DNI">
+												<h:outputText value="#{inqui.dni}" />
+											</p:column>
+											<p:column headerText="Carnet extranjeria">
+												<h:outputText value="#{inqui.carnetextranjeria}" />
+											</p:column>
+											<p:column headerText="RUC">
+												<h:outputText value="#{inqui.ruc}" />
+											</p:column>
+											<p:column headerText="Direccion">
+												<h:outputText value="#{inqui.direccion}" />
+											</p:column>
+											<p:column headerText="Referencia">
+												<h:outputText value="#{inqui.referencia}" />
+											</p:column>
+											<p:column headerText="Dpto.">
+												<h:outputText value="#{inqui.dpto}" />
+											</p:column>
+											<p:column headerText="Provincia">
+												<h:outputText value="#{inqui.provincia}" />
+											</p:column>
+											<p:column headerText="Distrito">
+												<h:outputText value="#{inqui.distrito}" />
+											</p:column>
+
+											<p:column headerText="F. Creacion">
+												<h:outputText value="#{inqui.feccre}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario creador">
+												<h:outputText value="#{inqui.usrcre}" />
+											</p:column>
+											<p:column headerText="F. Modificacion">
+												<h:outputText value="#{inqui.fecmod}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Usuario Modificador">
+												<h:outputText value="#{inqui.usrmod}" />
+											</p:column>
+
+										</p:dataTable>
+
+									</div>
+
+
+
+								</h:form>
+
+							</div>
+
+
+						</div>
+
+
+					</div>
+				</div>
+
+
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>
