@@ -5,6 +5,8 @@ public class Prueba {
 	private int val;
 	private int prim;
 	private int sec;
+	
+	private int cuarto;
 
 	public int getSec() {
 		return sec;
