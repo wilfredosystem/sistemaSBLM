@@ -9,6 +9,7 @@ public class Prueba {
 	private int cuarto;
 	private int quinto;
 	private int sexto;
+	private int set7;
 
 	public int getQuinto() {
 		return quinto;
