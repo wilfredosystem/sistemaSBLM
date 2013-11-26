@@ -16,6 +16,8 @@ public class Prueba {
 		this.sec = sec;
 	}
 
+	
+	private int terc;
 	public int getVal() {
 		return val;
 	}
