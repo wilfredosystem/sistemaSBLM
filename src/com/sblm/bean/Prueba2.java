@@ -12,4 +12,5 @@ int valor07;
  int valor06;
  
  int valor08;
+ int valor09;
 }
