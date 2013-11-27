@@ -13,6 +13,8 @@ int valor07;
  
  int valor08;
  int valor09;
+ 
+ int valor10;
 
  
 
