@@ -6,9 +6,6 @@ public class Prueba {
 
 		}
 
-
-
-		}
 	
 	
 }
