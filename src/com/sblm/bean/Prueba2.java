@@ -8,4 +8,6 @@ public class Prueba2 {
  
  int valor05;
  int valor06;
+ 
+ int valor08;
 }
