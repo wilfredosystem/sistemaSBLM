@@ -5760,3 +5760,93 @@ width: 565px;
 #dialogCuota .ui-dialog-titlebar{
 width: 605px;
 }
+
+/*******SEGUIMIENTO********/
+.btnSeguimiento {
+	float: left;
+	margin-left: 217px;
+	margin-top: 60px;
+	text-decoration: none;
+	color: #000;
+	width: 85px;
+	height: 30px;
+	background-color: #ffc600;
+	text-align: center;
+}
+
+.btnDespacho {
+	float: left;
+	margin-left: 5px;
+	margin-top: 60px;
+	text-decoration: none;
+	color: #000;
+	width: 85px;
+	height: 30px;
+	background-color: #fed02e;
+	text-align: center;
+	padding: 0 auto 0 auto;
+}
+/***/
+.fila3columnas {
+	float: left;
+	margin-left: 15px;
+	margin-top: 0px;
+	color: #000;
+	width: 700px;
+	height: auto;
+	text-align: center;
+	padding: 0 auto 0 auto;
+}
+
+.columna1_3 {
+	float: left;
+	margin-left: 5px;
+	margin-top: 0px;
+	color: #000;
+	width: 227px;
+	height: 30px;
+	text-align: center;
+	padding: 0 auto 0 auto;
+}
+.textoCabecera {
+	float: left;
+	margin-left:10px;
+	width: 300px;
+	height: 26px;
+	text-align: left;
+	color: #3385BF;
+}
+.textoidenti {
+	float: left;
+	margin-left:10px;
+	width: 300px;
+	height: 26px;
+	text-align: left;
+	color: #4C4C4C;
+}
+.campoIngreso {
+	float:left;
+	margin-left:10px;
+	width: 180px;
+}
+.fila3columnasAcordeon {
+	float: left;
+	margin-left: 15px;
+	margin-top: 0px;
+	color: #000;
+	width: 650px;
+	height: auto;
+	text-align: center;
+	padding: 0 auto 0 auto;
+}
+
+.columnaAcordeon{
+	float: left;
+	margin-left: 5px;
+	margin-top: 0px;
+	color: #000;
+	width: 210px;
+	height: 30px;
+	text-align: center;
+	padding: 0 auto 0 auto;
+}

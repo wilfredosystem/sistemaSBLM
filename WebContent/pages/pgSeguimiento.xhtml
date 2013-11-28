@@ -42,13 +42,7 @@
 								value="/resources/images/recaudacion/menuAzul_opc2Submenu.png"
 								alt="Cobranzas" title="Recaudacion" />
 						</p:commandLink>
-						<p:commandLink id="idmenuAzul_submenOpc3"
-							onclick="window.location.href='/sistemaSBLM/pages/pgRecaudacionAutovaluo.jsf'"
-							styleClass="menuAzul_submenOpc3" oncomplete="tabDerivacion();">
-							<p:graphicImage
-								value="/resources/images/recaudacion/menuAzul_opc3Submenu.png"
-								alt="Arbitrios" title="Autovaluo" />
-						</p:commandLink>
+
 					</div>
 					<div class="menuAzul_submenuItems">
 						<p:commandLink id="idmenuAzul_bandejaSubmenu"
@@ -61,9 +55,9 @@
 							<h:outputText style="float:left;margin-left:5px; margin-top:2px;"
 								value="Bandeja" />
 						</p:commandLink>
-						
+
 						<p:commandLink id="idmenuAzul_arbitriosSubmenu"
-							styleClass="menuAzul_arbitriosSubmenu"
+							styleClass="menuAzul_arbitriosSubmenu" style="width:150px;"
 							oncomplete="tabDerivacion();">
 							<p:graphicImage styleClass="menuAzul_imgsubmenbandeja"
 								style="margin-top:2px;" width="22" height="22"
@@ -71,7 +65,7 @@
 								title="Bandeja" />
 							<h:outputText
 								style="float:left;margin-left:5px; margin-top:7px;color:white;"
-								value="Cobranza" />
+								value="Arrendamiento" />
 						</p:commandLink>
 
 					</div>
@@ -81,28 +75,47 @@
 					<!-- CONTENIDO MODIFICABLE -->
 					<div class="contenidoPrincipal_subFondo_Icono"></div>
 					<div id="lblSubtitulo"
-						class="contenidoPrincipal_subFondo_lblTitulox">Derivacion</div>
+						class="contenidoPrincipal_subFondo_lblTitulox">Seguimiento</div>
 
-					<p:commandLink id="idDerivacion" styleClass="btnDerivacion"
-						onclick="tabDerivacion();">
-						<div class="btncentrado">Derivaci&oacute;n</div>
+
+					<p:commandLink id="idSeguimiento" styleClass="btnSeguimiento"
+						onclick="tabSeguimiento();">
+						<div class="btncentrado">Seguimiento</div>
 					</p:commandLink>
-					<p:commandLink id="idDespacho" styleClass="btnDespacho"
-						onclick="tabDespacho();">
-						<div class="btncentrado">Despacho</div>
+					<p:commandLink id="idConsulta" styleClass="btnDespacho"
+						onclick="tabConsulta();">
+						<div class="btncentrado">Consulta</div>
 					</p:commandLink>
-					<p:commandLink id="idConsultas" styleClass="btnConsultas"
-						onclick="tabConsultas();">
-						<div class="btncentrado">Consultas</div>
+					<p:commandLink id="idAlerta" styleClass="btnDespacho"
+						onclick="tabAlerta();">
+						<div class="btncentrado">Alerta</div>
+					</p:commandLink>
+					<p:commandLink id="idReporte" styleClass="btnConsultas"
+						onclick="tabReporte();">
+						<div class="btncentrado">Reporte</div>
 					</p:commandLink>
 					<div class="contenidoPrincipal_fondo_formulario">
 						<div class="dgaiMonitoreo_Contenido">
-							<!-- PANEL DERIVACION -->
-							<div id="idDivDerivacion">aa</div>
-							<!-- PANEL DESPACHO -->
-							<div id="idDivDespacho">bb</div>
-							<!-- PANEL CONSULTAS -->
-							<div id="idDivConsultas">cc</div>
+							<!-- PANEL SEGUIMIENTO -->
+							<div id="idDivSeguimiento">
+								
+								<ui:include src="pgSeguimientoSeguimiento.xhtml" />
+							</div>
+							<!-- PANEL CONSULTA -->
+							<div id="idDivConsulta">
+								CONSULTA
+								<ui:include src="pgSeguimientoConsulta.xhtml" />
+							</div>
+							<!-- PANEL ALERTA -->
+							<div id="idDivAlerta">
+								ALERTA
+								<ui:include src="pgSeguimientoAlerta.xhtml" />
+							</div>
+							<!-- PANEL REPORTE -->
+							<div id="idDivReporte">
+								REPORTE
+								<ui:include src="pgSeguimientoReporte.xhtml" /> 
+							</div>
 						</div>
 					</div>
 				</div>
